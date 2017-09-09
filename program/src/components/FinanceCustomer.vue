@@ -1,6 +1,7 @@
 <template>
     <div class="service">
-		<Row :gutter="20">
+	<transition name="fade">
+		<Row :gutter="20" v-if="loading">
 			<Col span="24">
 				<Card :bordered="false">
 
@@ -13,7 +14,7 @@
 				</Card>
 			</Col>
 		 </Row>
-
+	</transition>
 		<Modal v-model="customer.loading" width="80%">
 			<p slot="header" style="text-align:center">
 				<Icon type="ios-list"></Icon>
@@ -32,6 +33,7 @@
 	    name:'FinanceCustomer',
 	    data () {
 	      	return {
+				loading: false,
 	      		columns: [
 	      			{
 	      			  title: '客户',
@@ -159,7 +161,7 @@
 	      
 	      setTimeout(()=> {
 	        this.loading = true;
-	      }, 500);
+	      }, 1000);
 
 	    }
 	}
