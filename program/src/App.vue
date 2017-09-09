@@ -2,61 +2,68 @@
   <div id="app">
     <div style="  position: absolute; width:100%; z-index:2;">
       <Menu mode="horizontal" theme="light" active-name="home" @on-select="on_router">
-        <Menu-item name="home">
-            <Icon type="ios-home"></Icon>
-            首页
-        </Menu-item>
-        <Submenu name="project">
-            <template slot="title">
-                <Icon type="stats-bars"></Icon>
-                项目管理
-            </template>
-            <Menu-group title="使用">
-                <Menu-item name="31">jia</Menu-item>
-                <Menu-item name="32">活跃分析</Menu-item>
-                <Menu-item name="33">时段分析</Menu-item>
-            </Menu-group>
-        </Submenu>
-        <Submenu name="statistics">
-            <template slot="title">
-                <Icon type="stats-bars"></Icon>
-                统计分析
-            </template>
-            <Menu-group title="使用">
-                <Menu-item name="3-1">新增和启动</Menu-item>
-                <Menu-item name="3-2">活跃分析</Menu-item>
-                <Menu-item name="statisticsRegional">地域分析</Menu-item>
-                <Menu-item name="3-3">时段分析</Menu-item>
-            </Menu-group>
-            <Menu-group title="留存">
-                <Menu-item name="3-4">用户留存</Menu-item>
-                <Menu-item name="3-5">流失用户</Menu-item>
-            </Menu-group>
-        </Submenu>
-        <Submenu name="finance">
-            <template slot="title">
-              <Icon type="settings"></Icon>
-              财务管理
-            </template>
-            <Menu-group title="客户">
-                <Menu-item name="financeCustomer">账单结算</Menu-item>
-            </Menu-group>
-            <Menu-group title="员工">
-                <Menu-item name="financeEmployee">提成结算</Menu-item>
-            </Menu-group>
-        </Submenu>
-        <Submenu name="employee">
-            <template slot="title">
-              <Icon type="ios-paper"></Icon>
-              人员管理
-            </template>
-            <Menu-group title="客户">
-                <Menu-item name="sCustomer">客户注册</Menu-item>
-            </Menu-group>
-            <Menu-group title="员工">
-                <Menu-item name="sEmployee">员工注册</Menu-item>
-            </Menu-group>
-        </Submenu>
+        <Row type="flex" justify="center" align="middle" style="min-width: 1080px" >
+          <Col span="16" >
+          <Menu-item name="home">
+              <Icon type="ios-home"></Icon>
+              首页
+          </Menu-item>
+          <Submenu name="project">
+              <template slot="title">
+                  <Icon type="stats-bars"></Icon>
+                  项目管理
+              </template>
+              <Menu-group title="使用">
+                  <Menu-item name="31">jia</Menu-item>
+                  <Menu-item name="32">活跃分析</Menu-item>
+                  <Menu-item name="33">时段分析</Menu-item>
+              </Menu-group>
+          </Submenu>
+          <Submenu name="statistics">
+              <template slot="title">
+                  <Icon type="stats-bars"></Icon>
+                  统计分析
+              </template>
+              <Menu-group title="使用">
+                  <Menu-item name="3-1">新增和启动</Menu-item>
+                  <Menu-item name="3-2">活跃分析</Menu-item>
+                  <Menu-item name="statisticsRegional">地域分析</Menu-item>
+                  <Menu-item name="3-3">时段分析</Menu-item>
+              </Menu-group>
+              <Menu-group title="留存">
+                  <Menu-item name="3-4">用户留存</Menu-item>
+                  <Menu-item name="3-5">流失用户</Menu-item>
+              </Menu-group>
+          </Submenu>
+          <Submenu name="finance">
+              <template slot="title">
+                <Icon type="settings"></Icon>
+                财务管理
+              </template>
+              <Menu-group title="客户">
+                  <Menu-item name="financeCustomer">账单结算</Menu-item>
+              </Menu-group>
+              <Menu-group title="员工">
+                  <Menu-item name="financeEmployee">提成结算</Menu-item>
+              </Menu-group>
+          </Submenu>
+          <Submenu name="employee">
+              <template slot="title">
+                <Icon type="ios-paper"></Icon>
+                人员管理
+              </template>
+              <Menu-group title="客户">
+                  <Menu-item name="sCustomer">客户注册</Menu-item>
+              </Menu-group>
+              <Menu-group title="员工">
+                  <Menu-item name="sEmployee">员工注册</Menu-item>
+              </Menu-group>
+          </Submenu>
+          </Col>
+          <Col span="4">
+            <Avatar style="color: #fff; background-color: #5cadff; float: right;" size="large" shape="square">{{user.name}}</Avatar>
+          </Col>
+        </Row>
       </Menu>
     </div>
 
@@ -77,6 +84,11 @@ export default {
   data() {
     return {
       loading: true,
+    }
+  },
+  computed:{
+    user() {
+      return this.$store.state.user;
     }
   },
 

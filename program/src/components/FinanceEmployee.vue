@@ -7,24 +7,24 @@
           <Card :bordered="false">
 
             <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
-              <Col span="12">
+              <Col span="9">
                 <P>渲染师</P>
               </Col>
-              <Col span="2">
+              <Col span="3">
                 <label style="float: right">建模提成：</label>
               </Col>
 <!--               <Col span="10" style="min-width: 320px; font-size: 12px;"> -->
               <Col span="2">
-                <InputNumber style="width: 100%;" size="small" step="0.1" :max="1" :min="0" v-model="modelValue"></InputNumber>
+                <InputNumber style="width: 100%;" size="small" :step="0.1" :max="1" :min="0" v-model="modelValue"></InputNumber>
               </Col>
-              <Col span="2">
+              <Col span="3">
                 <label style="float: right">渲染提成：</label>
               </Col>
               <Col span="2">
-                <InputNumber style="width: 100%;" size="small" step="0.1" :max="1" :min="0" v-model="randerValue"></InputNumber>
+                <InputNumber style="width: 100%;" size="small" :step="0.1" :max="1" :min="0" v-model="randerValue"></InputNumber>
               </Col>
                 
-              <Col span="1">
+              <Col span="2">
                 <label style="float: right">月份：</label>
               </Col> 
               <Col span="3">
@@ -89,7 +89,10 @@
             <Icon type="ios-list"></Icon>
             <span>详细表单</span>
         </p>
-        <Table border height="750" size="small" :columns="columns2" :data="financeData.renderDetails" ></Table>
+        <Table border height="750" size="small" :columns="columns2" :data="financeData.renderDetails" ref="customerList"></Table>
+        <div slot="footer">
+			    <Button type="primary" size="large" @click="exportData()">导出</Button>
+			  </div>
 <!--         <div style="text-align:center">
             <p>此任务删除后，下游 10 个任务将无法执行。</p>
             <p>是否继续删除？</p>
@@ -230,6 +233,13 @@
           setTimeout(()=> {
           this.$store.dispatch('getFinanceRender');
           }, 500);
+        },
+        exportData () {
+          console.log('in')
+              this.$refs.customerList.exportCsv({
+                  filename: `工资单`,
+                  original: false
+              });
         }
     },
     mounted() {
@@ -237,7 +247,7 @@
       
       setTimeout(()=> {
         this.loading = true;
-      }, 500);
+      }, 1000);
     }
   };
 </script>

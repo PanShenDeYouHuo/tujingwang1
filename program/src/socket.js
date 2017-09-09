@@ -1,8 +1,12 @@
 import io from 'socket.io-client';
 
 function socketClass () {
+	
+	// https
+	// let url = 'https://192.168.0.105:3000/';
 
-	let url = 'https://192.168.0.105:3000/';
+	// http
+	let url = 'http://192.168.0.105:3000/';
 	this.opt = {
 		autoConnect: false,
 		query: {},
