@@ -1,25 +1,28 @@
 
 let state = {
-	name: '',
-	account: '',
-	password: '',
-	token: '',
+	name: '',				//用户昵称
+	account: '',			//登入账号
+	password: '',			//密码
+	token: '',				//用户token
+	state: false,			//登入状态
+	headUrl: '',			//头像地址
 
-	loading: true,
-	isRemember: false,
+	loading: true,			//登入时是等待状态
+	isRemember: false,		//是否记住密码
 };
 
 let mutations = {
 	setUser(state, newUser) {
 		for (var key in newUser) {
-        	state[key] = newUser[key];
-      	}
+			state[key] = newUser[key];
+		}
 	},
 };
 
 let actions = {
 	//启动app时，载入用户数据
-	loadUserData({commit, state, rootState}) {
+	loadUserData({ commit, state, rootState }) {
+		//路由初始化
 		rootState.router.beforeEach((to, from, next) => {
 			next();
 			rootState.loading.finish();
@@ -27,9 +30,9 @@ let actions = {
 		//登入检测sessionstotage
 		let stoken = sessionStorage.getItem('token');
 		if (stoken) {
-		  	rootState.socketClass.opt.query = {token: stoken};
-		  	rootState.socketClass.socket.open();
-		  	return;
+			rootState.socketClass.opt.query = { token: stoken };
+			rootState.socketClass.socket.open();
+			return;
 		}
 		//登入检测localstotage
 		let raccount = localStorage.getItem('ruser');
@@ -38,22 +41,22 @@ let actions = {
 		state.account = raccount;
 
 		if (rpassword) {
-		  	state.password = rpassword;
-		  	state.isRemember = true;
+			state.password = rpassword;
+			state.isRemember = true;
 		}
 		// setTimeout(()=> {
-		rootState.router.push('login');
+		// rootState.router.push('login');
 		// }, 1500);
 	},
 	//登入接口
-	loginIn({commit, state, rootState}) {
+	loginIn({ commit, state, rootState }) {
 		state.loading = false;
 		rootState.socketClass.connect(state.account, state.password);
 	},
 	//登入成功接口
-	loginSuccess({commit, state, rootState}) {
+	loginSuccess({ commit, state, rootState }) {
 		//登入成功是返回的结果
-		rootState.socketClass.socket.on('loginOk', (data)=> {
+		rootState.socketClass.socket.on('loginOk', (data) => {
 
 			rootState.router.push('home');
 			commit('setUser', data);
@@ -68,10 +71,10 @@ let actions = {
 				localStorage.setItem('ruser', state.account);
 				//是否记住密码
 				if (state.isRemember) {
-				  	localStorage.setItem('rpassword', state.password);
+					localStorage.setItem('rpassword', state.password);
 				}
 				else {
-				  	localStorage.removeItem('rpassword');
+					localStorage.removeItem('rpassword');
 				}
 				//设置为登入状态
 				sessionStorage.setItem('state', 1);
@@ -81,20 +84,20 @@ let actions = {
 		});
 	},
 	//登录失败接口
-	loginFail({commit, state, rootState}) {
+	loginFail({ commit, state, rootState }) {
 		//socket.io 拒绝链接接口
-		rootState.socketClass.socket.on("error", (data)=> {
-		  sessionStorage.setItem('state', -1);
-		  state.loading = true;
-		  rootState.message.error(data);
+		rootState.socketClass.socket.on("error", (data) => {
+			sessionStorage.setItem('state', -1);
+			state.loading = true;
+			rootState.message.error(data);
 		});
 	},
-	
+
 
 };
 
 let getters = {
-	
+
 };
 
 

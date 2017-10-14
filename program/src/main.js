@@ -3,14 +3,18 @@
 
 import Vue from 'vue';
 
-import 'iview/dist/styles/iview.css';
-import iView from 'iview';
+//VueMaterial部分 开始-------------------------------
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.css'
+Vue.use(VueMaterial)
 
-import App from './App';
-import router from './router';
-import store from './store/index';
+// import 'iview/dist/styles/iview.css';
+// import iView from 'iview';
+// Vue.use(iView);
 
-Vue.use(iView);
+import App from './App';            //载入app.vue
+import router from './router';      //路由
+import store from './store/index'; //状态管理
 
 Vue.config.productionTip = false;
 

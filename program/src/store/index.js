@@ -11,7 +11,7 @@ const state = {
 	socketClass,
 	router: {},
 	message: {},
-	loading:{},
+	loading: {},
 
 };
 
@@ -20,12 +20,15 @@ const mutations = {
 };
 
 const actions = {
+	//获取路由
 	getRouter({commit, state}, router) {
 		state.router = router;
 	},
+	//获取全局提示
 	getMessage({commit, state}, message) {
 		state.message = message;
 	},
+	//获取页面加载静读条
 	getLoading({commit, state}, loading) {
 		state.loading = loading;
 	},

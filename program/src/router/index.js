@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import Home from '@/components/Home';
 import Login from '@/components/Login';
+import Works from '@/components/Works';
 
 import FinanceEmployee from '@/components/financeEmployee';
 import FinanceCustomer from '@/components/financeCustomer';
@@ -22,6 +24,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+    },
+    {
+      path: '/works',
+      name: 'Works',
+      component: Works,
     },
     {
       path: '/financeEmployee',

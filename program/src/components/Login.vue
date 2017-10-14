@@ -1,11 +1,11 @@
 
 <template >
   <div class="login">
-  <transition name="fade">
+  <!-- <transition name="fade">
     <Form ref="formInline" :model="form" :rules="ruleInline" class="box_relative" v-if="loading">
       <Row >
         <Col span="8" class="white">
-          <Form-item prop="user">
+          <Form-item prop="account">
               <Input type="text" v-model="form.account" placeholder="Username">
               </Input>
           </Form-item>
@@ -30,7 +30,9 @@
         </Col>
       </Row>
     </Form>
-  </transition>
+  </transition> -->
+    <Card dis-hover style="width: 500px; margin:0 auto;">
+    </Card>
   </div>
 </template>
 
@@ -41,7 +43,7 @@
     data () {
       return {
         ruleInline: {
-          name: [
+          account: [
               { required: true, message: '请填写用户名', trigger: 'blur' }
           ],
           password: [
@@ -85,11 +87,12 @@
 
 <style >
   .login{
-    background: url('../assets/bg.jpg'); 
+    /* background: url('../assets/bg.jpg');  */
+    background-color: #fff;
     height: 100%; width: 100%; 
     position:absolute; 
     z-index:3; 
-    left: 0px; top: 0px; /*background-image:url(../assets/logo.png);*/ 
+    left: 0px; top: 0px;
     background-position:center; 
   }
 

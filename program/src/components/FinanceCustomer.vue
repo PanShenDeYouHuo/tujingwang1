@@ -10,7 +10,7 @@
 						  	<P>客户</P>
 						</Col>
 					</Row>
-					<Table border size="small" :columns="columns" no-data-text="height" :data="customer.list" ></Table>
+					<Table border height="833" size="small" :columns="columns" no-data-text="height" :data="customer.list" ></Table>
 				</Card>
 			</Col>
 		 </Row>
@@ -171,6 +171,9 @@
 	.service {
 	    width:100%;
 	    height:100%;
+		padding: 20px;
+    	padding-top: 70px;
+		background-color: #fff;
 	    box-sizing:border-box;
 	    overflow:auto;
 	    position: absolute;
