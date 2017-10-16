@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import user from './modules/user'
+import login from './modules/login'
 import finance from './modules/finance'
 import statistics from './modules/statistics'
-import socketClass from '../socket';
+import socketClass from '../socket.io';
 
 Vue.use(Vuex);
 
@@ -40,6 +41,7 @@ const getters = {
 
 const modules = {
 	user,
+	login,
 	finance,
 	statistics
 };

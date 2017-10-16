@@ -1,85 +1,32 @@
 <template>
   <div id="app">
-    <div style="box-sizing:border-box;  position: absolute; width:100%; z-index:2; border-style:solid; border-width: 0px 0px 1px 0px; border-color: #dddee1">
-      <Row type="flex" justify="center" align="middle"  style="min-width: 1080px; max-width: 1280px;margin:0 auto;" >
-        <Col span="4">
-          <img src="./assets/home.png" alt="标志" style="height: 40px; padding-top: 0px;">
-        </Col>
-        <Col span="16">
-        <Menu mode="horizontal" theme="light" active-name="home" @on-select="on_router">
-          <Menu-item name="home">
-              首页
-          </Menu-item>
-
-          <Menu-item name="works">
-              项目
-          </Menu-item>
-
-          <!-- <Submenu name="statistics">
-              <template slot="title">
-                  分析
-              </template>
-              <Menu-group title="使用">
-                  <Menu-item name="3-1">新增和启动</Menu-item>
-                  <Menu-item name="3-2">活跃分析</Menu-item>
-                  <Menu-item name="statisticsRegional">地域分析</Menu-item>
-                  <Menu-item name="3-3">时段分析</Menu-item>
-              </Menu-group>
-              <Menu-group title="留存">
-                  <Menu-item name="3-4">用户留存</Menu-item>
-                  <Menu-item name="3-5">流失用户</Menu-item>
-              </Menu-group>
-          </Submenu> -->
-          <!-- <Submenu name="finance">
-              <template slot="title">
-                财务
-              </template>
-              <Menu-group title="客户">
-                  <Menu-item name="financeCustomer">账单结算</Menu-item>
-              </Menu-group>
-              <Menu-group title="员工">
-                  <Menu-item name="financeEmployee">提成结算</Menu-item>
-              </Menu-group>
-          </Submenu>
-          <Submenu name="employee">
-              <template slot="title">
-                管理
-              </template>
-              <Menu-group title="客户">
-                  <Menu-item name="sCustomer">客户注册</Menu-item>
-              </Menu-group>
-              <Menu-group title="员工">
-                  <Menu-item name="sEmployee">员工注册</Menu-item>
-              </Menu-group>
-          </Submenu> -->
-
-        </Menu>
-        </Col>
-
-        <Col span="4">
-        <!-- 未登入显示 -->
-          <Button type="dashed" style="height: 40px; float: right;" v-if="!user.statr" @click="to_login()">登入</Button>
-          <Button type="text" style="height: 40px; float: right;" v-if="!user.statr">注册</Button>
-        <!-- 登入显示 -->
-          <Dropdown style="float: right; height: 40px;" v-if="user.statr">
-            <!-- <Avatar src="http://img.zcool.cn/community/0015ad59b50892a801211d2566598e.jpg@160w_160h_1c_1e_1o_100sh.jpg" size="large" style="height: 40px;" /> -->
-            <Avatar :src="user.headUrl" size="large" style="height: 40px;" />
-            <DropdownMenu slot="list">
-              <DropdownItem>个人主页</DropdownItem>
-              <DropdownItem>项目管理</DropdownItem>
-              <DropdownItem>账号管理</DropdownItem>
-            <DropdownItem divided>退出登入</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          <!-- <Avatar style="color: #fff; background-color: #5cadff; float: right;" size="large" shape="square">{{user.name}}</Avatar> -->
-        </Col>
-
-      </Row>
+    <div style="background-color: #fff;  position: absolute; width:100%; z-index:2; border-style:solid; border-width: 0px 0px 1px 0px; border-color: #666">
+      <pmenu @toggleRightSidenav="toggleRightSidenav" 
+      @toLogin="to_login()"></pmenu>
     </div>
 
+    <!-- 用户信息管理右侧边导航 -->
+    <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
+      <!-- <md-toolbar>
+      <div class="md-toolbar-container">
+          <h3 class="md-title">Sidenav content</h3>
+      </div>
+      </md-toolbar>
+
+      <md-button class="md-raised md-accent" @click="closeRightSidenav">Close</md-button> -->
+    </md-sidenav>
+
+    <!-- 登入右侧边导航 -->
+    <md-sidenav class="md-right" ref="loginRightSidenav" @open="open('loginRightSidenav')" @close="close('loginRightSidenav')">
+      <login v-show="loginType == 0"></login>
+      <wechatLogin v-show="loginType == 1"></wechatLogin>
+    </md-sidenav>
+
+    <!-- 路由页面 -->
     <keep-alive>
       <router-view class="content"></router-view>
     </keep-alive>
+
     <!-- 载入等待页面 -->
     <!-- <div v-if="loading">
       <Spin fix size="large"></Spin>
@@ -89,6 +36,9 @@
 </template>
 
 <script>
+import pmenu from './components/Menu'
+import login from './components/login_component/Login'
+import wechatLogin from './components/login_component/wechatLogin'
 export default {
   name: 'app',
   data() {
@@ -99,18 +49,40 @@ export default {
   computed:{
     user() {
       return this.$store.state.user;
+    },
+    loginType() {
+      
+      return this.$store.state.login.loginType;
     }
   },
+  components:{pmenu, login, wechatLogin},
 
   methods:{
     //导航路由初始化
     on_router(name) {
       this.$router.push(name);
     },
-    //去登入页面
+
+    //用户信息管理右侧边导航
+    toggleRightSidenav() {
+      this.$refs.rightSidenav.toggle();
+    },
+    closeRightSidenav() {
+      this.$refs.rightSidenav.close();
+    },
+
+    //登入右侧导航
     to_login() {
-      this.$router.push('login');
-    }
+      this.$refs.loginRightSidenav.toggle();
+    },
+
+    open(ref) {
+      console.log('Opened: ' + ref);
+    },
+    close(ref) {
+      console.log('Closed: ' + ref);
+    },
+    //
   },
   mounted(){
 
@@ -126,7 +98,7 @@ export default {
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
     this.$store.dispatch('loginFail');                  //开启登入失败接口
     this.$store.dispatch('loadUserData');               //开始启动app是载入用户数据信息
-    this.$router.push('home');                          //切换到home页面
+    // this.$router.push('home');                          //切换到home页面
   },
   created() {
     console.log('created');
@@ -165,10 +137,6 @@ export default {
 html,body{margin: 0px; height: 100%; padding: 0px;}
 body{background-color:rgb(245, 245, 245); overflow:hidden;}
 
-.ivu-menu-horizontal {
-    height: 50px;
-    line-height: 50px;
-}
 
 .content {
   width:100%;height:100%;
@@ -176,22 +144,15 @@ body{background-color:rgb(245, 245, 245); overflow:hidden;}
   padding-top: 50px;
 }
 
-/* 导航栏 */
-.ivu-menu-light.ivu-menu-horizontal .ivu-menu-item, .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu {
-    height: inherit;
-    line-height: inherit;
-    border-bottom: 2px solid transparent;
-    color: #6d6d6d;
+.md-sidenav .md-sidenav-content {
+    width: 354px;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.ivu-menu-light.ivu-menu-horizontal .ivu-menu-item-active, .ivu-menu-light.ivu-menu-horizontal .ivu-menu-item:hover, .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu-active, .ivu-menu-light.ivu-menu-horizontal .ivu-menu-submenu:hover {
-    color: #000000;
-    border-bottom: 2px solid #5d5d5d;
+.md-theme-default.md-sidenav .md-sidenav-content {
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.ivu-menu-horizontal.ivu-menu-light:after {
-    height: 0px;
-}
 
 /* 过度动画 */
 .fade-enter-active, .fade-leave-active {

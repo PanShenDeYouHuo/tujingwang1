@@ -5,7 +5,7 @@ let state = {
 	password: '',			//密码
 	token: '',				//用户token
 	state: false,			//登入状态
-	headUrl: '',			//头像地址
+	avatarUrl: '',			//头像地址
 
 	loading: true,			//登入时是等待状态
 	isRemember: false,		//是否记住密码

@@ -8,9 +8,14 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 Vue.use(VueMaterial)
 
-// import 'iview/dist/styles/iview.css';
-// import iView from 'iview';
-// Vue.use(iView);
+//iview部分
+import 'iview/dist/styles/iview.css';
+import IView from 'iview';
+Vue.use(IView);
+
+//vue-agile轮播图组件
+import VueAgile from 'vue-agile';
+Vue.use(VueAgile);
 
 import App from './App';            //载入app.vue
 import router from './router';      //路由
