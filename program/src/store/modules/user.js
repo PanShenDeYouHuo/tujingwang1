@@ -1,14 +1,16 @@
 
 let state = {
-	name: '',				//用户昵称
-	account: '',			//登入账号
-	password: '',			//密码
-	token: '',				//用户token
-	state: false,			//登入状态
-	avatarUrl: '',			//头像地址
+	_id: '',					//账户唯一id
+	token: '',					//令牌
+	nickname: '',				//用户昵称
+	sex: '',					//性别
+	headimgurl: '',				//头像地址
+	province: '',				//省份
+	city: '',					//城市
+	country: '',				//国家
 
-	loading: true,			//登入时是等待状态
-	isRemember: false,		//是否记住密码
+	loading: true,				//登入时是等待状态
+	isRemember: false,			//是否记住密码
 };
 
 let mutations = {
@@ -22,11 +24,6 @@ let mutations = {
 let actions = {
 	//启动app时，载入用户数据
 	loadUserData({ commit, state, rootState }) {
-		//路由初始化
-		rootState.router.beforeEach((to, from, next) => {
-			next();
-			rootState.loading.finish();
-		})
 		//登入检测sessionstotage
 		let stoken = sessionStorage.getItem('token');
 		if (stoken) {
@@ -58,40 +55,60 @@ let actions = {
 		//登入成功是返回的结果
 		rootState.socketClass.socket.on('loginOk', (data) => {
 
-			rootState.router.push('home');
 			commit('setUser', data);
 
-			//用于判读登入还是重连 0登入 1重新链接
-			let loginState = sessionStorage.getItem('state');
+			// //用于判读登入还是重连 0登入 1重新链接
+			// let loginState = sessionStorage.getItem('state');
 			if (loginState !== '1') {
-				// rootState.router.push('/home');
 				//sessionStorage token用于刷新重连
-				sessionStorage.setItem('token', state.token);
+				localStorage.setItem('ltoken', state.token);
 				//保存账号
-				localStorage.setItem('ruser', state.account);
+				localStorage.setItem('luser', state.account);
 				//是否记住密码
 				if (state.isRemember) {
-					localStorage.setItem('rpassword', state.password);
+					localStorage.setItem('lpassword', state.password);
 				}
 				else {
-					localStorage.removeItem('rpassword');
+					localStorage.removeItem('lpassword');
 				}
-				//设置为登入状态
-				sessionStorage.setItem('state', 1);
+				// //设置为登入状态
+				// sessionStorage.setItem('state', 1);
 			}
 			state.loading = true;
 
 		});
+
 	},
-	//登录失败接口
-	loginFail({ commit, state, rootState }) {
-		//socket.io 拒绝链接接口
-		rootState.socketClass.socket.on("error", (data) => {
-			sessionStorage.setItem('state', -1);
-			state.loading = true;
-			rootState.message.error(data);
+	// //登录失败接口
+	// loginFail({ commit, state, rootState }) {
+	// 	//socket.io 拒绝链接接口
+	// 	rootState.socketClass.socket.on("error", (data) => {
+	// 		sessionStorage.setItem('state', -1);
+	// 		state.loading = true;
+	// 		rootState.message.error(data);
+	// 	});
+	// },
+	loginSuccess({commit, state, rootState}) {
+		rootState.socketClass.socket.on('loginSuccess', (data)=> {
+			console.log(data);
+			commit('setUser', data);
+			// for(let index in data) {
+			// 	localStorage.setItem(index, data[index]);
+			// }
+			localStorage.setItem('accessToken', data.accessToken);
 		});
 	},
+
+	//错误返回接口
+	error({commit, state, rootState}) {
+		rootState.socketClass.socket.on('appError', (err)=> {
+			console.log('appError');
+			rootState.message.error({
+				content: err,
+                duration: 5
+			});
+		});
+	}
 
 
 };

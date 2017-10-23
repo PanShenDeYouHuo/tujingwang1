@@ -6,7 +6,16 @@ import Vue from 'vue';
 //VueMaterial部分 开始-------------------------------
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
-Vue.use(VueMaterial)
+Vue.use(VueMaterial);
+Vue.material.registerTheme('default', {
+  primary: {
+    color: 'grey',
+    hue: 800
+  },
+  accent: 'yellow',
+  warn: 'red',
+
+})
 
 //iview部分
 import 'iview/dist/styles/iview.css';

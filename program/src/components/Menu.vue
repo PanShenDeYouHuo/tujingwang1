@@ -24,14 +24,13 @@
             <md-layout md-flex="20" md-align="end">
 
                 <!-- 未登入显示 -->
-                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user.statr" @click="to_login()">登入</md-button>
-                <div style="border-style:solid; border-width: 0px 0px 0px 2px; border-color: #dddee1; margin: 10px 0px;" v-if="!user.statr"></div>
-                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user.statr">注册</md-button>
+                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user._id" @click="to_login()">登入</md-button>
+                <div style="border-style:solid; border-width: 0px 0px 0px 2px; border-color: #dddee1; margin: 10px 0px;" v-if="!user._id"></div>
+                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user._id">注册</md-button>
 
                 <!-- 登入显示 -->
-                <md-avatar style="margin-right: 20px;" v-if="user.statr">
-                    <md-ink-ripple />
-                    <img src="http://img.zcool.cn/community/0015ad59b50892a801211d2566598e.jpg@160w_160h_1c_1e_1o_100sh.jpg" alt="Avatar" @click="toggleRightSidenav()">
+                <md-avatar style="margin-right: 20px;" v-if="user._id">
+                    <img :src="user.headimgurl" alt="Avatar" @click="toggleRightSidenav()">
                 </md-avatar>
             </md-layout>
 
@@ -65,13 +64,13 @@ export default {
     },
     computed: {
         user() {
+            let url = this.$store.state.user.headimgurl;
+            let l = url.length;
+            this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
             return this.$store.state.user;
         }
     },
     methods: {
-        sayHello(){
-            console.log('hello')
-        },
 
         activeSelection(router) {
             let result = [];
@@ -89,7 +88,7 @@ export default {
             this.$router.push(routerName);
             // this.$emit('change',aa);
         },
-        //发送侧变导航开事件
+        //用户侧变导航开事件
         toggleRightSidenav() {
             this.$emit('toggleRightSidenav');
         },

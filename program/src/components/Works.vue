@@ -8,6 +8,7 @@
                     <Icon type="ios-keypad"></Icon>
                     风格
                 </h2>
+                <a href="javascript:open(' ', '_self').close();" ></a>
                 <br>
                 <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
                     <Button type="ghost" long>现代简约</Button>

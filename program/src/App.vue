@@ -7,19 +7,57 @@
 
     <!-- 用户信息管理右侧边导航 -->
     <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
-      <!-- <md-toolbar>
-      <div class="md-toolbar-container">
-          <h3 class="md-title">Sidenav content</h3>
-      </div>
-      </md-toolbar>
+      <md-toolbar class="md-account-header">
+        <md-list class="md-transparent">
+          <md-list-item class="md-avatar-list">
+            <md-avatar class="md-large">
+              <img src="https://placeimg.com/64/64/people/8" alt="People">
+            </md-avatar>
 
-      <md-button class="md-raised md-accent" @click="closeRightSidenav">Close</md-button> -->
+            <span style="align-self: center">{{user.nickname}}</span>
+
+          </md-list-item>
+
+          <md-list-item>
+            <div class="md-list-text-container">
+              <span>{{user.nickname}}</span>
+              <span>johndoe@email.com</span>
+            </div>
+
+            <md-button class="md-icon-button md-list-action">
+              <md-icon>arrow_drop_down</md-icon>
+            </md-button>
+          </md-list-item>
+        </md-list>
+      </md-toolbar>
+          <md-list>
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>insert_drive_file</md-icon> <span>My files</span>
+      </md-list-item>
+
+      <md-list-item @click="$refs.sidenav.toggle()">
+        <md-icon>people</md-icon> <span>Shared with me</span>
+      </md-list-item>
+
+      <md-list-item @click="$refs.sidenav.toggle()">
+        <md-icon>access_time</md-icon> <span>Recent</span>
+      </md-list-item>
+
+      <md-list-item @click="$refs.sidenav.toggle()">
+        <md-icon>start</md-icon> <span>Starred</span>
+      </md-list-item>
+
+      <md-list-item @click="$refs.sidenav.toggle()">
+        <md-icon>delete</md-icon> <span>Trash</span>
+      </md-list-item>
+    </md-list>
+
+
     </md-sidenav>
 
     <!-- 登入右侧边导航 -->
-    <md-sidenav class="md-right" ref="loginRightSidenav" @open="open('loginRightSidenav')" @close="close('loginRightSidenav')">
-      <login v-show="loginType == 0"></login>
-      <wechatLogin v-show="loginType == 1"></wechatLogin>
+    <md-sidenav class="md-right" ref="loginSidenav" @open="open('loginSidenav')" @close="close('loginSidenav')">
+      <login @closeLoginSidenav="closeLoginSidenav()" v-show="loginType == 0"></login>
     </md-sidenav>
 
     <!-- 路由页面 -->
@@ -37,8 +75,7 @@
 
 <script>
 import pmenu from './components/Menu'
-import login from './components/login_component/Login'
-import wechatLogin from './components/login_component/wechatLogin'
+import login from './components/user_component/Login'
 export default {
   name: 'app',
   data() {
@@ -55,7 +92,7 @@ export default {
       return this.$store.state.login.loginType;
     }
   },
-  components:{pmenu, login, wechatLogin},
+  components:{pmenu, login},
 
   methods:{
     //导航路由初始化
@@ -73,7 +110,10 @@ export default {
 
     //登入右侧导航
     to_login() {
-      this.$refs.loginRightSidenav.toggle();
+      this.$refs.loginSidenav.toggle();
+    },
+    closeLoginSidenav() {
+      this.$refs.loginSidenav.close();
     },
 
     open(ref) {
@@ -95,8 +135,10 @@ export default {
     this.$store.dispatch('getRouter', this.$router);    //将router映射到store内
     this.$store.dispatch('getMessage', this.$Message);  //将message映射到store内
     this.$store.dispatch('getLoading', this.$Loading);  //将loading映射到store内
+    this.$store.dispatch('error');                      //开启错误接口
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
-    this.$store.dispatch('loginFail');                  //开启登入失败接口
+
+    this.$store.dispatch('initialize'); 
     this.$store.dispatch('loadUserData');               //开始启动app是载入用户数据信息
     // this.$router.push('home');                          //切换到home页面
   },
@@ -146,12 +188,12 @@ body{background-color:rgb(245, 245, 245); overflow:hidden;}
 
 .md-sidenav .md-sidenav-content {
     width: 354px;
-    background-color: rgba(0, 0, 0, 0);
+    /* background-color: rgba(0, 0, 0, 0); */
 }
 
-.md-theme-default.md-sidenav .md-sidenav-content {
+/* .md-theme-default.md-sidenav .md-sidenav-content {
     background-color: rgba(0, 0, 0, 0);
-}
+} */
 
 
 /* 过度动画 */

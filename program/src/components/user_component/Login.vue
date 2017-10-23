@@ -20,7 +20,7 @@
       </form>
 
       <div style="  text-align: center;">
-        <md-button class="md-raised md-primary " style="width: 100%; margin: auto; margin-top: 24px; margin-bottom: 24px;">
+        <md-button class="md-raised md-primary " style="width: 100%; margin: auto; margin-top: 16px; margin-bottom: 20px;">
           <span class="">登入</span>
         </md-button>
       </div>
@@ -64,6 +64,7 @@
         </md-button>
       </md-layout>
 
+
       <div style="padding-bottom: 24px;"></div>
 
 
@@ -99,6 +100,7 @@
         let state = this.$store.state;
         this.$refs[name].validate((valid) => {
           if (valid) {
+
             setTimeout(()=> {
               let state = sessionStorage.getItem('state');
               if (state !== '1') {
@@ -106,13 +108,21 @@
                 this.$store.state.user.loading = true;
               }
             }, 20000);
+
             this.$store.dispatch('loginIn', this.$router);
           }
         });
       },
 
       wechatLogin() {
-        this.$store.dispatch('wechatLogin');
+        let appid = 'wx578ee588948c8fcc';
+        let redirect_uri = 'http://cloud.tujingwang.cn/user/wechat';
+        let sid = this.$store.state.socketClass.socket.id;
+
+        window.open(`https://open.weixin.qq.com/connect/qrconnect?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_login&state=${sid
+        }#wechat_redirect`);
+        this.$emit('closeLoginSidenav');
+        // this.$store.dispatch('wechatLogin');
       }
     },
     mounted(){

@@ -7,9 +7,9 @@ function socketClass () {
 
 	// http
 	// let url = 'http://192.168.0.105:3000/';
-	let url = 'http://60.205.225.197:888/';
+	let url = 'http://60.205.225.197:80/';
 	this.opt = {
-		autoConnect: false,
+		// autoConnect: false,
 		query: {},
 		transports: ['websocket'],
 	};
@@ -29,12 +29,17 @@ function socketClass () {
 	});
 
 	this.socket.on("connect", ()=> {
+		
 		console.log("连接成功");
 	});
 
 	this.socket.on('connect_error', (error) => {
 		console.log(`connect_${error}`);
 	});
+
+		// this.socket.on('error', (error)=> {
+		// 	console.log(`error: ${error}`);
+		// });
 
 	/**
 	 * 登入接口
