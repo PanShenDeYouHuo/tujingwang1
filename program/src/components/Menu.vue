@@ -1,27 +1,47 @@
 <template>
     <div class="menu">
 
-        <md-layout md-gutter>
+        <v-layout md-gutter>
             <!-- 图标 -->
-            <md-layout md-flex="20">
+            <v-layout md-flex="20">
                 <div style="margin: auto; margin-left: 20px; ">
                     <img src="../assets/logo1.png" alt="标志" style="height: 50px; padding-top: 0px;" >
                 </div>
-            </md-layout>
+            </v-layout>
 
             <!-- 导航按钮 -->
-            <md-layout md-flex="60">
-                <md-button-toggle md-single>
-                    <md-button v-for=" (text, index) in menuText" 
-                    :key="text.name" @click="change(text.router)"
-                    class="menuButton" v-bind:class="{'md-toggle': active[index]}">
-                        <span class="md-body-2">{{text.name}}</span>
-                    </md-button>
-                </md-button-toggle>
-            </md-layout>
+            <v-layout md-flex="60">
+
+                    <v-btn v-for=" (text, index) in menuText" 
+                    class="menu-btn"
+                    flat
+                    :key="text.name" 
+                    :value="index"
+                    @click="change(text.router)">
+                        {{text.name}}
+                    </v-btn>
+
+            </v-layout>
+
+            <!-- <v-btn-toggle v-model="text">
+              <v-btn flat value="left">
+                Left
+              </v-btn>
+              <v-btn flat value="center">
+                Center
+              </v-btn>
+              <v-btn flat value="right">
+                Right
+              </v-btn>
+              <v-btn flat value="justify">
+                Justify
+              </v-btn>
+            </v-btn-toggle> -->
+
+            
 
             <!-- 登入管理 -->
-            <md-layout md-flex="20" md-align="end">
+            <v-layout md-flex="20" md-align="end">
 
                 <!-- 未登入显示 -->
                 <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user._id" @click="to_login()">登入</md-button>
@@ -32,9 +52,9 @@
                 <md-avatar style="margin-right: 20px;" v-if="user._id">
                     <img :src="user.headimgurl" alt="Avatar" @click="toggleRightSidenav()">
                 </md-avatar>
-            </md-layout>
+            </v-layout>
 
-        </md-layout>
+        </v-layout>
 
     </div>
 </template>
@@ -45,6 +65,7 @@ export default {
     props: [],
     data() {
         return {
+            text:'首页',
             menuText: [
                 { 
                     name: '首页',
@@ -152,14 +173,19 @@ export default {
         letter-spacing: .01em;
     }
 
-    .md-button-toggle > .md-button:not([disabled]) {
+    .menu-btn {
+        height: 100%;
+        margin: 0px;
+    }
+
+    /* .md-button-toggle > .md-button:not([disabled]) {
         color: rgba(0, 0, 0, 0.99);
     }
 
     .md-theme-default.md-button-toggle .md-toggle {
         color: rgba(255, 255, 255, 1);
         background-color: rgba(0, 0, 0, .77);
-    }
+    } */
 
 
 

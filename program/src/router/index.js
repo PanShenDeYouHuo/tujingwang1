@@ -7,8 +7,6 @@ import Login from '@/components/user_component/Login';
 import PublishingTasks from '@/components/user_component/PublishingTasks';
 import Works from '@/components/Works';
 
-import FinanceEmployee from '@/components/financeEmployee';
-import FinanceCustomer from '@/components/financeCustomer';
 
 import StatisticsRegional from '@/components/statisticsRegional';
 
@@ -41,16 +39,6 @@ export default new Router({
       path: '/works',
       name: 'Works',
       component: Works,
-    },
-    {
-      path: '/financeEmployee',
-      name: 'FinanceEmployee',
-      component: FinanceEmployee,
-    },
-    {
-      path: '/financeCustomer',
-      name: 'FinanceCustomer',
-      component: FinanceCustomer,
     },
     {
       path: '/statisticsRegional',

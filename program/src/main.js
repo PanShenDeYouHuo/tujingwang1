@@ -4,33 +4,30 @@
 import Vue from 'vue';
 
 //VueMaterial部分 开始-------------------------------
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
-Vue.use(VueMaterial);
-Vue.material.registerTheme('default', {
-  primary: {
-    color: 'grey',
-    hue: 900
-  },
-  accent: {
-    color: 'red',
-    hue: 500
-  },
-  warn: {
-    color: 'red',
-    hue: 900
-  },
+// import VueMaterial from 'vue-material'
+// import 'vue-material/dist/vue-material.css'
+// Vue.use(VueMaterial);
+// Vue.material.registerTheme('default', {
+//   primary: {
+//     color: 'grey',
+//     hue: 900
+//   },
+//   accent: {
+//     color: 'red',
+//     hue: 500
+//   },
+//   warn: {
+//     color: 'red',
+//     hue: 900
+//   },
 
-})
+// })
 
-//iview部分
-import 'iview/dist/styles/iview.css';
-import IView from 'iview';
-Vue.use(IView);
+//vuetify
+import Vuetify from 'vuetify'
+Vue.use(Vuetify)
+import 'vuetify/dist/vuetify.css'
 
-//vue-agile轮播图组件
-import VueAgile from 'vue-agile';
-Vue.use(VueAgile);
 
 import App from './App';            //载入app.vue
 import router from './router';      //路由
