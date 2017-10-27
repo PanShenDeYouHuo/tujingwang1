@@ -1,57 +1,68 @@
 <template>
   <div id="app">
-    <div style="background-color: #fff;  position: absolute; width:100%; z-index:2; border-style:solid; border-width: 0px 0px 1px 0px; border-color: #666">
+    <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;"> -->
+    <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2; border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0">
+      <md-whiteframe md-elevation="4">
       <pmenu @toggleRightSidenav="toggleRightSidenav" 
       @toLogin="to_login()"></pmenu>
+      </md-whiteframe>
     </div>
 
     <!-- 用户信息管理右侧边导航 -->
     <md-sidenav class="md-right" ref="rightSidenav" @open="open('Right')" @close="close('Right')">
-      <md-toolbar class="md-account-header">
-        <md-list class="md-transparent">
-          <md-list-item class="md-avatar-list">
+      
+    <md-list style="height: 100%;">
+
+
+          <md-list-item >
             <md-avatar class="md-large">
-              <img src="https://placeimg.com/64/64/people/8" alt="People">
+              <img :src="user.headimgurl" alt="People">
             </md-avatar>
 
-            <span style="align-self: center">{{user.nickname}}</span>
+            <span>{{user.nickname}}</span>
+
+            <md-button class="md-icon-button md-list-action">
+              <md-icon class="md-primary">settings</md-icon>
+            </md-button>
 
           </md-list-item>
 
           <md-list-item>
-            <div class="md-list-text-container">
-              <span>{{user.nickname}}</span>
-              <span>johndoe@email.com</span>
-            </div>
+            <!-- <div class="md-list-text-container"> -->
+              <span class="md-caption" style="color: #999"> {{user.province}}/{{user.city}}</span>
+              <!-- <span>{{user._id}}</span> -->
+            <!-- </div> -->
 
-            <md-button class="md-icon-button md-list-action">
-              <md-icon>arrow_drop_down</md-icon>
-            </md-button>
+            <md-divider class="md-inset"></md-divider>
           </md-list-item>
-        </md-list>
-      </md-toolbar>
-          <md-list>
+      
+      <span style="flex: 0 1 8px"></span>
       <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
-        <md-icon>insert_drive_file</md-icon> <span>My files</span>
+        <md-icon>insert_drive_file</md-icon> <span>我的创造</span>
+      </md-list-item>
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>insert_drive_file</md-icon> <span>我的任务</span>
       </md-list-item>
 
-      <md-list-item @click="$refs.sidenav.toggle()">
-        <md-icon>people</md-icon> <span>Shared with me</span>
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>people</md-icon> <span>我的团队</span>
       </md-list-item>
 
-      <md-list-item @click="$refs.sidenav.toggle()">
-        <md-icon>access_time</md-icon> <span>Recent</span>
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>access_time</md-icon> <span>我的统计</span>
       </md-list-item>
 
-      <md-list-item @click="$refs.sidenav.toggle()">
-        <md-icon>start</md-icon> <span>Starred</span>
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>start</md-icon> <span>账号管理</span>
       </md-list-item>
 
-      <md-list-item @click="$refs.sidenav.toggle()">
-        <md-icon>delete</md-icon> <span>Trash</span>
+      <span style="flex: 1 1 auto"></span>
+      <md-divider class="md-inset"></md-divider>
+
+      <md-list-item @click="$refs.sidenav.toggle()" class="md-primary">
+        <md-icon>power_settings_new</md-icon><span>退出登入</span>
       </md-list-item>
     </md-list>
-
 
     </md-sidenav>
 
@@ -166,7 +177,8 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 /*  text-align: center;*/
@@ -186,10 +198,10 @@ body{background-color:rgb(245, 245, 245); overflow:hidden;}
   padding-top: 50px;
 }
 
-.md-sidenav .md-sidenav-content {
+/* .md-sidenav .md-sidenav-content {
     width: 354px;
-    /* background-color: rgba(0, 0, 0, 0); */
-}
+     background-color: rgba(0, 0, 0, 0);
+} */
 
 /* .md-theme-default.md-sidenav .md-sidenav-content {
     background-color: rgba(0, 0, 0, 0);
@@ -202,5 +214,9 @@ body{background-color:rgb(245, 245, 245); overflow:hidden;}
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in below version 2.1.8 */ {
   opacity: 0
+}
+
+.md-whiteframe-4dp {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.0), 0 4px 5px rgba(0, 0, 0, 0.0), 0 1px 10px rgba(0, 0, 0, 0.0);
 }
 </style>

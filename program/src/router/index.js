@@ -3,7 +3,8 @@ import Router from 'vue-router';
 
 import Menu from '@/components/Menu';
 import Home from '@/components/Home';
-import Login from '@/components/login_component/Login';
+import Login from '@/components/user_component/Login';
+import PublishingTasks from '@/components/user_component/PublishingTasks';
 import Works from '@/components/Works';
 
 import FinanceEmployee from '@/components/financeEmployee';
@@ -30,6 +31,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+    },
+    {
+      path: '/PublishingTasks',
+      name: 'PublishingTasks',
+      component: PublishingTasks,
     },
     {
       path: '/works',

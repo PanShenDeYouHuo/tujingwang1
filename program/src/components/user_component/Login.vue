@@ -8,13 +8,13 @@
       <form novalidate @submit.stop.prevent="submit">
 
         <md-input-container>
-          <label>账号</label>
-          <md-input placeholder="手机号/邮箱"></md-input>
+          <label>手机号/邮箱</label>
+          <md-input ></md-input>
         </md-input-container>
 
         <md-input-container md-has-password>
           <label>密码</label>
-          <md-input placeholder="密码" type="password"></md-input>
+          <md-input  type="password"></md-input>
         </md-input-container>
 
       </form>

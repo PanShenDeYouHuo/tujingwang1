@@ -57,7 +57,19 @@ export default {
                 {
                     name: '资讯',
                     router: 'login',
-                }
+                },
+                {
+                    name: '活动',
+                    router: 'activity',
+                },
+                {
+                    name: '素材',
+                    router: 'material',
+                },
+                {
+                    name: '发布任务',
+                    router: 'PublishingTasks',
+                },
             ],
             active: [],
         }
