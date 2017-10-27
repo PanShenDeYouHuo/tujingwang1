@@ -146,6 +146,7 @@ export default {
         padding:0px 35px;
     }
 
+
     .md-body-2 {
         font-size: 15px;
         font-weight: 300;
