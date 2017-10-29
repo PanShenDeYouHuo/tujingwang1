@@ -1,7 +1,13 @@
 <template>
   <div class="home">
 
-    <v-icon>home</v-icon>
+        <v-layout row justify-center>
+      <v-dialog v-model="dialog" persistent>
+        <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
+        <!-- <login></login> -->
+        <p>sadfasdfs</p>
+      </v-dialog>
+    </v-layout>
 
   </div>
 </template>

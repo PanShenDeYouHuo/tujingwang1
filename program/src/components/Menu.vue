@@ -1,60 +1,74 @@
 <template>
     <div class="menu">
 
-        <v-layout md-gutter>
-            <!-- 图标 -->
-            <v-layout md-flex="20">
-                <div style="margin: auto; margin-left: 20px; ">
-                    <img src="../assets/logo1.png" alt="标志" style="height: 50px; padding-top: 0px;" >
-                </div>
-            </v-layout>
+
+        <!-- 图标 -->
+        <v-layout row  align-center>
+
+            <v-flex lg2 >
+                <v-layout row wrap justify-start style="margin-left: 100px;">
+
+                    <v-avatar>
+                        <img src="../assets/logo1.png" alt="logo" @click="toggleRightSidenav()">
+                    </v-avatar>
+
+                </v-layout>
+            </v-flex>
+
 
             <!-- 导航按钮 -->
-            <v-layout md-flex="60">
 
+            <v-flex lg8>
+                <v-layout justify-center>
                     <v-btn v-for=" (text, index) in menuText" 
                     class="menu-btn"
                     flat
-                    :key="text.name" 
-                    :value="index"
+                    :key="text.name"
+                    v-bind:class="{'menu-active': active[index]}"
                     @click="change(text.router)">
                         {{text.name}}
                     </v-btn>
-
-            </v-layout>
-
-            <!-- <v-btn-toggle v-model="text">
-              <v-btn flat value="left">
-                Left
-              </v-btn>
-              <v-btn flat value="center">
-                Center
-              </v-btn>
-              <v-btn flat value="right">
-                Right
-              </v-btn>
-              <v-btn flat value="justify">
-                Justify
-              </v-btn>
-            </v-btn-toggle> -->
-
-            
+                </v-layout>
+            </v-flex>
+         
 
             <!-- 登入管理 -->
-            <v-layout md-flex="20" md-align="end">
 
-                <!-- 未登入显示 -->
-                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user._id" @click="to_login()">登入</md-button>
-                <div style="border-style:solid; border-width: 0px 0px 0px 2px; border-color: #dddee1; margin: 10px 0px;" v-if="!user._id"></div>
-                <md-button style=" float: right;  min-width: 30px; color: #aaa" v-if="!user._id">注册</md-button>
+            <v-flex lg2 >
+                <v-layout row justify-end style="margin-right: 100px;">
+                    <!-- 未登入显示 -->
+                    <v-btn flat style="margin-right: 0px; min-width: 10px; color: #aaa" v-if="!user._id"  @click="to_login()">登入</v-btn>
+                   
+                    <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-if="!user._id">注册</v-btn>
 
-                <!-- 登入显示 -->
-                <md-avatar style="margin-right: 20px;" v-if="user._id">
-                    <img :src="user.headimgurl" alt="Avatar" @click="toggleRightSidenav()">
-                </md-avatar>
-            </v-layout>
+                    <!-- 登入显示 -->
+                    <v-btn flat v-if="user._id"  style="height: 50px; width: 50px; min-width: 20px; margin: 0px; padding: 0px;">
+
+                        <v-avatar size="32px">
+                            <img :src="user.headimgurl" alt="Avatar" @click="toggleRightSidenav()">
+                        </v-avatar>
+
+                    </v-btn>
+
+                </v-layout>
+            </v-flex>
 
         </v-layout>
+
+
+            <!-- <v-dialog v-model="dialog" persistent>
+                <v-card>
+                    <v-card-title class="headline">Use Google's location service?</v-card-title>
+                    <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat @click.native="dialog = false">Disagree</v-btn>
+                    <v-btn color="green darken-1" flat @click.native="dialog = false">Agree</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog> -->
+
+
 
     </div>
 </template>
@@ -65,6 +79,7 @@ export default {
     props: [],
     data() {
         return {
+            dialog: false,
             text:'首页',
             menuText: [
                 { 
@@ -115,16 +130,17 @@ export default {
                 result[index] = '/' + this.menuText[index].router === router ? true : false; 
             }
             this.active = result;
+            console.log(this.active)
         },
         change(routerName) {
             
             this.$router.push(routerName);
             // this.$emit('change',aa);
         },
-        //用户侧变导航开事件
-        toggleRightSidenav() {
-            this.$emit('toggleRightSidenav');
-        },
+        // //用户侧变导航开事件
+        // toggleRightSidenav() {
+        //     this.$emit('toggleRightSidenav');
+        // },
         //登入侧边导航开事件
         to_login() {
             this.$emit('toLogin');
@@ -155,12 +171,17 @@ export default {
         padding-top: 70px;
         overflow:auto;
         position: absolute; */
-        margin: auto;
-        max-width: 1220px;
+        
+        margin: 0px auto;
+ 
         min-width: 920px;
+        width: 100%;
         background-color: #fff;
         z-index:1;
-    }
+
+        display: -webkit-flex; /* Safari */
+        display: flex;
+  }
 
     .menuButton {
         height:50px;
@@ -174,8 +195,23 @@ export default {
     }
 
     .menu-btn {
-        height: 100%;
+        color: #777;
+        height: 50px;
         margin: 0px;
+    }
+
+    .menu-active {
+        color: #111;
+        font-weight: 600;
+    }
+
+    .btn--flat {
+        border-radius: 0px;
+    }
+
+    .btn--flat:hover {
+        color: #fff;
+        background-color:black  !important;
     }
 
     /* .md-button-toggle > .md-button:not([disabled]) {

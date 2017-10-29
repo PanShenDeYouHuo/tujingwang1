@@ -34,14 +34,22 @@ let actions = {
 			// for(let index in data) {
 			// 	localStorage.setItem(index, data[index]);
 			// }
+
+			//储存accessToken
 			localStorage.setItem('accessToken', data.accessToken);
+			//登入界面关
+			rootState.loginDialog = false;
 		});
 	},
 
 	//错误返回接口
-	error({commit, state, rootState}) {
+	appError({commit, state, rootState}) {
 		rootState.socketClass.socket.on('appError', (err)=> {
 			console.log('appError');
+			rootState.errorSnackbar = {
+				state: true,
+				text: err
+			}
 			// rootState.message.error({
 			// 	content: err,
             //     duration: 5

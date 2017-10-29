@@ -1,6 +1,6 @@
 <template>
     <div class="publishingTasks">
-        <md-whiteframe md-elevation="4" style="padding: 0px;">
+        <!-- <md-whiteframe md-elevation="4" style="padding: 0px;"> -->
             
             <md-layout md-gutter style="height: 48px;">
                 <md-layout md-gutter md-vertical-align="center" md-align="center" md-flex="10" style="background-color: #f44336; width: 120px; margin-right: 16px;">
@@ -15,7 +15,7 @@
                 </md-layout>
 
             </md-layout>
-        </md-whiteframe>
+        <!-- </md-whiteframe> -->
         <br>
         <md-layout md-gutter>
             <md-layout md-gutter md-vertical-align="center" md-align="center" md-flex="10" style="background-color: #f44336; width: 120px; margin-right: 16px;">
@@ -48,7 +48,7 @@
 
             <md-layout md-flex="75">
 
-                    <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px; ">
+                    <!-- <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px; "> -->
                         <md-layout md-flex="100">
                             <span class="md-body-2" style="background-color: #f44336; color: #fff; width: 100%; text-align:center">角度</span>
                         </md-layout>
@@ -98,14 +98,14 @@
 
                             <Button type="dashed" long @click="handleAdd" style="width: 250px; height: 320px;"><md-icon class="md-size-2x">add</md-icon></Button>
                         </md-layout>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
 
 
             </md-layout>
 
             <md-layout md-gutter>
 
-                    <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px;">
+                    <!-- <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px;"> -->
 
                         <md-layout >
                             <md-layout md-flex="100">
@@ -122,7 +122,7 @@
                                 <p>点击或将文件拖拽到这里上传</p>
                             </div>
                         </Upload>
-                    </md-whiteframe>
+                    <!-- </md-whiteframe> -->
 
             </md-layout>
 

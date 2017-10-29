@@ -11,6 +11,11 @@ Vue.use(Vuex);
 const state = {
 	socketClass,
 	router: {},
+	loginDialog: false,
+	errorSnackbar: {
+		state: true,
+		text: 'what are you doing',
+	}
 
 };
 

@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <v-app id="app">
+
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;"> -->
     <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2; border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0">
-      <md-whiteframe md-elevation="4">
-      <pmenu @toggleRightSidenav="toggleRightSidenav" 
-      @toLogin="to_login()"></pmenu>
-      </md-whiteframe>
+
+      <pmenu @toLogin="to_login()"></pmenu>
+
     </div>
 
     <!-- 用户信息管理右侧边导航 -->
@@ -68,119 +68,37 @@
     <!-- <md-sidenav class="md-right" ref="loginSidenav" @open="open('loginSidenav')" @close="close('loginSidenav')">
       <login @closeLoginSidenav="closeLoginSidenav()" v-show="loginType == 0"></login>
     </md-sidenav> -->
+  
+    <!-- 登入界面 -->
+    <v-dialog v-model="loginDialog" persistent max-width="340">
+      <login @close="to_close()"></login>
+    </v-dialog>
+
+
+    <v-layout row  align-center>
+    <v-snackbar
+      :timeout="116000"
+      top
+
+      color="error"
+      v-model="errorSnackbar.state"
+
+    >
+      {{ errorSnackbar.text }}
+      <!-- <v-btn flat color="black" @click.native="errorSnackbar.state = false">Close</v-btn> -->
+    </v-snackbar>
+    </v-layout>
+
+
 
     <!-- 路由页面 -->
-    <keep-alive>
+    <!-- <keep-alive>
       <router-view class="content"></router-view>
-    </keep-alive>
-
-<!-- <v-app >
-    <v-navigation-drawer permanent clipped light :mini-variant="mini" width="240" class="grey lighten-4" app >
-
-      <v-list class="pa-0" v-show="mini">
-
-        <v-list-tile @click="mini = !mini" >
-          <v-list-tile-action>
-              <v-icon>menu</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-tile>
-
-      </v-list>
+    </keep-alive> -->
 
 
-      <v-list class="pa-0">
-        
-        <v-list-tile avatar v-if="user._id">
-          <v-list-tile-avatar>
-            <img :src="user.headimgurl" alt="avatar">
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>{{user.nickname}}</v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-action v-show="!mini">
-            <v-btn icon @click.native.stop="mini = !mini">
-              <v-icon>chevron_left</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
 
-        <v-list-tile avatar v-if="!user._id">
-          <v-list-tile-avatar>
-            <v-icon dark x-large>account_circle</v-icon>
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>未登入</v-list-tile-title>
-          </v-list-tile-content>
-          <v-list-tile-action v-show="!mini">
-            <v-btn icon @click.native.stop="mini = !mini">
-              <v-icon>chevron_left</v-icon>
-            </v-btn>
-          </v-list-tile-action>
-        </v-list-tile>
-
-      </v-list>
-
-      <v-list class="grey lighten-4 pt-0">
-        <v-divider class="my-2"></v-divider>
-
-        <template v-for="(item, i) in items">
-
-          <v-layout row v-if="item.heading" align-center :key="i">
-            <v-flex xs6>
-              <v-subheader v-if="item.heading" class="caption">
-                {{ item.heading }}
-              </v-subheader>
-            </v-flex>
-
-          </v-layout>
-
-          <v-divider dark v-else-if="item.divider" class="my-2" :key="i"></v-divider>
-
-          <v-list-tile :key="i" v-else @click="" >
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                {{ item.text }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-     
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-toolbar color="cyan lighten-2" app absolute clipped-left dense>
-      <span class="title">TJ&nbsp;<span class="text">Cloud</span></span>
-      <v-spacer></v-spacer>
-
-      <v-avatar class="grey lighten-4" size="42px">
-        <img :src="user.headimgurl" alt="avatar">
-      </v-avatar>
-
-    </v-toolbar>
-
-
-    <main>
-      <v-content>
-        <v-container fluid fill-height class="grey lighten-4">
-          <v-layout justify-center align-center>
-            <v-tooltip right>
-              <v-btn icon large :href="source" target="_blank" slot="activator">
-                <v-icon large>code</v-icon>
-              </v-btn>
-              <span>Source</span>
-            </v-tooltip>
-          </v-layout>
-        </v-container>
-      </v-content>
-    </main>
-
-  </v-app> -->
-
-  </div>
+  </v-app>
 </template>
 
 
@@ -188,24 +106,13 @@
 <script>
 import pmenu from './components/Menu'
 import login from './components/user_component/Login'
+import Test from './components/user_component/login-test'
 export default {
   name: 'app',
-  components:{pmenu, login},
+  components:{pmenu, login, Test},
 
   data() {
     return {
-      items: [
-        { icon: 'dashboard', text: '发现设计', routerName: '/home' },
-        { icon: 'chat_bubble', text: '素材' },
-        { icon: 'touch_app', text: '搜索' },
-        { divider: true },
-        // { heading: '' },
-        { icon: 'add', text: '发布任务' },
-        { icon: 'keyboard', text: '我的创作' },
-        { icon: 'archive', text: '我的任务' },
-        { icon: 'delete', text: '我的团队' },
-        { icon: 'settings', text: '我的统计' },
-      ],
       source: 'source',
       mini: true,
     }
@@ -218,38 +125,49 @@ export default {
     loginType() {
       
       return this.$store.state.login.loginType;
+    },
+    loginDialog() {
+      return this.$store.state.loginDialog;
+    },
+    errorSnackbar() {
+      return this.$store.state.errorSnackbar;
     }
   },
 
   methods:{
     //导航路由初始化
-    on_router(name) {
-      this.$router.push(name);
+    // on_router(name) {
+    //   this.$router.push(name);
+    // },
+
+    //登入窗口关闭
+    to_close() {
+      this.$store.state.loginDialog = false;
     },
 
-    //用户信息管理右侧边导航
-    toggleRightSidenav() {
-      this.$refs.rightSidenav.toggle();
-    },
-    closeRightSidenav() {
-      this.$refs.rightSidenav.close();
-    },
+    // //用户信息管理右侧边导航
+    // toggleRightSidenav() {
+    //   this.$refs.rightSidenav.toggle();
+    // },
+    // closeRightSidenav() {
+    //   this.$refs.rightSidenav.close();
+    // },
 
-    //登入右侧导航
-    to_login() {
-      this.$refs.loginSidenav.toggle();
-    },
-    closeLoginSidenav() {
-      this.$refs.loginSidenav.close();
-    },
+    // //登入右侧导航
+    // to_login() {
+    //   this.$store.state.loginDialog = true;
+    // },
+    // closeLoginSidenav() {
+    //   this.$refs.loginSidenav.close();
+    // },
 
-    open(ref) {
-      console.log('Opened: ' + ref);
-    },
-    close(ref) {
-      console.log('Closed: ' + ref);
-    },
-    //
+    // open(ref) {
+    //   console.log('Opened: ' + ref);
+    // },
+    // close(ref) {
+    //   console.log('Closed: ' + ref);
+    // },
+    
   },
   mounted(){
 
@@ -260,10 +178,10 @@ export default {
   beforeCreate() {
     //app初始化
     this.$store.dispatch('getRouter', this.$router);    //将router映射到store内
-    this.$store.dispatch('error');                      //开启错误接口
+    this.$store.dispatch('appError');                   //开启错误接口
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
 
-    this.$store.dispatch('initialize'); 
+    this.$store.dispatch('initialize');
     // this.$store.dispatch('loadUserData');               //开始启动app是载入用户数据信息
 
   },
@@ -293,6 +211,7 @@ export default {
 #app {
   /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  box-sizing:border-box;
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -322,7 +241,9 @@ html,body{overflow-y: hidden;}
     font-weight: 400;
   } */
 
-
+  .snack__content {
+    min-width: 100px;
+  }
 
 
 .list__tile__title {
