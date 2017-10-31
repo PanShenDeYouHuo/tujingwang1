@@ -24,21 +24,23 @@ let mutations = {
 let actions = {
 
 
+	//退出登入
+	signOut({commit, state, rootState}) {
+		//删除accessToken
+		localStorage.removeItem('accessToken');
+		state._id = '';
+	},
+
+
 	//登入成功接口
-
-
 	loginSuccess({commit, state, rootState}) {
 		rootState.socketClass.socket.on('loginSuccess', (data)=> {
-			console.log(data);
-			commit('setUser', data);
-			// for(let index in data) {
-			// 	localStorage.setItem(index, data[index]);
-			// }
-
 			//储存accessToken
 			localStorage.setItem('accessToken', data.accessToken);
-			//登入界面关
+			//登入界面关闭
 			rootState.loginDialog = false;
+			console.log(data);
+			commit('setUser', data);
 		});
 	},
 
@@ -46,6 +48,7 @@ let actions = {
 	appError({commit, state, rootState}) {
 		rootState.socketClass.socket.on('appError', (err)=> {
 			console.log('appError');
+
 			rootState.errorSnackbar = {
 				state: true,
 				text: err
@@ -72,4 +75,4 @@ const user = {
 	getters
 };
 
-export default user
+export default user;

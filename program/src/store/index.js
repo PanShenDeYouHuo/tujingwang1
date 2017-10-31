@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import user from './modules/user'
-import login from './modules/login'
-import finance from './modules/finance'
+
+import user from './modules/user';
+import login from './modules/login';
+import project from './modules/project';
+import finance from './modules/finance';
 import statistics from './modules/statistics'
 import socketClass from '../socket.io';
 
@@ -13,7 +15,7 @@ const state = {
 	router: {},
 	loginDialog: false,
 	errorSnackbar: {
-		state: true,
+		state: false,
 		text: 'what are you doing',
 	}
 
@@ -52,6 +54,7 @@ const getters = {
 const modules = {
 	user,
 	login,
+	project,
 	finance,
 	statistics
 };

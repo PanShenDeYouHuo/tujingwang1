@@ -37,7 +37,7 @@
         </v-form>
 
 
-        <v-btn outline color="secondary" style="width: 100%; margin: auto; margin-top: 16px; margin-bottom: 20px;">
+        <v-btn color="yellow" style="width: 100%; margin: auto; margin-top: 16px; margin-bottom: 20px;">
           登入
         </v-btn>
 
@@ -55,11 +55,11 @@
           <v-flex lg6 >
             <v-layout justify-end>
 
-              <v-btn small flat style=" margin-top: 8px; margin-right: 0px; margin-left: 0px; min-width: 10px; color: #aaa">
+              <v-btn small flat style="margin: 0px; margin-top: 2px; min-width: 10px; color: #aaa">
                 <span class="">忘记密码</span>
               </v-btn>
               <!-- <div style="border-style:solid; border-width: 0px 0px 0px 2px; border-color: #dddee1; margin: 16px 0px;"></div> -->
-              <v-btn small flat style=" margin-top: 8px; margin-right: 0px; margin-left: 0px; min-width: 10px; color: #aaa">
+              <v-btn small flat style="margin: 0px; margin-top: 2px; margin-left: 0px; min-width: 10px; color: #aaa">
                 <span>注册</span>
               </v-btn>
 
@@ -87,6 +87,7 @@
 
         <!-- 微信 -->
         <v-layout align-center justify-center>
+          <!-- <v-btn fab small style="background-color: #3cb034;" @click="wechatLogin()"> -->
           <v-btn fab small style="background-color: #3cb034;" @click="wechatLogin()">
             <img src="../../assets/wechat.png" style="width: 28px;" alt="wechat" >
           </v-btn>

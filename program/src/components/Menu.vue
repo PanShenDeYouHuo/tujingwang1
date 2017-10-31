@@ -1,5 +1,5 @@
 <template>
-    <div class="menu">
+    <div class="my-menu">
 
 
         <!-- 图标 -->
@@ -9,7 +9,7 @@
                 <v-layout row wrap justify-start style="margin-left: 100px;">
 
                     <v-avatar>
-                        <img src="../assets/logo1.png" alt="logo" @click="toggleRightSidenav()">
+                        <img src="../assets/logo2.png" alt="logo" @click="toggleRightSidenav()">
                     </v-avatar>
 
                 </v-layout>
@@ -19,7 +19,7 @@
             <!-- 导航按钮 -->
 
             <v-flex lg8>
-                <v-layout justify-center>
+                <v-layout justify-center align-content-space-between>
                     <v-btn v-for=" (text, index) in menuText" 
                     class="menu-btn"
                     flat
@@ -27,7 +27,7 @@
                     v-bind:class="{'menu-active': active[index]}"
                     @click="change(text.router)">
                         {{text.name}}
-                    </v-btn>
+                     </v-btn>
                 </v-layout>
             </v-flex>
          
@@ -35,20 +35,44 @@
             <!-- 登入管理 -->
 
             <v-flex lg2 >
-                <v-layout row justify-end style="margin-right: 100px;">
+                <v-layout row justify-end style=" margin-right: 100px;">
                     <!-- 未登入显示 -->
-                    <v-btn flat style="margin-right: 0px; min-width: 10px; color: #aaa" v-if="!user._id"  @click="to_login()">登入</v-btn>
+                    <v-btn flat style="margin-right: 0px; min-width: 10px; color: #aaa" v-show="!user._id"  @click="to_login()">登入</v-btn>
                    
-                    <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-if="!user._id">注册</v-btn>
+                    <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-show="!user._id">注册</v-btn>
 
                     <!-- 登入显示 -->
-                    <v-btn flat v-if="user._id"  style="height: 50px; width: 50px; min-width: 20px; margin: 0px; padding: 0px;">
-
-                        <v-avatar size="32px">
-                            <img :src="user.headimgurl" alt="Avatar" @click="toggleRightSidenav()">
-                        </v-avatar>
-
+                    <v-btn v-if="user._id" flat @click="change('publish')"  class="menu-btn-o">
+                        <i class="material-icons">backup</i>
+                        <!-- <span>发布</span> -->
                     </v-btn>
+
+                    <v-menu offset-y left v-if="user._id">
+                        <!-- 头像按钮 -->
+                        <v-btn flat  slot="activator"  style="height: 50px; width: 50px; min-width: 20px; margin: 0px; padding: 0px;">
+
+                            <v-avatar size="38px">
+                                <img :src="user.headimgurl" alt="Avatar" >
+                            </v-avatar>
+
+                        </v-btn>
+                        <!-- 菜单 -->
+                        <v-list dense>
+                            <div v-for="(item, index) in items" :key="item.title">
+
+                                <v-list-tile v-if="item.title" :key="index" @click="">
+                                    <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
+                                </v-list-tile>
+
+                                <v-divider v-else-if="item.divider" :key="index"></v-divider>
+
+                                <v-list-tile v-else :key="index" @click="signOut()">
+                                    <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
+                                </v-list-tile>
+                            </div>
+
+                        </v-list>
+                    </v-menu>
 
                 </v-layout>
             </v-flex>
@@ -56,26 +80,12 @@
         </v-layout>
 
 
-            <!-- <v-dialog v-model="dialog" persistent>
-                <v-card>
-                    <v-card-title class="headline">Use Google's location service?</v-card-title>
-                    <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-                    <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" flat @click.native="dialog = false">Disagree</v-btn>
-                    <v-btn color="green darken-1" flat @click.native="dialog = false">Agree</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog> -->
-
-
-
     </div>
 </template>
 
 <script>
 export default {
-    name: 'menu',
+    name: 'my-menu',
     props: [],
     data() {
         return {
@@ -102,12 +112,17 @@ export default {
                     name: '素材',
                     router: 'material',
                 },
-                {
-                    name: '发布任务',
-                    router: 'PublishingTasks',
-                },
             ],
             active: [],
+            items: [
+                { title: '我的作品' },
+                { title: '我的任务' },
+                { title: '我的团队' },
+                { title: '我的统计' },
+                { title: '账号管理' },
+                { divider: true},
+                { signOut: '退出登入' }
+            ]
         }
     },
     computed: {
@@ -130,11 +145,10 @@ export default {
                 result[index] = '/' + this.menuText[index].router === router ? true : false; 
             }
             this.active = result;
-            console.log(this.active)
         },
         change(routerName) {
-            
-            this.$router.push(routerName);
+            console.log(routerName);
+            this.$router.replace({name:routerName});
             // this.$emit('change',aa);
         },
         // //用户侧变导航开事件
@@ -144,6 +158,9 @@ export default {
         //登入侧边导航开事件
         to_login() {
             this.$emit('toLogin');
+        },
+        signOut() {
+            this.$store.dispatch('signOut');
         }
     },
     mounted(){
@@ -164,7 +181,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .menu {
+    .my-menu {
         /* width:100%;
         height:50px;
         padding: 10px;
@@ -173,10 +190,9 @@ export default {
         position: absolute; */
         
         margin: 0px auto;
- 
-        min-width: 920px;
-        width: 100%;
-        background-color: #fff;
+        min-width: 1080px;
+
+        background-color: #000;
         z-index:1;
 
         display: -webkit-flex; /* Safari */
@@ -195,24 +211,48 @@ export default {
     }
 
     .menu-btn {
-        color: #777;
+        color: #999;
         height: 50px;
         margin: 0px;
+        font-size: 16px;
+        border-radius: 0px;
+        padding-top: 5px; 
+        border-style:solid; border-width: 0px 0px 4px 0px; border-color: rgba(0, 0, 0, 0);
     }
 
-    .menu-active {
-        color: #111;
-        font-weight: 600;
-    }
-
-    .btn--flat {
+    .menu-btn-o {
+        color: #999;
+        height: 50px;
+        min-width: 64px;
+        margin: 0px;
         border-radius: 0px;
     }
 
-    .btn--flat:hover {
+    .menu-active {
+        color: #fff;
+        border-style:solid; border-width: 0px 0px 4px 0px; border-color: #ffeb3b;
+        
+        
+    }
+    
+    .menu-btn:hover {
+        color: #ffffff;
+        background-color: rgba(99, 99, 99, 0.3)  !important;
+    }
+
+    .menu-btn-o:hover {
+        color: #ffffff;
+    }
+
+
+    /* .btn--flat {
+        border-radius: 0px;
+    } */
+
+    /* .btn--flat:hover {
         color: #fff;
         background-color:black  !important;
-    }
+    } */
 
     /* .md-button-toggle > .md-button:not([disabled]) {
         color: rgba(0, 0, 0, 0.99);

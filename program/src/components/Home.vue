@@ -1,12 +1,8 @@
 <template>
   <div class="home">
 
-        <v-layout row justify-center>
-      <v-dialog v-model="dialog" persistent>
-        <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
-        <!-- <login></login> -->
-        <p>sadfasdfs</p>
-      </v-dialog>
+    <v-layout row justify-center>
+      <p>hello</p>
     </v-layout>
 
   </div>

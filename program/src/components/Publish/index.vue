@@ -1,8 +1,74 @@
 <template>
-    <div class="publishingTasks">
+    <div class="publish">
+        <v-container grid-list-lg text-xs-center>
+            <v-layout row wrap align-center>
+                    <v-flex xs6>
+                        <v-layout justify-end>
+                            <v-card dark style=" height: 300px; width: 300px;">
+                                <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;">
+                                    <i class="material-icons" style="font-size: 40px;">photo</i>
+                                    作品
+                                </v-btn>
+                            </v-card>
+                        </v-layout>
+                    </v-flex> 
+
+                    <v-flex xs6>
+                        <v-card dark style=" height: 300px; width: 300px;">
+                        <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;" @click="projectDialogOpen()">
+                            <i class="material-icons" style="font-size: 40px;">event_note</i>
+                            项目
+                        </v-btn>
+                        </v-card>
+                    </v-flex>
+ 
+            </v-layout>
+        </v-container>
+
+        <v-dialog v-model="project.createDialog" persistent max-width="500px">
+            <v-card>
+                <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout wrap>
+                            <v-flex xs12>
+                                <v-form v-model="nproject.valid" ref="taskForm" lazy-validation>
+                                    <v-text-field label="任务名称" v-model="nproject.name" :rules="nproject.rules" color="yellow darken-1" 
+                                    @keyup.enter="projectCreate(nproject.name)"></v-text-field>
+                                    <!-- 用来消除空格提交 -->
+                                    <v-text-field v-show="false" label="任务名称"></v-text-field>
+                                </v-form>
+                            </v-flex>
+
+ 
+                        </v-layout>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn small flat @click="projectDialogClose()">取消</v-btn>
+                    <v-btn small flat @click="projectCreate(nproject.name)">创建</v-btn>
+                </v-card-actions>
+            </v-card>
+
+            
+            <!-- <div style="background-color: #fff">
+                <v-layout row wrap>
+                    <v-flex xs12 class="text-xs-right">
+
+                            <v-btn @click="taskDialogClose()">
+                                取消
+                            </v-btn>
+                            <v-btn @click="taskCreate(text)">
+                                创建
+                            </v-btn>
+
+                    </v-flex>
+                </v-layout>
+            </div> -->
+        </v-dialog>
         <!-- <md-whiteframe md-elevation="4" style="padding: 0px;"> -->
             
-            <md-layout md-gutter style="height: 48px;">
+            <!-- <md-layout md-gutter style="height: 48px;">
                 <md-layout md-gutter md-vertical-align="center" md-align="center" md-flex="10" style="background-color: #f44336; width: 120px; margin-right: 16px;">
                     <span class="md-body-2" style="color: #fff;  padding: 12px;">任务名称</span>
                 </md-layout>
@@ -14,9 +80,9 @@
                     </md-input-container>
                 </md-layout>
 
-            </md-layout>
+            </md-layout> -->
         <!-- </md-whiteframe> -->
-        <br>
+        <!-- <br>
         <md-layout md-gutter>
             <md-layout md-gutter md-vertical-align="center" md-align="center" md-flex="10" style="background-color: #f44336; width: 120px; margin-right: 16px;">
                 <span class="md-body-2" style="color: #fff;  padding: 12px;">设计风格</span>
@@ -46,10 +112,10 @@
         <br>
         <md-layout md-gutter="16">
 
-            <md-layout md-flex="75">
+            <md-layout md-flex="75"> -->
 
                     <!-- <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px; "> -->
-                        <md-layout md-flex="100">
+                        <!-- <md-layout md-flex="100">
                             <span class="md-body-2" style="background-color: #f44336; color: #fff; width: 100%; text-align:center">角度</span>
                         </md-layout>
                         <br>
@@ -97,17 +163,17 @@
                             </md-card>
 
                             <Button type="dashed" long @click="handleAdd" style="width: 250px; height: 320px;"><md-icon class="md-size-2x">add</md-icon></Button>
-                        </md-layout>
+                        </md-layout> -->
                     <!-- </md-whiteframe> -->
 
 
-            </md-layout>
+            <!-- </md-layout>
 
-            <md-layout md-gutter>
+            <md-layout md-gutter> -->
 
                     <!-- <md-whiteframe md-elevation="4" style="width: 100%; padding: 0px;"> -->
 
-                        <md-layout >
+                        <!-- <md-layout >
                             <md-layout md-flex="100">
                                 <span class="md-body-2" style="background-color: #f44336; color: #fff; width: 100%; text-align:center">资料</span>
                             </md-layout>
@@ -121,26 +187,51 @@
                                 <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                                 <p>点击或将文件拖拽到这里上传</p>
                             </div>
-                        </Upload>
+                        </Upload> -->
                     <!-- </md-whiteframe> -->
 
-            </md-layout>
+            <!-- </md-layout>
 
-        </md-layout>
+        </md-layout> -->
+
+        
     </div>
 </template>
 
 <script>
 export default {
-    name: 'publishingTasks',
+    name: 'project',
     props: [],
     data() {
         return {
+            nproject: {
+                name: '',
+                valid: false,
+                rules: [
+                    (v) => !!v || '请填写任务名称',
+                ]
+            },
         }
     },
     computed: {
+        project() {
+            return this.$store.state.project;
+        }
     },
     methods: {
+
+        projectDialogOpen() {
+            this.$store.dispatch('taskCreateDialogOpen');
+            // this.$router.replace({name: 'task', params:{tid: 1231231}});
+        },
+        projectDialogClose() {
+            this.$refs.taskForm.reset()
+            this.$store.dispatch('taskCreateDialogClose');
+        },
+        projectCreate(taskName) {
+            if(!this.$refs.taskForm.validate()) return;
+            this.$store.dispatch('taskCreate',taskName);
+        }
     },
     mounted(){
     },
@@ -153,52 +244,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .publishingTasks {
+    .publish {
         /* width:100%;
         height:50px;
         padding: 10px;
         padding-top: 70px;
         overflow:auto;
         position: absolute; */
-        margin: auto;
-        padding: 16px;
-        padding-top: 66px;
+        /* margin: auto; */
+
+        /* padding: 16px; */
+        padding-top: 50px;
+        display: flex;
+        /* background-position:center;  */
         /* max-width: 1220px; */
-        min-width: 965px;
+        /* min-width: 965px;
         background-color: #fff;
-        z-index:1;
+        z-index:1; */
     }
 
-    .card {
-        width: 250px; height: 320px; margin-right: 16px; margin-bottom: 16px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.08);
+    .mycard {
+        height: 500px;
     }
 
-    .md-caption {
-        font-size: 12px;
-        font-weight: 300;
-        letter-spacing: .02em;
-        line-height: 15px;
-    }
-
-    .md-card .md-card-header {
-        padding: 16px;
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-
-    .md-card .md-card-content {
-        padding: 16px;
-        padding-top: 8px;
-        padding-bottom: 8px;
-        font-size: 14px;
-        line-height: 22px;
-    }
-
-    .md-fab.md-fab-top-right, .md-speed-dial.md-fab-top-right {
-        top: 16px;
-        right: 16px;
-    }
 
 
    
