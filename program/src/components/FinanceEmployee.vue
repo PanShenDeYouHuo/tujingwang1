@@ -3,7 +3,7 @@
     <transition name="fade">
     <div v-if="loading">
       <Row :gutter="20">
-        <Col span="12">
+        <Col span="24">
           <Card :bordered="false">
 
             <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
@@ -31,56 +31,13 @@
                 <Date-picker style="width: 100%;" size="small" type="month" v-model="financeData.renderTime" :clearable="false" :editable="false" @on-change="renderChange" placeholder="选择月" > </Date-picker>
               </Col>
             </Row>
-            <Table border height="352" size="small" :columns="columns1" no-data-text="height" :data="financeData.renderList" ></Table>
+            <Table border height="793" size="small" :columns="columns1" no-data-text="height" :data="financeData.renderList" ></Table>
 
           </Card>
         </Col>
-        <Col span="12">
-          <Card :bordered="false">
-              <Row slot="title" type="flex" align="middle">
-                <Col span="21">
-                  <P>客服</P>
-                </Col>
-                <Col span="3">
-                  <Date-picker size="small" placement="bottom-end" v-model="financeData.serviceTime" type="month" placeholder="选择月" ></Date-picker>
-                </Col>
-              </Row>
-              <Table border height="352" size="small" :columns="columns1" :data="financeData.serviceList" ></Table>
-          </Card>
-        </Col>
+        
       </Row>
-      <br>
-      <Row :gutter="20">
 
-        <Col span="12">
-          <Card :bordered="false">
-            <Row slot="title" type="flex" align="middle">
-              <Col span="21">
-                <P>业务员</P>
-              </Col>
-              <Col span="3">
-                <Date-picker size="small" v-model="financeData.salesmanTime" type="month" placeholder="选择月"></Date-picker>
-              </Col>
-            </Row>
-            <Table border height="352" size="small" :columns="columns1" :data="financeData.salesmanList" ></Table>
-          </Card>
-        </Col>
-
-        <Col span="12">
-          <Card :bordered="false">
-              <Row slot="title" type="flex" align="middle">
-                <Col span="21">
-                  <P>其他</P>
-                </Col>
-                <Col span="3">
-                  <Date-picker size="small" placement="bottom-end" v-model="financeData.othenTime" type="month" placeholder="选择月"></Date-picker>
-                </Col>
-              </Row>
-              <Table border height="352" size="small" :columns="columns1" :data="financeData.othenList" ></Table>
-          </Card>
-        </Col>
-
-      </Row>
     </div>
     </transition>
 
