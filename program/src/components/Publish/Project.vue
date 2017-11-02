@@ -62,7 +62,7 @@
                                         <v-container fill-height fluid>
                                             <v-layout fill-height>
                                                 <v-flex xs12 align-end flexbox>
-                                                <span class="headline white--text" v-text="card.title"></span>
+                                                <span class="title white--text" v-text="`${index+1}-${card.title}`"></span>
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
@@ -92,10 +92,10 @@ export default {
         return {
             ha: this.$route.params.tid,
             cards:[
-                { title: 'Pre-fab homes', src: require('../../assets/1.jpg'), flex: 4 },
-                { title: 'Favorite road trips', src: require('../../assets/2.jpg'), flex: 2 },
-                { title: 'Best airlines', src: require('../../assets/3.jpg'), flex: 2 },
-                { title: 'Best airlines', src: require('../../assets/3.jpg'), flex: 2 }
+                { title: '客厅', src: require('../../assets/1.jpg'), flex: 4 },
+                { title: '餐厅', src: require('../../assets/2.jpg'), flex: 2 },
+                { title: '厨房', src: require('../../assets/3.jpg'), flex: 2 },
+                { title: '卧室', src: require('../../assets/3.jpg'), flex: 2 }
             ]
         }
     },
