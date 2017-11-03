@@ -3,25 +3,16 @@
     <transition name="fade">
     <div v-if="loading">
       <Row :gutter="20">
-        <Col span="24">
+        <Col span="12">
           <Card :bordered="false">
 
             <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
-              <Col span="9">
-                <P>渲染师</P>
+              <Col span="17">
+                <P>本月排图</P>
               </Col>
-              <Col span="3">
-                <label style="float: right">建模提成：</label>
-              </Col>
-<!--               <Col span="10" style="min-width: 320px; font-size: 12px;"> -->
+
               <Col span="2">
-                <InputNumber style="width: 100%;" size="small" :step="0.1" :max="1" :min="0" v-model="modelValue"></InputNumber>
-              </Col>
-              <Col span="3">
-                <label style="float: right">渲染提成：</label>
-              </Col>
-              <Col span="2">
-                <InputNumber style="width: 100%;" size="small" :step="0.1" :max="1" :min="0" v-model="randerValue"></InputNumber>
+                 <Button type="primary" size="large" @click="exportMonth()">导出</Button>
               </Col>
                 
               <Col span="2">
@@ -31,7 +22,61 @@
                 <Date-picker style="width: 100%;" size="small" type="month" v-model="financeData.renderTime" :clearable="false" :editable="false" @on-change="renderChange" placeholder="选择月" > </Date-picker>
               </Col>
             </Row>
-            <Table border height="793" size="small" :columns="columns1" no-data-text="height" :data="financeData.renderList" ></Table>
+            <Table border height="470" size="small" :columns="columns1" no-data-text="height" :data="financeData.monthList" ref="monthList"></Table>
+
+          </Card>
+        </Col>
+
+        <Col span="12" style="margin-bottom: 20px;">
+          <Card :bordered="false">
+
+            <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
+              <Col span="22">
+                <P>本月出图</P>
+              </Col>
+
+              <Col span="2">
+                 <Button type="primary" size="large" @click="exportMonthFinish()">导出</Button>
+              </Col>
+                
+            </Row>
+            <Table border height="470" size="small" :columns="columns1" no-data-text="height" :data="financeData.monthListFinish" ref="monthListFinish"></Table>
+
+          </Card>
+        </Col>
+
+
+        <Col span="12">
+          <Card :bordered="false">
+
+            <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
+              <Col span="22">
+                <P>全部排图</P>
+              </Col>
+
+              <Col span="2">
+                 <Button type="primary" size="large" @click="exportAll()">导出</Button>
+              </Col>
+
+            </Row>
+            <Table border height="470" size="small" :columns="columns1" no-data-text="height" :data="financeData.allList" ref="allList"></Table>
+
+          </Card>
+        </Col>
+
+                <Col span="12">
+          <Card :bordered="false">
+
+            <Row slot="title" type="flex" align="middle" style="font-size: 12px;">
+              <Col span=22>
+                <P>全部出图</P>
+              </Col>
+
+              <Col span="2">
+                 <Button type="primary" size="large" @click="exportAllFinish()">导出</Button>
+              </Col>
+            </Row>
+            <Table border height="470" size="small" :columns="columns1" no-data-text="height" :data="financeData.allListFinish" ref="allListFinish"></Table>
 
           </Card>
         </Col>
@@ -50,13 +95,6 @@
         <div slot="footer">
 			    <Button type="primary" size="large" @click="exportData()">导出</Button>
 			  </div>
-<!--         <div style="text-align:center">
-            <p>此任务删除后，下游 10 个任务将无法执行。</p>
-            <p>是否继续删除？</p>
-        </div>
-        <div slot="footer">
-            <Button type="error" size="large" long :loading="financeData.renderLoading" @click="">删除</Button>
-        </div> -->
     </Modal>
 
     </div>
@@ -92,17 +130,17 @@
             title: '渲染总价',
             key: 'totalRenderPrice'
           },
-          {
-            title: '提成',
-            key: "all",
-            render: (h, params) => {
-              return h('div', [
-                h('p', {
+          // {
+          //   title: '提成',
+          //   key: "all",
+          //   render: (h, params) => {
+          //     return h('div', [
+          //       h('p', {
 
-                }, params.row.totalModelPrice * this.modelValue + params.row.totalRenderPrice * this.randerValue)
-              ]);
-            }
-          },
+          //       }, params.row.totalModelPrice * this.modelValue + params.row.totalRenderPrice * this.randerValue)
+          //     ]);
+          //   }
+          // },
           {
             title: '操作',
             key: 'totalFinance',
@@ -172,7 +210,11 @@
           {
             title: '制作人',
             key: 'name'
-          }
+          },
+          {
+            title: '结算状态',
+            key: 'state'
+          },
         ],
       }
     },
@@ -189,6 +231,9 @@
           // this.financeData.renderTime = date;
           setTimeout(()=> {
           this.$store.dispatch('getFinanceRender');
+          this.$store.dispatch('getFinanceMonth');
+          this.$store.dispatch('getFinanceMonthFinish');
+
           }, 500);
         },
         exportData () {
@@ -197,10 +242,38 @@
                   filename: `工资单`,
                   original: false
               });
-        }
+        },
+        exportMonth () {
+          this.$refs.monthList.exportCsv({
+              filename: `本月排图`,
+              original: false
+          });
+        },
+        exportMonthFinish () {
+          this.$refs.monthListFinish.exportCsv({
+              filename: `本月出图`,
+              original: false
+          });
+        },
+        exportAll () {
+          this.$refs.allList.exportCsv({
+              filename: `全部排图`,
+              original: false
+          });
+        },
+        exportAllFinish () {
+          this.$refs.allListFinish.exportCsv({
+              filename: `全部出图`,
+              original: false
+          });
+        },
     },
     mounted() {
       this.$store.dispatch('getFinanceRender');
+      this.$store.dispatch('getFinanceMonth');
+      this.$store.dispatch('getFinanceMonthFinish');
+      this.$store.dispatch('getFinanceAll');
+      this.$store.dispatch('getFinanceAllFinish');
       
       setTimeout(()=> {
         this.loading = true;
