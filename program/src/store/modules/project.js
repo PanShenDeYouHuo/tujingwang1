@@ -1,29 +1,56 @@
 let state = {
-    createDialog: false,
+
+    _id: '',
+    name: '我的项目名称',
+    publisher: {},
+    service: {},
+    manager: {},
+    referenceFile: [],
+    projectFile: [],
+    image: [
+        {
+            state: 0,
+            designType: '工装',
+            space: '别墅',
+            style: '现代',
+            area: '客厅',
+            imageType: '全景',
+            price: 300,
+            murl: '',
+            iurl: '',
+            productionsGroup: []
+            
+        }
+    ],
+
+    oldData: {},
+
 };
 
 let mutations = {
-    closeCreateDialog(state) {
-        state.createDialog = false;
-    },
-    openCreateDialog(state) {
-        state.createDialog = true;
-    }
 };
 
 let actions = {
-    taskCreateDialogOpen({commit, state, rootState}) {
-        commit('openCreateDialog');
-    },
-    taskCreateDialogClose({commit, state, rootState}) {
-        commit('closeCreateDialog');
-    },
+    //根据项目id载入项目进行编辑
     taskCreate({commit, state, rootState}, projectName) {
-        console.log('haha')
-        console.log(projectName);
         rootState.router.replace({name: 'project', params:{pid: 1231231}});
-        commit('closeCreateDialog');
+    },
+
+    //添加image
+    addImage({commit, state, rootState}, image) {
+        let newImage = {};
+        for( let key in image) {
+            newImage[key] = image[key];
+        }
+        state.image.push(newImage);
+    },
+
+    //移除image
+    reImage({commit, state, rootState}, index) {
+        state.image.splice(index, 1);
     }
+
+
 
 };
 

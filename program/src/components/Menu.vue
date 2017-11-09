@@ -190,7 +190,7 @@ export default {
         position: absolute; */
         
         margin: 0px auto;
-        min-width: 1080px;
+        min-width: 1280px;
 
         background-color: #000;
         z-index:1;

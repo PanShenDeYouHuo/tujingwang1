@@ -25,13 +25,13 @@
             </v-layout>
         </v-container>
 
-        <v-dialog v-model="project.createDialog" persistent max-width="500px">
+        <v-dialog v-model="nproject.dialog" persistent max-width="500px">
             <v-card>
                 <v-card-text>
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex xs12>
-                                <v-form v-model="nproject.valid" ref="taskForm" lazy-validation>
+                                <v-form v-model="nproject.valid" ref="projectForm" lazy-validation>
                                     <v-text-field label="任务名称" v-model="nproject.name" :rules="nproject.rules" color="yellow darken-1" 
                                     @keyup.enter="projectCreate(nproject.name)"></v-text-field>
                                     <!-- 用来消除空格提交 -->
@@ -49,22 +49,7 @@
                     <v-btn small flat @click="projectCreate(nproject.name)">创建</v-btn>
                 </v-card-actions>
             </v-card>
-
-            
-            <!-- <div style="background-color: #fff">
-                <v-layout row wrap>
-                    <v-flex xs12 class="text-xs-right">
-
-                            <v-btn @click="taskDialogClose()">
-                                取消
-                            </v-btn>
-                            <v-btn @click="taskCreate(text)">
-                                创建
-                            </v-btn>
-
-                    </v-flex>
-                </v-layout>
-            </div> -->
+         
         </v-dialog>
         <!-- <md-whiteframe md-elevation="4" style="padding: 0px;"> -->
             
@@ -200,11 +185,12 @@
 
 <script>
 export default {
-    name: 'project',
+    name: 'publish',
     props: [],
     data() {
         return {
             nproject: {
+                dialog: false,
                 name: '',
                 valid: false,
                 rules: [
@@ -220,16 +206,24 @@ export default {
     },
     methods: {
 
+        //打开创建任务模态框
         projectDialogOpen() {
-            this.$store.dispatch('taskCreateDialogOpen');
-            // this.$router.replace({name: 'task', params:{tid: 1231231}});
+            this.nproject.dialog = true;
         },
+        //关闭创建任务模态框
         projectDialogClose() {
-            this.$refs.taskForm.reset()
-            this.$store.dispatch('taskCreateDialogClose');
+            //清空form数据
+            this.$refs.projectForm.reset();
+            this.nproject.dialog = false;
         },
+
+        //创建项目
         projectCreate(taskName) {
-            if(!this.$refs.taskForm.validate()) return;
+            //验证表单数据
+            if(!this.$refs.projectForm.validate()) return;
+            //关闭模态框
+            this.projectDialogClose();
+            //路由跳转
             this.$store.dispatch('taskCreate',taskName);
         }
     },

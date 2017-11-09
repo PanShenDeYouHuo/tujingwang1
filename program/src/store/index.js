@@ -43,7 +43,6 @@ const actions = {
 		if(accessToken) {
 				state.socketClass.socket.emit('login', accessToken);
 		}
-		console.log(state.user);
 	}
 };
 
