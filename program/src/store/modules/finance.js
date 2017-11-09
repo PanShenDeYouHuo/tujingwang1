@@ -123,18 +123,18 @@ let actions = {
 			});
 	},
 	//获得客服工资单
-	getFinanceService({commit, state, rootState}) {
-		rootState.loading.start();
-		rootState.socketClass.myEmit('GET/finace/employee', {time: state.serviceTime, job: '客服'})
-			.then((res)=> {
-				commit('setFinanceService', {list: res});
-				rootState.loading.finish();
-			})
-			.catch((err)=> {
-				console.log(err);
-				rootState.loading.error();
-			});
-	},
+	// getFinanceService({commit, state, rootState}) {
+	// 	rootState.loading.start();
+	// 	rootState.socketClass.myEmit('GET/finace/employee', {time: state.serviceTime, job: '客服'})
+	// 		.then((res)=> {
+	// 			commit('setFinanceService', {list: res});
+	// 			rootState.loading.finish();
+	// 		})
+	// 		.catch((err)=> {
+	// 			console.log(err);
+	// 			rootState.loading.error();
+	// 		});
+	// },
 
 	/////////////////////////////////////////////////////////
 	
