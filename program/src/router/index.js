@@ -3,16 +3,14 @@ import Router from 'vue-router';
 
 import Home from '@/components/Home';
 import Login from '@/components/user_component/Login';
-import Publish from '@/components/Publish';
-import Works from '@/components/Publish/Works';
-import Work from '@/components/Publish/Work';
-import Projects from '@/components/Publish/Projects';
-import Project from '@/components/Publish/Project';
-// import Tasks from '@/components/Publish/Tasks';
-// import Task from '@/components/Publish/Task';
+import Publish from '@/components/publish';
+import Works from '@/components/publish/Works';
+import Work from '@/components/publish/Work';
+import Projects from '@/components/publish/Projects';
+import Project from '@/components/publish/Project';
 
 
-import StatisticsRegional from '@/components/statisticsRegional';
+
 
 Vue.use(Router);
 
@@ -36,8 +34,6 @@ export default new Router({
     { name: 'work', path: '/works/:wid', component: Work },
     { name: 'projects', path: '/projects', component: Projects },
     { name: 'project', path: '/projects/:pid', component: Project },
-    // { name: 'tasks', path: '/task', component: Tasks },
-    // { name: 'task', path: '/task/:tid', component: Task },
-    { name: 'hello',path: '/statisticsRegional', component: StatisticsRegional }
+
   ],
 });

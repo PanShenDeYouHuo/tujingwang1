@@ -66,7 +66,7 @@
                                 <v-btn color="yellow" @click="imageDialogOpen()">
                                     添加任务
                                 </v-btn>
-                                <v-btn color="yellow">
+                                <v-btn color="yellow" @click="upload()">
                                     添加参考
                                 </v-btn>
 
@@ -299,6 +299,11 @@ export default {
         designTypeChange() {
                 this.image.space = '';
                 this.image.area = '';
+        },
+
+        //上传文件
+        upload() {
+            
         }
 
     },

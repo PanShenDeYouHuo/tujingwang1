@@ -4,8 +4,7 @@ import Vuex from 'vuex';
 import user from './modules/user';
 import login from './modules/login';
 import project from './modules/project';
-import finance from './modules/finance';
-import statistics from './modules/statistics'
+
 import socketClass from '../socket.io';
 
 Vue.use(Vuex);
@@ -53,9 +52,7 @@ const getters = {
 const modules = {
 	user,
 	login,
-	project,
-	finance,
-	statistics
+	project
 };
 
 

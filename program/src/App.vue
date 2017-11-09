@@ -49,6 +49,7 @@ import login from './components/user_component/Login'
 
 export default {
   name: 'app',
+  
   components:{pmenu, login},
 
   data() {
