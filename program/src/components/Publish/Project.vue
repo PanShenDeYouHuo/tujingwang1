@@ -95,9 +95,14 @@
                             
                         </v-layout>
            
-                    </v-flex>
+                    </v-flex >
+                    <!-- <input type="file" accept=".doc,.docx" multiple> -->
 
-            </v-layout>                  
+
+                    <input type="file" id="xFile" ref="file" @change="fileChange()" multiple style="position:absolute;clip:rect(0 0 0 0);" >
+
+
+            </v-layout >                  
         </v-container>
         
 <!-- 添加image模态框 -->
@@ -113,7 +118,7 @@
 
                                 <v-flex xs12 sm6 md4>
                                     <v-select label="设计风格"
-                                        v-bind:items="styleItems"
+                                        :items="styleItems"
                                         v-model="image.style" color="yellow darken-2"
                                         :rules="rules.style"
                                     ></v-select>
@@ -148,11 +153,51 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn small flat color="yellow darken-2" @click="imageDialogClose()">取消</v-btn>
-                    <v-btn small flat color="yellow darken-2" @click="addImage( image )">添加</v-btn>
+                    <v-btn  flat color="deep-orange"  @click="imageDialogClose()">取消</v-btn>
+                    <v-btn color="yellow" @click="addImage( image )">添加</v-btn>
                 </v-card-actions>
             </v-card>
          
+        </v-dialog>
+
+<!-- 添加upload模态框 -->
+        <v-dialog v-model="uploadDialog" persistent max-width="900px">
+            <v-card>
+                <v-toolbar color="white" flat>
+                    <v-btn icon light @click="uploadDialogClose()">
+                        <v-icon color="grey darken-2" >arrow_back</v-icon>
+                    </v-btn>
+                    <v-toolbar-title class="grey--text text--darken-4">参考文件</v-toolbar-title>
+                    <v-spacer></v-spacer>
+
+                    <v-btn  color="light-blue lighten-2 " >
+                        从本地添加文件
+                    </v-btn>
+                </v-toolbar>
+                <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout wrap>
+
+                            <v-flex xs12>
+                                <v-card>
+                                    <v-card-title style="padding: 0px 16px;">
+                                        <span class="grey--text caption">共有 {{project.image.length}} 个任务</span>
+                                        <v-spacer></v-spacer>
+
+
+                                    </v-card-title>
+                                </v-card>
+                             </v-flex> 
+
+                        </v-layout>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-layout justify-center>
+                        <v-btn  color="yellow " @click="uploadDialogClose()">上传</v-btn>
+                    </v-layout>
+                </v-card-actions>
+            </v-card>
         </v-dialog>
         
     </div>
@@ -174,6 +219,8 @@ export default {
             ],
             imageDialog: false,
             imageValid: false,
+            uploadDialog: false,
+            uploadValid: false,
             designTypeItems: [
                 { text: '家装', value: '家装'},
                 { text: '工装', value: '工装'}
@@ -266,7 +313,8 @@ export default {
                 imageType: [
                     (v) => !!v || '请选择图片类型'
                 ],
-            }
+            },
+            dir: 'haha',
         }
     },
     computed: {
@@ -300,11 +348,39 @@ export default {
                 this.image.space = '';
                 this.image.area = '';
         },
-
+        fileChange() {
+            console.log(this.$refs.file.files)
+        },
         //上传文件
         upload() {
+            this.$refs.file.click();
             
-        }
+            // let inputObj=document.createElement('input')
+            // inputObj.setAttribute('id','_ef');
+            // inputObj.setAttribute('type','file');
+            // inputObj.setAttribute("style",'visibility:hidden');
+            // // inputObj.setAttribute("multiple");
+            // inputObj.setAttribute("accept","image/gif, image/jpeg");
+            // inputObj.addEventListener('change',this.fileChange());
+            // // document.body.appendChild(inputObj);
+            // inputObj.click();
+
+            // inputObj.value ;
+
+            // setTimeout(() => {             
+            // console.log(this.dir);
+            // }, 5000);
+
+            // let obj = document.open();
+        },
+        //打开文件模态框
+        uploadDialogOpen() {
+            this.uploadDialog = true;
+        },
+        //关闭文件模态框
+        uploadDialogClose() {
+            this.uploadDialog = false;
+        },
 
     },
     mounted(){
