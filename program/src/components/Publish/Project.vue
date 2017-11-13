@@ -320,6 +320,8 @@ export default {
         //打开文件模态框
         uploadDialogOpen() {
             this.uploadDialog = true;
+            //获取ststoken
+            this.$store.dispatch('getReadStsToken');
         },
         //关闭文件模态框
         uploadDialogClose() {

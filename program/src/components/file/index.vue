@@ -173,15 +173,16 @@ export default {
 
         //上传文件
         upload() {
-            this.$store.dispatch('uploadReferenceFile', 'aa')
-                .then((res)=> {
-                    console.log(res);
-                })
-                .catch((err)=> {
-                    console.log(err);
-                    this.$store.state.errorSnackbar.state = true;
-                    this.$store.state.errorSnackbar.text = err;
-                })
+            this.$store.dispatch('getReadStsToken')
+                // .then((res)=> {
+                //     console.log(res);
+                // })
+                // .catch((err)=> {
+                //     this.$store.state.errorSnackbar = {
+                //         state: true,
+                //         text: err.toString()
+                //     }
+                // })
             this.$refs.file.click();
            
         },

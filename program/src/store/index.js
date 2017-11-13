@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import user from './modules/user';
 import login from './modules/login';
 import project from './modules/project';
+import ossFile from './modules/ossFile';
 
 import socketClass from '../socket.io';
 
@@ -36,13 +37,19 @@ const actions = {
 			next();
 		});
 
-		//载入用户数据
-		let accessToken = localStorage.getItem('accessToken');
-
-		if(accessToken) {
-				state.socketClass.socket.emit('login', accessToken);
-		}
+		//短线重连接口
+		state.socketClass.socket.on("connect", ()=> {
+			console.log("连接成功");
+	
+			//载入用户数据
+			let accessToken = localStorage.getItem('accessToken');
+			if(accessToken) {
+					state.socketClass.socket.emit('authentication', accessToken);
+			}
+			
+		});
 	}
+
 };
 
 const getters = {
@@ -52,7 +59,8 @@ const getters = {
 const modules = {
 	user,
 	login,
-	project
+	project,
+	ossFile
 };
 
 

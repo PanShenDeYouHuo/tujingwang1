@@ -122,6 +122,7 @@ export default {
     this.$store.dispatch('getRouter', this.$router);    //将router映射到store内
     this.$store.dispatch('appError');                   //开启错误接口
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
+    this.$store.dispatch('authenticationSuccess');               //开启登入成功接口
 
     this.$store.dispatch('initialize');
     // this.$store.dispatch('loadUserData');               //开始启动app是载入用户数据信息

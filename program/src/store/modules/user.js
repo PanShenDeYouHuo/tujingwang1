@@ -35,11 +35,25 @@ let actions = {
 	//登入成功接口
 	loginSuccess({commit, state, rootState}) {
 		rootState.socketClass.socket.on('loginSuccess', (data)=> {
-			//储存accessToken
-			localStorage.setItem('accessToken', data.accessToken);
+			//储存accessToken到localStorage
+			// localStorage.setItem('accessToken', data.accessToken);
+			//进行身份认证，根据权限开启api
+			rootState.socketClass.socket.emit('authentication', data.accessToken);
 			//登入界面关闭
 			rootState.loginDialog = false;
+			//用户数据保存
+			commit('setUser', data);
 			console.log(data);
+		});
+
+	},
+
+	authenticationSuccess({commit, state, rootState}) {
+		rootState.socketClass.socket.on('authenticationSuccess', (data)=> {
+			//储存accessToken到localStorage
+			localStorage.setItem('accessToken', data.accessToken);
+
+			//用户数据保存
 			commit('setUser', data);
 		});
 	},
@@ -47,16 +61,12 @@ let actions = {
 	//错误返回接口
 	appError({commit, state, rootState}) {
 		rootState.socketClass.socket.on('appError', (err)=> {
-			console.log('appError');
 
 			rootState.errorSnackbar = {
 				state: true,
 				text: err
 			}
-			// rootState.message.error({
-			// 	content: err,
-            //     duration: 5
-			// });
+
 		});
 	}
 

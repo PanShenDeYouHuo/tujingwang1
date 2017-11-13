@@ -51,11 +51,11 @@ let actions = {
         state.image.splice(index, 1);
     },
 
-    //上传参考文件
-    uploadReferenceFile({commit, state, rootState}, hello) {
-        console.log('hello');
-        return 'chenggong';
-    }
+    // //上传参考文件
+    // uploadReferenceFile({commit, state, rootState}, flies) {
+
+    //     return 'chenggong';
+    // }
 
 
 

@@ -16,9 +16,9 @@ function socketClass () {
 
 	this.socket = io.connect(url, this.opt);
 
-	this.socket.on('disconnect', ()=> {
-		console.log("网络中断");
-	});
+	// this.socket.on('disconnect', ()=> {
+	// 	console.log("网络中断");
+	// });
 
 	this.socket.on('reconnect', ()=> {
 		console.log("重新链接成功");
@@ -28,10 +28,10 @@ function socketClass () {
 		console.log("正在重连...");
 	});
 
-	this.socket.on("connect", ()=> {
+	// this.socket.on("connect", ()=> {
 		
-		console.log("连接成功");
-	});
+	// 	console.log("连接成功");
+	// });
 
 	this.socket.on('connect_error', (error) => {
 		console.log(`connect_${error}`);
