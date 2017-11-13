@@ -31,7 +31,7 @@ import 'vuetify/dist/vuetify.css'
 
 import App from './App';            //载入app.vue
 import router from './router';      //路由
-import store from './store/index'; //状态管理
+import store from './store/index';  //状态管理
 
 Vue.config.productionTip = false;
 

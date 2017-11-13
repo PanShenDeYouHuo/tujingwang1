@@ -31,6 +31,7 @@ let mutations = {
 };
 
 let actions = {
+
     //根据项目id载入项目进行编辑
     taskCreate({commit, state, rootState}, projectName) {
         rootState.router.replace({name: 'project', params:{pid: 1231231}});
@@ -48,6 +49,12 @@ let actions = {
     //移除image
     reImage({commit, state, rootState}, index) {
         state.image.splice(index, 1);
+    },
+
+    //上传参考文件
+    uploadReferenceFile({commit, state, rootState}, hello) {
+        console.log('hello');
+        return 'chenggong';
     }
 
 
