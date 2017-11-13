@@ -184,6 +184,14 @@
             width: 220
           },
           {
+            title: '排图时间',
+            key: 'cpt',
+          },
+          {
+            title: '出图时间',
+            key: 'bigTime',
+          },
+          {
             title: '空间名',
             key: 'iname'
           },
