@@ -2,11 +2,12 @@
   <v-app id="app">
 
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0"> -->
-    <div class="elevation-4" style="background-color: #fff;  position: absolute; width: 100%; z-index:2; ">
-
+    <div class="elevation-4" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+      
       <pmenu @toLogin="to_login()"></pmenu>
 
     </div>
+
 
     <!-- 登入右侧边导航 -->
     <!-- <md-sidenav class="md-right" ref="loginSidenav" @open="open('loginSidenav')" @close="close('loginSidenav')">
@@ -18,7 +19,7 @@
       <login @close="to_close()"></login>
     </v-dialog>
 
-    <!-- 信息提示窗口 -->
+    <!-- 错误信息提示窗口 -->
     <v-snackbar
       :timeout="6000"
       top
@@ -26,6 +27,16 @@
       v-model="errorSnackbar.state"
     >
       {{ errorSnackbar.text }}
+    </v-snackbar>
+
+    <!-- 成功信息提示窗口 -->
+    <v-snackbar
+      :timeout="6000"
+      top
+      color="green"
+      v-model="successSnackbar.state"
+    >
+      {{ successSnackbar.text }}
     </v-snackbar>
 
 
@@ -72,6 +83,9 @@ export default {
     },
     errorSnackbar() {
       return this.$store.state.errorSnackbar;
+    },
+    successSnackbar() {
+      return this.$store.state.successSnackbar;
     }
   },
 
@@ -164,7 +178,9 @@ export default {
 
 }
 
-html,body{overflow-y: hidden;}
+/* html,body{overflow:visible;} */
+
+html,body{overflow:visible;}
 
 
 /* .content {
@@ -192,5 +208,17 @@ html,body{overflow-y: hidden;}
 .list__tile__title {
     line-height: 28px;
 }
+
+
+.card {
+    -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
+    box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.3);
+}
+
+.btn--raised {
+      -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
+    box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);      
+}
+
 
 </style>

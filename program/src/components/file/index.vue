@@ -5,13 +5,13 @@
 
         <v-card style="width: 100%;">
             <v-toolbar color="white" flat>
-                <v-btn icon light @click="upload()">
+                <v-btn icon light @click="close()">
                     <v-icon color="grey darken-2" >arrow_back</v-icon>
                 </v-btn>
                 <v-toolbar-title class="grey--text text--darken-4">参考文件</v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <v-btn  color="light-blue lighten-2 " @click="upload()">
+                <v-btn  color="light-blue lighten-2 " @click="openFile()">
                     从本地添加文件
                 </v-btn>
             </v-toolbar>
@@ -51,21 +51,20 @@
                                 </v-card>
                             </div>
                         </v-flex>
-                        
                         <!-- 需要上传文件列表 -->
-                        <v-flex xs2  v-for="(file, index) in uploadFileList" :key="index+'上传'">
+                        <v-flex xs2  v-for="(file, index) in uploadFileList" :key="index">
                             <div class="big">
                                 <v-card>
                                     <v-card-media :src=" file.src !== '' ? file.src : '' " height="195px">
                                         <div style="background-color: rgba(0, 0, 0, .7); width: 100%; display: flex; flex-direction: column;  justify-content: center; align-items: center;">
                                             <v-progress-circular
-                                                v-bind:size="100"
-                                                v-bind:width="15"
-                                                v-bind:rotate="270"
-                                                v-bind:value="value"
+                                                :size="100"
+                                                :width="15"
+                                                :rotate="270"
+                                                :value="file.progress*100"
                                                 color="yellow"      
                                                 >
-                                                {{ value }}%
+                                                {{ file.progress*100 }}%
                                             </v-progress-circular>
                                             <br>
                                             <span class="title white--text">
@@ -100,7 +99,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-layout justify-center>
-                    <v-btn  color="yellow " @click="upload()">上传</v-btn>
+                    <v-btn  color="yellow " @click="upload(uploadFileList)">上传</v-btn>
                 </v-layout>
             </v-card-actions>
         </v-card>
@@ -119,13 +118,21 @@ export default {
         return {
             fileIcon: require('../../assets/file.png'),
             referenceFileList: [],
-            uploadFileList: [],
             value: 0,
         }
     },
     computed: {
+        uploadFileList() {
+                return this.$store.state.ossFile.uploadFileList;
+
+        }
     },
     methods: {
+        
+        //关闭文件窗口
+        close() {
+            this.$emit('close');
+        },
 
         //选取上传文件完成时触发
         fileChange() {
@@ -133,20 +140,13 @@ export default {
             //实例文件载入列表用于异步操作
             let uploadFileList = this.uploadFileList;
 
-
-            // //检查文件是否选择
-            // if(!this.$refs.file.value){
-            //     console.log('取消选择');
-            //     return;
-            // }
-
-
             for( let file of this.$refs.file.files ) {
 
                 //文件是否同名
                 for (let key of uploadFileList) {
                     if(file.name === key.name) continue;
                 }
+                file.progress = 0;
                 //判断是否是图片
                 if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.type !== 'image/bmp' && file.type !== 'image/jpg') {
                     file.src = '';
@@ -160,7 +160,6 @@ export default {
 
                 oFReader.onloadend = function(oFRevent){
                     file.src = oFRevent.target.result;
-                    console.log(file)
                     uploadFileList.push(file);
                 };
                 //根据inputfile的files读取文件
@@ -171,9 +170,14 @@ export default {
 
         },
 
+        //选择上传的文件
+        openFile() {
+            this.$refs.file.click();
+        },
+
         //上传文件
-        upload() {
-            this.$store.dispatch('getReadStsToken')
+        upload(files) {
+            this.$store.dispatch('uploadFile');
                 // .then((res)=> {
                 //     console.log(res);
                 // })
@@ -183,7 +187,6 @@ export default {
                 //         text: err.toString()
                 //     }
                 // })
-            this.$refs.file.click();
            
         },
 

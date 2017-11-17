@@ -17,7 +17,7 @@ Vue.use(Router);
 export default new Router({
   mode: 'history',
   routes: [
-    { name: '', path: '/', component: Home },
+    { name: '/', path: '/', component: Home },
     { name: 'publish', path: '/publish',component: Publish,
       // children:[
       //   {        

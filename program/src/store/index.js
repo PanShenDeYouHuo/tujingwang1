@@ -14,10 +14,16 @@ const state = {
 	socketClass,
 	router: {},
 	loginDialog: false,
+	//错误提示栏
 	errorSnackbar: {
 		state: false,
 		text: 'what are you doing',
-	}
+	},
+	//成功提示栏
+	successSnackbar: {
+		state: false,
+		text: 'what are you doing',
+	},
 
 };
 
@@ -37,7 +43,7 @@ const actions = {
 			next();
 		});
 
-		//短线重连接口
+		//连接成功接口
 		state.socketClass.socket.on("connect", ()=> {
 			console.log("连接成功");
 	

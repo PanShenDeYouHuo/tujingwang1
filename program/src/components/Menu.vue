@@ -60,7 +60,7 @@
                         <v-list dense>
                             <div v-for="(item, index) in items" :key="item.title">
 
-                                <v-list-tile v-if="item.title" :key="index" @click="">
+                                <v-list-tile v-if="item.title"  :key="index" @click="change(item.router)">
                                     <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
                                 </v-list-tile>
 
@@ -92,34 +92,19 @@ export default {
             dialog: false,
             text:'首页',
             menuText: [
-                { 
-                    name: '首页',
-                    router: '/',
-                },
-                {
-                    name: '项目',
-                    router: 'works',
-                },
-                {
-                    name: '资讯',
-                    router: 'login',
-                },
-                {
-                    name: '活动',
-                    router: 'activity',
-                },
-                {
-                    name: '素材',
-                    router: 'material',
-                },
+                { name: '首页',router: '/' },
+                { name: '项目',router: 'works' },
+                { name: '资讯',router: 'login' },
+                { name: '活动',router: 'activity' },
+                { name: '素材',router: 'material'},
             ],
             active: [],
             items: [
-                { title: '我的作品' },
-                { title: '我的任务' },
-                { title: '我的团队' },
-                { title: '我的统计' },
-                { title: '账号管理' },
+                { title: '我的作品', router: 'works' },
+                { title: '我的项目', router: 'projects' },
+                { title: '我的团队', router: 'temas' },
+                { title: '我的统计', router: 'statistics' },
+                { title: '账号管理', reuter: 'account' },
                 { divider: true},
                 { signOut: '退出登入' }
             ]

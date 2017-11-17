@@ -14,12 +14,14 @@
                     </v-flex> 
 
                     <v-flex xs6>
+
                         <v-card dark style=" height: 300px; width: 300px;">
-                        <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;" @click="projectDialogOpen()">
-                            <i class="material-icons" style="font-size: 40px;">event_note</i>
-                            项目
-                        </v-btn>
+                            <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;" @click="projectDialogOpen()">
+                                <i class="material-icons" style="font-size: 40px;">event_note</i>
+                                项目
+                            </v-btn>
                         </v-card>
+
                     </v-flex>
  
             </v-layout>
@@ -46,7 +48,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn small flat @click="projectDialogClose()">取消</v-btn>
-                    <v-btn small flat @click="projectCreate(nproject.name)">创建</v-btn>
+                    <v-btn small flat :loading="project.postProjectLoading" @click="projectCreate(nproject.name)">创建</v-btn>
                 </v-card-actions>
             </v-card>
          
@@ -202,7 +204,8 @@ export default {
     computed: {
         project() {
             return this.$store.state.project;
-        }
+        },
+
     },
     methods: {
 
@@ -210,6 +213,7 @@ export default {
         projectDialogOpen() {
             this.nproject.dialog = true;
         },
+        
         //关闭创建任务模态框
         projectDialogClose() {
             //清空form数据
@@ -221,10 +225,10 @@ export default {
         projectCreate(taskName) {
             //验证表单数据
             if(!this.$refs.projectForm.validate()) return;
-            //关闭模态框
+            // //关闭模态框
             this.projectDialogClose();
             //路由跳转
-            this.$store.dispatch('taskCreate',taskName);
+            this.$store.dispatch('postProject',taskName);
         }
     },
     mounted(){

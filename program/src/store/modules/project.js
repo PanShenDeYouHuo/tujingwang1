@@ -23,19 +23,38 @@ let state = {
         }
     ],
 
-    oldData: {},
+    listData:[],
+    listCount: '',
+    changeData: {}, //项目设置内存区
+    oldData: {},    //旧数据
+
+    //状态
+    postProjectLoading: false,  //创建项目状态
+
+    getProjectLoading: false,   //获取项目状态
+    getProjectsLoading: false,  //获取项目列表状态
+
+    putProjectLoading: false,   //保存跟新项目状态
 
 };
 
 let mutations = {
+    setChangeProject(state, project) {
+        state.changeData = project;
+    },
+
+    setProjectList(state, data) {
+        state.listData = data.projects;
+        state.listCount = data.count;
+    }
 };
 
 let actions = {
 
-    //根据项目id载入项目进行编辑
-    taskCreate({commit, state, rootState}, projectName) {
-        rootState.router.replace({name: 'project', params:{pid: 1231231}});
-    },
+    // //根据项目id载入项目进行编辑
+    // taskCreate({commit, state, rootState}, projectName) {
+    //     rootState.router.replace({name: 'project', params:{pid: 1231231}});
+    // },
 
     //添加image
     addImage({commit, state, rootState}, image) {
@@ -43,19 +62,76 @@ let actions = {
         for( let key in image) {
             newImage[key] = image[key];
         }
-        state.image.push(newImage);
+        state.changeProject.image.push(newImage);
     },
 
     //移除image
     reImage({commit, state, rootState}, index) {
-        state.image.splice(index, 1);
+        state.changeProject.image.splice(index, 1);
     },
 
-    // //上传参考文件
-    // uploadReferenceFile({commit, state, rootState}, flies) {
 
-    //     return 'chenggong';
-    // }
+    //创建项目
+    postProject({commit, state, rootState}, projectName) {
+        state.postProjectLoading = true;
+        rootState.socketClass.myEmit( 'postProject',{name: projectName, uid:rootState.user._id})
+        .then((pid)=> {
+            rootState.router.replace({name: 'project', params:{pid}});
+        })
+        .catch((err)=> {
+            setTimeout(() => {
+                state.postProjectLoading = false;
+                rootState.errorSnackbar = { state: true, text: err.message };
+            }, 800);
+        });
+
+    },
+
+    //保存项目
+    putProject({commit, state, rootState}) {
+        state.putProjectLoading = true;
+        rootState.socketClass.myEmit('putProject', state.changeProject)
+        .then((res)=> {
+            rootState.successSnackbar = { state: true, text: '保存成功'}
+        })
+        .catch((err)=> {
+            console.log(err);
+            setTimeout(()=> {
+                state.putProjectLoading = true;
+                rootState.errorSnackbar = { state: true, text: err.message };
+            }, 800);
+        });
+    },
+
+    //根据pid获取项目
+    getProject({commit, state, rootState}, pid) {
+        rootState.socketClass.myEmit('getProject', {pid})
+        .then((res)=> {
+            commit('setChangeProject', res);
+        })
+        .catch((err)=> {
+            console.log(err);
+            setTimeout(()=> {
+                rootState.errorSnackbar = { state: true, text: err.message };
+            }, 800);
+        });
+    },
+
+
+
+
+    //根据发布人id查询项目列表
+    getProjects({commit, state, rootState}, data) {
+        rootState.socketClass.myEmit('getProjects', {uid: rootState.user._id, currentPage: data.currentPage, pageSize: data.pageSize})
+        .then((res)=> {
+            commit('setProjectList', res);
+        })
+        .catch((err)=> {
+            setTimeout(()=> {
+                rootState.errorSnackbar = { state: true, text: err.message };
+            }, 800);
+        });
+    },
 
 
 

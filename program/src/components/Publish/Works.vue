@@ -1,6 +1,6 @@
 <template>
   <div class="works">
-    <Row  type="flex" justify="space-around">
+    <!-- <Row  type="flex" justify="space-around">
         <Col span="5">
             <Card >
                 <div>
@@ -150,7 +150,7 @@
             </Card>
         </Col>
 
-    </Row>
+    </Row> -->
   </div>
 </template>
 

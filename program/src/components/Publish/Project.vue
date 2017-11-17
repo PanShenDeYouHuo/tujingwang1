@@ -6,7 +6,7 @@
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn  color="yellow">
+                <v-btn @click="" color="yellow">
                     保存
                 </v-btn>
             </v-layout>
@@ -57,11 +57,11 @@
                         </v-card>
                     </v-flex> 
 
-                    
+                    <!-- 设置按钮 -->
                     <v-flex xs12>
                         <v-card>
                             <v-card-title style="padding: 0px 16px;">
-                                <span class="grey--text caption">共有 {{project.image.length}} 个任务</span>
+                                <span class="grey--text caption">共有 {{project.image ? project.image.length || 0 : 0}} 个任务</span>
                                 <v-spacer></v-spacer>
                                 <v-btn color="yellow" @click="imageDialogOpen()">
                                     添加任务
@@ -74,7 +74,8 @@
                         </v-card>
                     </v-flex> 
 
-                    <v-flex xs12>
+                    <!-- 项目任务区 -->
+                    <v-flex xs12 v-if="project.image">
                         <v-layout row wrap>
 
                             <v-flex v-bind="{ [`xs${image.imageType === '默认' ? 3 : 3}`]: true }"  v-for="(image, index) in project.image" :key="index + image.name">
@@ -162,7 +163,7 @@
 
 <!-- 添加upload模态框 -->
         <v-dialog v-model="uploadDialog" persistent max-width="1300px">
-            <file></file>
+            <file @close="uploadDialogClose()"></file>
         </v-dialog>
         
     </div>
@@ -177,8 +178,10 @@ export default {
     props: [],
     data() {
         return {
+            loading: false,
             noImage: require('../../assets/bg1.jpg'),
-            projectName: this.$route.params.tid,
+
+            projectName: this.$route.params.pid,
             cards:[
                 { title: '客厅', src: require('../../assets/1.jpg'), flex: 4 },
                 { title: '餐厅', src: require('../../assets/2.jpg'), flex: 2 },
@@ -286,7 +289,7 @@ export default {
     },
     computed: {
         project() {
-            return this.$store.state.project;
+            return this.$store.state.project.changeData;
         }
     },
     methods: {
@@ -310,6 +313,10 @@ export default {
             this.imageDialogClose();
 
         },
+        //保存项目
+        savaProject() {
+            this.$store.dispatch('putProject');  
+        },
         //设计类型发生改变
         designTypeChange() {
                 this.image.space = '';
@@ -321,7 +328,7 @@ export default {
         uploadDialogOpen() {
             this.uploadDialog = true;
             //获取ststoken
-            this.$store.dispatch('getReadStsToken');
+            this.$store.dispatch('getWriteStsToken');
         },
         //关闭文件模态框
         uploadDialogClose() {
@@ -330,6 +337,7 @@ export default {
 
     },
     mounted(){
+        this.$store.dispatch('getProject',this.$route.params.pid);
     },
 
 };

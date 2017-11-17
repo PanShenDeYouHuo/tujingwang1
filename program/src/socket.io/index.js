@@ -75,8 +75,8 @@ function socketClass () {
 				this.socket.removeAllListeners("disconnect");
 			});
 			this.socket.emit(emitName, data, (res)=> {
-				if(res.err === -1){
-					reject({message:data.message});
+				if(res.err){
+					reject({message:res.message});
 					this.socket.removeAllListeners("disconnect");
 				}
 				else{
