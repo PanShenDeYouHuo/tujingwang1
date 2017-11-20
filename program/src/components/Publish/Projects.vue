@@ -4,7 +4,7 @@
         <div  style="background-color: #000; height: 50px;  position: absolute; width: 100%; min-width: 1280px; z-index:3; ">
             <v-layout align-center style="height: 100%;">
                 <v-flex xs1>
-                <v-btn flat icon @click="" color="yellow">
+                <v-btn flat icon @click="change('/')" color="yellow">
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 </v-flex>
@@ -51,13 +51,23 @@
                             </v-card-media>
                             <v-card-title>
                             <div>
-                                <span>{{project.name}}</span><br>
-                                <span class="grey--text">Whitehaven Beach</span>
+                                <span class="body-2">{{project.name}}</span><br>
+                                <span class="grey--text caption">Whitehaven Beach</span>
                             </div>
                             </v-card-title>
                             <v-card-actions>
-                                <v-btn flat small color="orange">Share</v-btn>
-                                <v-btn flat small color="orange">Explore</v-btn>
+                                <v-btn class="my-btn text-xs-center" flat small color="orange" @click="editProject(project._id)">
+                                    <span class="grey--text caption">编辑</span>
+                                </v-btn>
+                                <v-btn class="my-btn text-xs-center" flat small color="orange" @click="removeProject(project._id)">
+                                    <span class="grey--text caption">删除</span>
+                                </v-btn>
+                                <v-spacer></v-spacer>
+
+                                <div>
+                                    <span class="grey--text caption">{{createTime(project._id)}}</span>
+                                </div>
+
                             </v-card-actions>
                         </v-card>
                     </v-flex>
@@ -65,8 +75,12 @@
                                         <!-- 状态筛选 -->
                     <v-flex xs12 class="py-2">
                         <v-card>
-                            <v-card-title style="padding: 0px 16px;">
-                                <buttongroup title="状态" :items="items" active="全部"></buttongroup>
+                            <v-card-title style="padding: 0px 16px;" >
+                                 <div class="text-xs-center" style="width: 100%;">
+                                    <v-pagination  
+                                    v-bind="{'disabled': getProjectsLoading}"
+                                    :length="projectCount" v-model="currentPage" :total-visible="7" @input="paginationChange()"></v-pagination>
+                                </div>
                             </v-card-title>
                         </v-card>
                     </v-flex>
@@ -112,30 +126,76 @@ export default {
             toggle_exclusive: 2,
             toggle_multiple: [0, 1, 2],
 
-            workingImage: require('../../assets/working.jpg'),
+            workingImage: require('../../assets/working1.jpg'),
             items: [
                 {name: '全部'},
                 {name: '完成'},
                 {name: '未完成'}
-            ]
+            ],
+            currentPage: 1,
         }
     },
     computed: {
         projectList() {
-            console.log(this.$store.state.project.listData)
             return this.$store.state.project.listData;
-        }
+        },
+        projectCount() {
+            return this.$store.state.project.listCount;
+        },
+        getProjectsLoading() {
+            return this.$store.state.project.getProjectsLoading;
+        },
     },
     methods: {
         toTask() {
             this.$router.push('/publish/task');
+        },
+        paginationChange() {
+            this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
+        },
+        createTime(_id) {
+            let nowYear = new Date();
+            let createTime = new Date(parseInt(_id.substr(0, 8),16)*1000);
+
+            let year = nowYear.getFullYear() - createTime.getFullYear();     
+            if( year >= 1 ) {
+                return  `${year}年前`
+            }
+
+            let timeDifference = (new Date().getTime()) - (parseInt(_id.substr(0, 8),16)*1000)
+
+            let dayDifference = Math.round( timeDifference / 1000 / 86400);
+
+            if( dayDifference > 0) {
+                return `${dayDifference}天前`
+            }
+
+            let hoursDifference = Math.round( timeDifference / 1000 / 3600);
+
+            if(hoursDifference > 0) {
+                return `${hoursDifference}小时前`
+            }
+
+            let minutesDifference = Math.round( timeDifference / 1000 / 60);
+             
+            return  minutesDifference !== 0 ? `${minutesDifference}分钟前` : '1分钟前';
+        },
+
+        change(routerName) {
+            console.log(routerName);
+            this.$router.replace({name:routerName});
+            // this.$emit('change',aa);
+        },
+
+        editProject(pid) {
+            this.$store.dispatch('editProject', pid);
         }
     },
     mounted(){
-        this.$store.dispatch('getProjects', {pageSize: 16, currentPage: 1});
+        // this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
     },
     beforeCreate() {
-
+        this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
     },
 
 };
@@ -170,11 +230,26 @@ export default {
     }
 
     .card__title {
-        padding: 4px;
+        padding: 4px 8px 4px 10px;
     }
     .card__actions {
-        padding: 4px;
+        border-style:solid; border-width: 1px 0px 0px 0px; border-color: #ddd;
+        padding: 4px 8px 4px 6px;
     }
+
+
+    .my-btn {
+        margin-left: 0px;
+        margin-right: 0px;
+        min-width: 0px;
+        
+    }
+
+    .my-a {
+        text-decoration:none
+    }
+
+
 
 
 </style>

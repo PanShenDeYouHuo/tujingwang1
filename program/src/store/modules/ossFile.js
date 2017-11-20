@@ -1,4 +1,4 @@
-import  oss from 'ali-oss' //阿里云oss SDK
+// import  oss from 'ali-oss' //阿里云oss SDK
 
 let state = {
     referenceFileList: [],
@@ -7,7 +7,7 @@ let state = {
 };
 
 let mutations = {
-    //登陆状态改成微信登入
+
     setStsToken(state, newToken) {
         state.stsToken = newToken;
         console.log(state.stsToken);
@@ -42,7 +42,7 @@ let actions = {
     //上传文件
     uploadFile({commit, state, rootState}) {
 
-        let client = new oss.Wrapper({ 
+        let client = new OSS.Wrapper({ 
             region: 'oss-cn-beijing', 
             accessKeyId: state.stsToken.credentials.AccessKeyId, 
             accessKeySecret: state.stsToken.credentials.AccessKeySecret,

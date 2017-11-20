@@ -43,9 +43,18 @@
 
 
     <!-- 路由页面 -->
-    <keep-alive>
-      <router-view class="content"></router-view>
-    </keep-alive>
+
+  <keep-alive>
+    <router-view class="content" v-if="$route.meta.keepAlive">
+        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+    </router-view>
+  </keep-alive>
+
+    <router-view v-if="!$route.meta.keepAlive">
+        <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
+    </router-view>
+
+
 
 
 
@@ -169,6 +178,7 @@ export default {
   /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   box-sizing:border-box;
+  background-color: #fff;
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -183,11 +193,12 @@ export default {
 html,body{overflow:visible;}
 
 
-/* .content {
+.content {
   width:100%;height:100%;
-  box-sizing:border-box;
-  padding-top: 50px;
-} */
+  background-color: #fff;
+  /* box-sizing:border-box;
+  padding-top: 50px; */
+}
   /* main .container {
       height: 100px;
     } */
@@ -219,6 +230,26 @@ html,body{overflow:visible;}
       -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
     box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);      
 }
+
+  .pagination__item{
+     -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
+    box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);  
+  }
+
+  .pagination__item--active{
+      color: #FDD835;
+      background: #FFEB3B !important;
+  }
+
+  .pagination__navigation{
+      -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
+      box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);  
+  }
+
+  .my-btn .btn__content {
+
+    padding:0px 6px 0px 6px !important;
+  }
 
 
 </style>

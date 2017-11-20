@@ -133,7 +133,7 @@ export default {
     } */
 
     .menu-active {
-        color: #FF9800;
+        color: #e53935;
         /* border-style:solid; border-width: 0px 0px 4px 0px; border-color: #ffeb3b; */
         
         

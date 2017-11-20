@@ -46,6 +46,13 @@ module.exports = {
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')]
       },
+      // {
+        
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   include: [resolve('src'), resolve('test'),resolve('node_modules/_ali-oss@4.11.2@ali-oss'),resolve('node_modules/_co-gather@0.0.1@co-gather')],
+        
+      // },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',

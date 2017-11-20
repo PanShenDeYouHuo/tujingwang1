@@ -3,29 +3,13 @@
 
 import Vue from 'vue';
 
-//VueMaterial部分 开始-------------------------------
-// import VueMaterial from 'vue-material'
-// import 'vue-material/dist/vue-material.css'
-// Vue.use(VueMaterial);
-// Vue.material.registerTheme('default', {
-//   primary: {
-//     color: 'grey',
-//     hue: 900
-//   },
-//   accent: {
-//     color: 'red',
-//     hue: 500
-//   },
-//   warn: {
-//     color: 'red',
-//     hue: 900
-//   },
-
-// })
 
 //vuetify
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
+
+
+
 import 'vuetify/dist/vuetify.css'
 
 

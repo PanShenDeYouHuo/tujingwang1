@@ -2,11 +2,11 @@
     <div class="project">
         <div  style="background-color: #000; height: 50px;  position: absolute; width: 100%; z-index:3; ">
             <v-layout align-center style="height: 100%;">
-                <v-btn flat icon @click="" color="yellow">
+                <v-btn flat icon @click="quit('projects')" color="yellow">
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn @click="" color="yellow">
+                <v-btn @click="savaProject()" color="yellow">
                     保存
                 </v-btn>
             </v-layout>
@@ -21,7 +21,7 @@
                                 <div>
                                     <span class="title">{{project.name}}</span>
                                     <br>
-                                    <span class="grey--text caption">一年前</span>
+                                    <span class="grey--text caption">{{createTime1(project._id)}}</span>
                                 </div>  
                             </v-card-title>
                         </v-card>
@@ -83,26 +83,35 @@
                                 <v-card>
                                     <v-card-media :src="!!image.iurl || noImage" height="195px">
                                         <v-container fill-height fluid>
-                                            <v-layout fill-height>
-                                                <v-flex xs12 align-end flexbox>
-                                                <span class="subheading white--text" v-text="`${index+1}-${image.designType}-${image.space}-${image.area}-${image.imageType}`"></span>
+                                            <v-layout fill-height align-start>
+                                                <v-flex xs12  flexbox>
+                                                    <span class="subheading white--text" v-text="`NO${index+1}.${image.space}-${image.area}`"></span><br>
+                                                    <span class="caption  white--text" v-text="`${image.designType}-${image.imageType}角度`"></span>
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
                                     </v-card-media>
+                                    <v-card-actions class="white">
+                                        <v-btn flat small class="my-btn">
+                                           <span class="grey--text caption">编辑</span>
+                                        </v-btn>
+                                        <v-btn flat small class="my-btn">
+                                            <span class="grey--text caption">删除</span>
+                                        </v-btn>
+                                        <v-spacer></v-spacer>
+                                        <span class="caption">制作中</span>
+                                    </v-card-actions>
                                 </v-card>
-                            </div>
-                            </v-flex>
-                            
+                            </div>                   
+
+                        </v-flex>
+
+                     
                         </v-layout>
            
                     </v-flex >
                     <!-- <input type="file" accept=".doc,.docx" multiple> -->
-
-
                     <!-- <input type="file" id="xFile" ref="file" @change="fileChange()" multiple style="position:absolute;clip:rect(0 0 0 0);" > -->
-
-
             </v-layout >                  
         </v-container>
         
@@ -166,6 +175,8 @@
             <file @close="uploadDialogClose()"></file>
         </v-dialog>
         
+        
+
     </div>
 </template>
 
@@ -179,7 +190,7 @@ export default {
     data() {
         return {
             loading: false,
-            noImage: require('../../assets/bg1.jpg'),
+            noImage: require('../../assets/22.png'),
 
             projectName: this.$route.params.pid,
             cards:[
@@ -290,6 +301,9 @@ export default {
     computed: {
         project() {
             return this.$store.state.project.changeData;
+        },
+        projects() {
+            return this.$store.state.project.listData;
         }
     },
     methods: {
@@ -315,7 +329,7 @@ export default {
         },
         //保存项目
         savaProject() {
-            this.$store.dispatch('putProject');  
+            this.$store.dispatch('putProject',);  
         },
         //设计类型发生改变
         designTypeChange() {
@@ -335,8 +349,56 @@ export default {
             this.uploadDialog = false;
         },
 
+        //创建时间解析
+        createTime1(_id) {
+
+            if(!_id) return '无';
+
+            let nowYear = new Date();
+            let createTime = new Date(parseInt(_id.substring(0, 8),16)*1000);
+
+            let year = nowYear.getFullYear() - createTime.getFullYear();     
+            if( year >= 1 ) {
+                return  `${year}年前`
+            }
+
+            let timeDifference = (new Date().getTime()) - (parseInt(_id.substring(0, 8),16)*1000)
+
+            let dayDifference = Math.round( timeDifference / 1000 / 86400);
+
+            if( dayDifference > 0) {
+                return `${dayDifference}天前`
+            }
+
+            let hoursDifference = Math.round( timeDifference / 1000 / 3600);
+
+            if(hoursDifference > 0) {
+                return `${hoursDifference}小时前`
+            }
+
+            let minutesDifference = Math.round( timeDifference / 1000 / 60);
+             
+            return  minutesDifference !== 0 ? `${minutesDifference}分钟前` : '1分钟前';
+
+        },
+
+        quit(routerName) {
+            this.$store.dispatch('isChangeProject','projects')
+
+        },
+
+        change(routerName) {
+            console.log(routerName);
+            this.$router.replace({name:routerName});
+            // this.$emit('change',aa);
+        },
+
     },
     mounted(){
+        // this.$store.dispatch('getProject',this.$route.params.pid);
+    },
+
+    beforeCreate() {
         this.$store.dispatch('getProject',this.$route.params.pid);
     },
 
@@ -371,6 +433,20 @@ export default {
         /* box-shadow: 0 1px 5px rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12); */
     }
 
+        /* .card__title {
+        padding: 2px 4px 2px 4px;
+    }
+    .card__actions {
+        border-style:solid; border-width: 1px 0px 0px 0px; border-color: #ddd;
+        padding: 2px 0px 2px 0px;
+    } */
+
+        .my-btn {
+        margin-left: 0px;
+        margin-right: 0px;
+        min-width: 0px;
+        
+    }
 
 
 
