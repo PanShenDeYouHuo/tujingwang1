@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+// const io = () => import('socket.io-client')
 
 function socketClass () {
 	

@@ -51,7 +51,21 @@ let mutations = {
     setProjectList(state, data) {
         state.listData = data.projects;
         state.listCount = data.count;
-    }
+    },
+
+    //添加image
+    addImage(state, data) {
+        let newImage = {};
+        for( let key in data) {
+            newImage[key] = data[key];
+        }
+        state.changeData.image.push(newImage);
+    },
+
+    //移除image
+    reImage(steta, index) {
+        state.changeProject.image.splice(index, 1);
+    },
 };
 
 let actions = {
@@ -61,14 +75,15 @@ let actions = {
     //     rootState.router.replace({name: 'project', params:{pid: 1231231}});
     // },
 
-    //添加image
-    addImage({commit, state, rootState}, image) {
-        let newImage = {};
-        for( let key in image) {
-            newImage[key] = image[key];
-        }
-        state.changeData.image.push(newImage);
-    },
+    // //添加image
+    // addImage({commit, state, rootState}, image) {
+    //     let newImage = {};
+    //     for( let key in image) {
+    //         newImage[key] = image[key];
+    //     }
+    //     state.changeData.image.push(newImage);
+
+    // },
 
     //移除image
     reImage({commit, state, rootState}, index) {
@@ -79,29 +94,12 @@ let actions = {
     isChangeProject({commit, state, rootState}, routerName) {
 
         if (JSON.stringify(state.changeData) === JSON.stringify(state.oldChangeData)) {
-            // console.log('zheng')
             rootState.router.replace({name: routerName});
+            return false;
         } else {
-            console.log('jia');
+            return true;
         }
-
-    //     for( let key in state.changeData) {
-    //         console.log(state.oldChangeData[key]);
-    //         console.log(state.changeData[key]);
-    //         if(state.oldChangeData[key] !== state.changeData[key]) {
-    //             return
-    //         }
-    //     }
-    // //    let isChange = state.changeData === state.oldChangeData;
-    // //    console.log(isChange);
-    //    console.log(routerName);
-    //    rootState.router.replace({name: routerName});
-
-    //    if( isChange ) {
-    //         rootState.router.replace({name: routerName});
-    //     }
     },
-
 
     //创建项目
     postProject({commit, state, rootState}, projectName) {

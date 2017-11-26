@@ -1,5 +1,7 @@
 import Vue from 'vue';
+// const Vue = () => import('vue')
 import Router from 'vue-router';
+// const Router = () => import('vue-router')
 
 // import Home from '@/components/Home';
 // import Login from '@/components/user_component/Login';

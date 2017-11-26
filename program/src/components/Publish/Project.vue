@@ -15,7 +15,7 @@
 
         <v-container fluid grid-list-lg style="padding-top: 66px;">
             <v-layout row wrap>
-                    <v-flex xs6 d-flex>
+                    <v-flex xs12 d-flex>
                         <v-card >
                             <v-card-title style=" height: 100%;">
                                 <div>
@@ -27,33 +27,50 @@
                         </v-card>
                     </v-flex>
 
-                    <v-flex xs3 d-flex >
+                    <v-flex xs4 d-flex >
                         <v-card >
-                            <v-card-title style=" height: 100%;">
-                                <v-layout justify-center align-center>
-                                    <v-btn  color="yellow" class="text-xs-center">
-                                        设置项目完成时间
-                                    </v-btn>
-
-                                </v-layout>
+                            <v-card-title style="padding: 0px 16px;">
+                                <v-flex xs12>
+                                    <v-layout justify-center align-center>
+                                        <v-btn  color="yellow" class="text-xs-center">
+                                            设置完成时间
+                                        </v-btn>
+                                    </v-layout>
+                                </v-flex>
                             </v-card-title>
                         </v-card>
                     </v-flex>
 
-                    <!-- 设置任务负责人 -->
-                    <v-flex xs3 d-flex>
+                    <!-- 选择发布者 -->
+                    <v-flex xs4 d-flex >
                         <v-card >
-                        <v-card-title>
-                            <v-avatar size="42px">
-                                <img src="../../assets/bb.jpg" alt="Avatar" >
-                            </v-avatar>
+                            <v-card-title style="padding: 0px 16px;">
+                                <v-flex xs12>
+                                    <v-layout justify-center align-center>
+                                        <v-btn  color="yellow" class="text-xs-center">
+                                            选择发布者
+                                        </v-btn>
+                                    </v-layout>
+                                </v-flex>
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
 
-                            <div style="padding-left: 20px;">
-                                <span class="subheading" style=" white-space: nowrap; display: inline-block; overflow: hidden; width: 185px; text-overflow: ellipsis;">潘神的诱惑</span>
-                                <br>
-                                <span class="grey--text caption">浙江 / 台州</span>
-                            </div> 
-                        </v-card-title>
+                    <!-- 选择制作者 -->
+                    <v-flex xs4 d-flex>
+                        <v-card >
+                            <v-card-title style="padding: 0px 16px; height: 100%;">
+                                <v-flex xs12>
+                                    <v-layout align-center>
+                                        <span class="subheading" style="height: 100%;">制作：</span>
+                                        <v-avatar size="38px">
+                                            <img src="../../assets/bb.jpg" alt="Avatar" >
+                                        </v-avatar>
+
+                                        <span class="body-2" style=" padding-left: 8px; white-space: nowrap; display: inline-block; overflow: hidden; width: 185px; text-overflow: ellipsis;">潘神的诱惑</span>
+                                    </v-layout>
+                                </v-flex>
+                            </v-card-title>
                         </v-card>
                     </v-flex> 
 
@@ -84,14 +101,23 @@
                                     <v-card-media :src="!!image.iurl || noImage" height="195px">
                                         <v-container fill-height fluid>
                                             <v-layout fill-height align-start>
-                                                <v-flex xs12  flexbox>
-                                                    <span class="subheading white--text" v-text="`NO${index+1}.${image.space}-${image.area}`"></span><br>
+                                                <v-flex xs12  flexbox style="height: 100%;">
+                                                    <span class="subheading white--text" v-text="`${index+1}.${image.space}-${image.area}`"></span><br>
                                                     <span class="caption  white--text" v-text="`${image.designType}-${image.imageType}角度`"></span>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <br>
+                                                    <span class="subheading white--text" v-text="`￥${image.price}`"></span>
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
                                     </v-card-media>
                                     <v-card-actions class="white">
+                                        <v-btn flat small class="my-btn">
+                                           <span class="grey--text caption">支付定金</span>
+                                        </v-btn>
                                         <v-btn flat small class="my-btn">
                                            <span class="grey--text caption">编辑</span>
                                         </v-btn>
@@ -174,7 +200,19 @@
         <v-dialog v-model="uploadDialog" persistent max-width="1300px">
             <file @close="uploadDialogClose()"></file>
         </v-dialog>
-        
+
+ <!-- 添加是否保存修改模态框 -->       
+    <v-dialog v-model="saveDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">是否保存已修改项目？</v-card-title>
+        <v-card-actions>
+            <v-layout justify-center>
+                <v-btn color="yellow darken-1" flat="flat" @click.native="saveDialog = false; savaProject(); toProjects();">保存</v-btn>
+                <v-btn color="deep-orange darken-1" flat="flat" @click.native="saveDialog = false; toProjects();">放弃</v-btn>
+                </v-layout>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>       
         
 
     </div>
@@ -203,6 +241,7 @@ export default {
             imageValid: false,
             uploadDialog: false,
             uploadValid: false,
+            saveDialog: false,
             designTypeItems: [
                 { text: '家装', value: '家装'},
                 { text: '工装', value: '工装'}
@@ -322,15 +361,15 @@ export default {
             //验证表单数据
             if(!this.$refs.imageForm.validate()) return;
             //插入数据
-            this.$store.dispatch('addImage', image)
+            this.$store.dispatch('addImage', image);
+            // //同步到数据库
+            // this.$store.dispatch('putProject')
+            //     .then(())
             //关闭模态框
             this.imageDialogClose();
 
         },
-        //保存项目
-        savaProject() {
-            this.$store.dispatch('putProject',);  
-        },
+
         //设计类型发生改变
         designTypeChange() {
                 this.image.space = '';
@@ -383,8 +422,27 @@ export default {
         },
 
         quit(routerName) {
-            this.$store.dispatch('isChangeProject','projects')
+            this.$store.commit('isChangeProject')
+                .then((res)=> {
+                    if (res) {
+                        this.saveDialog = true;
+                    } else {
+                        this.toProjects();
+                    }
+                })
+                .catch((err)=> {
+                    console.log(err);
+                });
+        },
 
+        //保存项目
+        savaProject() {
+            this.$store.dispatch('putProject'); 
+        },
+
+        //跳转到project
+        toProjects() {
+            this.change('projects')
         },
 
         change(routerName) {
