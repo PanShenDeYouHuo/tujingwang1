@@ -184,6 +184,10 @@
             width: 220
           },
           {
+            title: '地区',
+            key: 'area',
+          },
+          {
             title: '排图时间',
             key: 'cpt',
           },
