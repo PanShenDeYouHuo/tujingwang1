@@ -52,7 +52,7 @@
                             <v-card-title>
                             <div>
                                 <span class="body-2">{{project.name}}</span><br>
-                                <span class="grey--text caption">Whitehaven Beach</span>
+                                <!-- <span class="grey--text caption">Whitehaven Beach</span> -->
                             </div>
                             </v-card-title>
                             <v-card-actions>

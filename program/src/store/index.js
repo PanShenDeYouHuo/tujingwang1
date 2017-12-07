@@ -49,8 +49,9 @@ const actions = {
 	
 			//载入用户数据
 			let accessToken = localStorage.getItem('accessToken');
+			console.log(accessToken);
 			if(accessToken) {
-					state.socketClass.socket.emit('authentication', accessToken);
+				state.socketClass.socket.emit('authentication', accessToken);
 			}
 			
 		});

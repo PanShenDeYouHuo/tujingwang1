@@ -2,7 +2,7 @@
     <div class="publish">
         <v-container grid-list-lg text-xs-center>
             <v-layout row wrap align-center>
-                    <v-flex xs6>
+                    <!-- <v-flex xs6>
                         <v-layout justify-end>
                             <v-card dark style=" height: 300px; width: 300px;">
                                 <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;">
@@ -11,17 +11,17 @@
                                 </v-btn>
                             </v-card>
                         </v-layout>
-                    </v-flex> 
+                    </v-flex>  -->
 
-                    <v-flex xs6>
-
-                        <v-card dark style=" height: 300px; width: 300px;">
-                            <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;" @click="projectDialogOpen()">
-                                <i class="material-icons" style="font-size: 40px;">event_note</i>
-                                项目
-                            </v-btn>
-                        </v-card>
-
+                    <v-flex xs12>
+                        <v-layout justify-center>
+                            <v-card dark style=" height: 300px; width: 300px;">
+                                <v-btn flat dark style="width: 100%; height: 100%; margin: 0px; font-size: 32px;" @click="projectDialogOpen()">
+                                    <i class="material-icons" style="font-size: 40px;">event_note</i>
+                                    创建项目
+                                </v-btn>
+                            </v-card>
+                        </v-layout>
                     </v-flex>
  
             </v-layout>

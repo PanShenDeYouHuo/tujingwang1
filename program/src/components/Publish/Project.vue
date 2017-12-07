@@ -7,7 +7,7 @@
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn @click="savaProject()" color="yellow">
-                    保存
+                    发布
                 </v-btn>
             </v-layout>
         </div>
@@ -115,9 +115,6 @@
                                         </v-container>
                                     </v-card-media>
                                     <v-card-actions class="white">
-                                        <v-btn flat small class="my-btn">
-                                           <span class="grey--text caption">支付定金</span>
-                                        </v-btn>
                                         <v-btn flat small class="my-btn">
                                            <span class="grey--text caption">编辑</span>
                                         </v-btn>
@@ -361,12 +358,17 @@ export default {
             //验证表单数据
             if(!this.$refs.imageForm.validate()) return;
             //插入数据
-            this.$store.dispatch('addImage', image);
-            // //同步到数据库
-            // this.$store.dispatch('putProject')
-            //     .then(())
-            //关闭模态框
-            this.imageDialogClose();
+            this.$store.commit('addImage', image);
+            //同步到数据库
+            this.$store.dispatch('putProject')
+                .then((res)=> {
+                    //关闭模态框
+                    this.imageDialogClose();
+                })
+                .catch((err)=> {
+                    //关闭模态框
+                    this.imageDialogClose();
+                })
 
         },
 
@@ -422,22 +424,14 @@ export default {
         },
 
         quit(routerName) {
-            this.$store.commit('isChangeProject')
-                .then((res)=> {
-                    if (res) {
-                        this.saveDialog = true;
-                    } else {
-                        this.toProjects();
-                    }
-                })
-                .catch((err)=> {
-                    console.log(err);
-                });
+            this.$router.replace({name:'projects'});
+            this.$store.commit('removeChangeDate');
+
         },
 
         //保存项目
         savaProject() {
-            this.$store.dispatch('putProject'); 
+            this.$store.dispatch('putProject');
         },
 
         //跳转到project

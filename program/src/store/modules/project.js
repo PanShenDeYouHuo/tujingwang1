@@ -1,3 +1,5 @@
+import { setTimeout } from "timers";
+
 let state = {
 
     _id: '',
@@ -27,7 +29,7 @@ let state = {
     listCount: 0,
 
     changeData: {}, //项目设置内存区
-    oldChangeData: {},    //旧数据判断是否更改
+    // oldChangeData: {},    //旧数据判断是否更改
 
     //状态
     postProjectLoading: false,  //创建项目状态
@@ -35,22 +37,29 @@ let state = {
     getProjectLoading: false,   //获取项目状态
     getProjectsLoading: false,  //获取项目列表状态
 
-    putProjectLoading: false,   //保存跟新项目状态
+    putProjectLoading: false,   //保存项目状态
+
+    deleteProjectLoading: false, //删除项目状态
 
 };
 
 let mutations = {
     //设置编辑项目的数据
     setChangeProject(state, project) {
-        let newProject =JSON.parse( JSON.stringify(project) );
+        // let newProject =JSON.parse( JSON.stringify(project) );
         state.changeData = project;
-        state.oldChangeData = newProject;
+        // state.oldChangeData = newProject;
     },
 
     //设置项目列表数据
     setProjectList(state, data) {
         state.listData = data.projects;
         state.listCount = data.count;
+    },
+
+    //删除项目数据
+    deleteProjectList(state, data) {
+        state.listData
     },
 
     //添加image
@@ -64,8 +73,14 @@ let mutations = {
 
     //移除image
     reImage(steta, index) {
-        state.changeProject.image.splice(index, 1);
+        state.changeData.image.splice(index, 1);
     },
+
+    //重置changeData
+    removeChangeDate(steta, index) {
+        state.changeData = {};
+    }
+
 };
 
 let actions = {
@@ -85,10 +100,10 @@ let actions = {
 
     // },
 
-    //移除image
-    reImage({commit, state, rootState}, index) {
-        state.changeProject.image.splice(index, 1);
-    },
+    // //移除image
+    // reImage({commit, state, rootState}, index) {
+    //     state.changeProject.image.splice(index, 1);
+    // },
 
     //判断编辑项目数据是否更改
     isChangeProject({commit, state, rootState}, routerName) {
@@ -123,7 +138,7 @@ let actions = {
         state.putProjectLoading = true;
         rootState.socketClass.myEmit('putProject', state.changeData)
         .then((res)=> {
-            rootState.successSnackbar = { state: true, text: '保存成功'}
+            // rootState.successSnackbar = { state: true, text: '保存成功'}
             commit('setChangeProject', state.changeData);
             state.putProjectLoading = false;
 
@@ -158,8 +173,6 @@ let actions = {
     },
 
 
-
-
     //根据发布人id查询项目列表
     getProjects({commit, state, rootState}, data) {
         state.getProjectsLoading = true;
@@ -174,6 +187,22 @@ let actions = {
                 state.getProjectsLoading = false;
                 rootState.errorSnackbar = { state: true, text: err.message };
             }, 800);
+        });
+    },
+
+    //根据项目_id删除项目
+    deleteProject({commit, state, rootState}, index) {
+        state.deleteProjectLoading = true;
+        rootState.socketClass.myEmit('deleteProjects', {pid})
+        .then((res)=> {
+            commit('deleteProjectList', index)
+            state.deleteProjectLoading = false;
+        })
+        .catch((err)=> {
+            setTimeout(()=> {
+                state.deleteProjectLoading = false;
+                rootState.errorSnackbar = { state: true, text: err.message};
+            }, 800)
         });
     },
 
