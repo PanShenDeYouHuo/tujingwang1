@@ -196,6 +196,10 @@
             key: 'bigTime',
           },
           {
+            title: '结算时间',
+            key: 'settlementTime',
+          },
+          {
             title: '空间名',
             key: 'iname'
           },
