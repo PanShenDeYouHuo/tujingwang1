@@ -45,12 +45,12 @@
     <!-- 路由页面 -->
 
   <keep-alive>
-    <router-view class="content" v-if="$route.meta.keepAlive">
+    <router-view class="routerView" v-if="$route.meta.keepAlive">
         <!-- 这里是会被缓存的视图组件，比如 Home！ -->
     </router-view>
   </keep-alive>
 
-  <router-view v-if="!$route.meta.keepAlive">
+  <router-view class="routerView" v-if="!$route.meta.keepAlive">
       <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
   </router-view>
 
@@ -190,14 +190,18 @@ export default {
 
 /* html,body{overflow:visible;} */
 
-html,body{overflow:visible;}
+html,body{overflow:visible; height: 100%;}
 
 
-.content {
+.routerView {
   width:100%;height:100%;
   background-color: #fff;
-  /* box-sizing:border-box;
-  padding-top: 50px; */
+  min-width: 920px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: auto;
+  position: absolute;
+  /* z-index: 2; */
 }
   /* main .container {
       height: 100px;

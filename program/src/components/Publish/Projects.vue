@@ -88,8 +88,7 @@
                 </v-layout>
 
                 
-
-                <!-- <v-layout row wrap v-else align-center>
+                <v-layout row wrap v-else align-center v-if="projectList.length === 0">
                     <v-flex xs12>
                         <v-layout justify-center>
                         <img src="../../assets/nothing.png"  alt="没有找到符合条件的结果" />
@@ -102,7 +101,7 @@
                         </v-layout>
                     </v-flex>
 
-                </v-layout> -->
+                </v-layout>
 
             </v-container>
         </div>

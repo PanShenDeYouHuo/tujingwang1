@@ -85,19 +85,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .my-buttongroup {
-        /* width:100%;
-        height:50px;
-        padding: 10px;
-        padding-top: 70px;
-        overflow:auto;
-        position: absolute; */
-        
-
 
         background-color: #fff;
         padding: 8px;
-
-
 
   }
 

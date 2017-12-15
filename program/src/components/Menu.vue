@@ -64,12 +64,31 @@
                                     <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
                                 </v-list-tile>
 
-                                <v-divider v-else-if="item.divider" :key="index"></v-divider>
+                                <!-- <v-divider v-else-if="item.divider" :key="index"></v-divider>
 
                                 <v-list-tile v-else :key="index" @click="signOut()">
                                     <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
-                                </v-list-tile>
+                                </v-list-tile> -->
+
                             </div>
+
+                            <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="change('admin')">
+                                <v-list-tile-title class="body-1">系统管理</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-list-tile v-if="user.authority.indexOf('boss') !== -1"  @click="change('boss')">
+                                <v-list-tile-title class="body-1">公司管理</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-list-tile v-if="user.authority.indexOf('financial') !== -1"  @click="change('financial')">
+                                <v-list-tile-title class="body-1">财务管理</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-divider></v-divider>
+
+                            <v-list-tile @click="signOut()">
+                                <v-list-tile-title class="body-1">退出登入</v-list-tile-title>
+                            </v-list-tile>
 
                         </v-list>
                     </v-menu>
@@ -100,13 +119,11 @@ export default {
             ],
             active: [],
             items: [
-                { title: '我的作品', router: 'works' },
+                // { title: '我的作品', router: 'works' },
                 { title: '我的项目', router: 'projects' },
                 { title: '我的团队', router: 'temas' },
                 { title: '我的统计', router: 'statistics' },
                 { title: '账号管理', reuter: 'account' },
-                { divider: true},
-                { signOut: '退出登入' }
             ]
         }
     },

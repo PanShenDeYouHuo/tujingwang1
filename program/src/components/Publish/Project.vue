@@ -424,8 +424,8 @@ export default {
         },
 
         quit(routerName) {
-            this.$router.replace({name:'projects'});
             this.$store.commit('removeChangeDate');
+            this.$router.replace({name:'projects'});
 
         },
 

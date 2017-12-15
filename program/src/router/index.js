@@ -11,13 +11,17 @@ import Router from 'vue-router';
 // import Projects from '@/components/publish/Projects';
 // import Project from '@/components/publish/Project';
 
-const Home = () => import('@/components/Home')
+const Home = () => import('@/components/Home');
 const Login = () => import('@/components/user_component/Login');
-const Publish = () => import('@/components/publish')
-const Works = () => import('@/components/publish/Works')
-const Work = () => import('@/components/publish/Work')
-const Projects = () => import('@/components/publish/Projects')
-const Project = () => import('@/components/publish/Project')
+const Publish = () => import('@/components/publish');
+const Works = () => import('@/components/publish/Works');
+const Work = () => import('@/components/publish/Work');
+const Projects = () => import('@/components/publish/Projects');
+const Project = () => import('@/components/publish/Project');
+
+const Admin = ()=> import('@/components/admin');
+const Aam = ()=> import('@/components/admin/Aam');
+const Sd = ()=> import('@/components/admin/Sd');
 
 
 
@@ -51,6 +55,19 @@ export default new Router({
     { name: 'work', path: '/works/:wid', component: Work },
     { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: false} },
     { name: 'project', path: '/projects/:pid', component: Project, meta: {keepAlive: false} },
+
+    { name: 'admin', path: '/admin', component: Admin, meta: {keepAlive: false},
+      children:[
+        {
+          path: 'aam',
+          component: Aam
+        },
+        {
+          path: 'sd',
+          component: Sd
+        }
+      ]
+    },
 
   ],
 });
