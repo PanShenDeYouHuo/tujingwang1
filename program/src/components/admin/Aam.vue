@@ -1,52 +1,63 @@
 <template>
   <div class="aam">
 
+    <v-container grid-list-lg fluid >
+      <v-layout row wrap>
 
-    <v-btn color="yellow" @click="imageDialogOpen()">
-      添加用户
-    </v-btn>
+        <v-flex xs12 class="py-2">
 
-    <v-tabs v-model="active">
-      <v-tabs-bar class="witet" dark>
-        <v-tabs-item
-          v-for="tab in tabs"
-          :key="tab"
-          :href="'#' + tab"
-          ripple
-        >
-           {{ tab }}
-        </v-tabs-item>
-        <v-tabs-slider color="yellow"></v-tabs-slider>
-      </v-tabs-bar>
-      <v-tabs-items>
-        <v-tabs-content
-          v-for="tab in tabs"
-          :key="tab"
-          :id="tab"
-        >
-          <v-card flat>
-            <v-card-text>{{ text }}</v-card-text>
+          <v-card>
+
+            <v-card-title style="padding: 0px 16px;">
+              <buttongroup title="状态" :items="items" active="全部"></buttongroup>
+              <v-spacer></v-spacer>
+              <v-btn color="yellow" @click="change('cr')">
+                    企业注册
+              </v-btn>
+              <v-btn color="yellow" @click="">
+                  用户管理
+              </v-btn>
+            </v-card-title>
+
           </v-card>
-        </v-tabs-content>
-      </v-tabs-items>
-    </v-tabs>
-    
+
+          
+        </v-flex>
+
+        <v-flex xs12 class="py-2">
+          <v-card style="height: 840px;">
+            
+          </v-card>
+        </v-flex>
+
+      </v-layout>
+    </v-container>
 
   </div>
 </template>
 
 <script>
+import buttongroup from "../Buttongroup";
 export default {
   name: 'aam',
   data() {
     return {
       value: 0,
-      tabs: ['用户', '注册'],
-      active: null,
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      items: [
+        {name: '全部'},
+        {name: '完成'},
+        {name: '未完成'}
+      ],
     };
   },
-  methods:{
+  methods: {
+    quit() {
+        this.$router.replace({name:'/'});
+    },
+    change(item) {
+
+      this.$router.replace({path:`/admin/${item}`});
+    },
   },
 };
 </script>
@@ -54,7 +65,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .aam {
-
+    width:100%;
   }
 
   

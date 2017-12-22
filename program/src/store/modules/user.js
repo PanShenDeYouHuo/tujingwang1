@@ -48,6 +48,7 @@ let actions = {
 
 	},
 
+	//验证成功
 	authenticationSuccess({commit, state, rootState}) {
 		rootState.socketClass.socket.on('authenticationSuccess', (data)=> {
 			//储存accessToken到localStorage

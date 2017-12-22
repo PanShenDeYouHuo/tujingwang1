@@ -22,6 +22,7 @@ const Project = () => import('@/components/publish/Project');
 const Admin = ()=> import('@/components/admin');
 const Aam = ()=> import('@/components/admin/Aam');
 const Sd = ()=> import('@/components/admin/Sd');
+const Cr = ()=> import('@/components/admin/Cr');
 
 
 
@@ -65,6 +66,10 @@ export default new Router({
         {
           path: 'sd',
           component: Sd
+        },
+        {
+          path: 'cr',
+          component: Cr
         }
       ]
     },

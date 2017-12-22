@@ -52,8 +52,8 @@ export default {
     data() {
         return {
             items: [
-                { title: '系统详情', icon: 'dashboard', router: 'sd' },
-                { title: '用户管理', icon: 'account_box', router: 'aam' },
+                { title: '系统', icon: 'dashboard', router: 'sd' },
+                { title: '用户', icon: 'account_box', router: 'aam' },
                 { title: 'Admin', icon: 'gavel' }
             ],
 
@@ -87,7 +87,7 @@ export default {
 <style scoped> 
 
   .admin {
-
+      width: 100%;
   }
 
   .menu-active {

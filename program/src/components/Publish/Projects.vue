@@ -72,7 +72,7 @@
                         </v-card>
                     </v-flex>
 
-                                        <!-- 状态筛选 -->
+                    <!-- 状态筛选 -->
                     <v-flex xs12 class="py-2">
                         <v-card>
                             <v-card-title style="padding: 0px 16px;" >
@@ -88,7 +88,7 @@
                 </v-layout>
 
                 
-                <v-layout row wrap v-else align-center v-if="projectList.length === 0">
+                <v-layout row wrap v-else align-center>
                     <v-flex xs12>
                         <v-layout justify-center>
                         <img src="../../assets/nothing.png"  alt="没有找到符合条件的结果" />
