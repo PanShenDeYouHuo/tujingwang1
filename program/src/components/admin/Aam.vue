@@ -40,13 +40,14 @@
 import buttongroup from "../Buttongroup";
 export default {
   name: 'aam',
+  components:{buttongroup},
   data() {
     return {
       value: 0,
       items: [
         {name: '全部'},
-        {name: '完成'},
-        {name: '未完成'}
+        {name: '使用'},
+        {name: '暂停'}
       ],
     };
   },
