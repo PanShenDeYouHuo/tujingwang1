@@ -12,7 +12,7 @@ import Router from 'vue-router';
 // import Project from '@/components/publish/Project';
 
 const Home = () => import('@/components/Home');
-const Login = () => import('@/components/user_component/Login');
+// const Login = () => import('@/components/user_component/Login');
 const Publish = () => import('@/components/publish');
 const Works = () => import('@/components/publish/Works');
 const Work = () => import('@/components/publish/Work');

@@ -39,7 +39,7 @@
                     <!-- 未登入显示 -->
                     <v-btn flat style="margin-right: 0px; min-width: 10px; color: #aaa" v-show="!user._id"  @click="to_login()">登入</v-btn>
                    
-                    <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-show="!user._id">注册</v-btn>
+                    <!-- <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-show="!user._id">注册</v-btn> -->
 
                     <!-- 登入显示 -->
                     <v-btn v-if="user._id" flat @click="change('publish')"  class="menu-btn-o">
@@ -194,7 +194,7 @@ export default {
         margin: 0px auto;
         min-width: 1280px;
 
-        background-color: #000;
+        background-color: #222;
         z-index:1;
 
         display: -webkit-flex; /* Safari */

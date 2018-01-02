@@ -1,6 +1,6 @@
 <template>
     <div class="admin">
-        <div  style="background-color: #000; height: 50px;  position: absolute; width: 100%; z-index:5; ">
+        <div  style="background-color: #333; height: 50px;  position: absolute; width: 100%; z-index:5; ">
             <v-layout align-center style="height: 100%;">
                 <v-btn flat icon @click="quit('projects')" color="yellow">
                     <v-icon>arrow_back</v-icon>

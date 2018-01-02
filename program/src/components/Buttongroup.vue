@@ -56,7 +56,7 @@ export default {
         change(active) {
             this.nowActive = active;
             // this.$router.replace({name:routerName});
-            // this.$emit('change',aa);
+            this.$emit('change',active);
         },
 
         // //登入侧边导航开事件

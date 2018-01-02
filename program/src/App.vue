@@ -2,7 +2,7 @@
   <v-app id="app">
 
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0"> -->
-    <div class="elevation-4" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+    <div class="elevation-2" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
       
       <pmenu @toLogin="to_login()"></pmenu>
 
@@ -65,7 +65,7 @@
 
 <script>
 import pmenu from './components/Menu'
-import login from './components/user_component/Login'
+import login from './components/user/Login'
 
 export default {
   name: 'app',
@@ -136,9 +136,9 @@ export default {
   },
   mounted(){
 
-    setTimeout(()=> {
-      this.loading = false;
-    }, 3000);
+    // setTimeout(()=> {
+    //   this.loading = false;
+    // }, 3000);
   },
   beforeCreate() {
     //app初始化
@@ -196,7 +196,7 @@ html,body{overflow:visible; height: 100%;}
 .routerView {
   width:100%;height:100%;
   background-color: #fff;
-  min-width: 920px;
+  min-width: 1280px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   overflow: auto;
@@ -225,14 +225,21 @@ html,body{overflow:visible; height: 100%;}
 }
 
 
-.card {
+/* .card {
     -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
     box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.3);
-}
+} */
+
+/* .card {
+    -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2), 0 2px 2px rgba(0,0,0,0.09), 0 3px 1px -2px rgba(0,0,0,0.02);
+} */
+
+
 
 .btn--raised {
-      -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
-    box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);      
+    -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
+    box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);
 }
 
   .pagination__item{
@@ -241,8 +248,8 @@ html,body{overflow:visible; height: 100%;}
   }
 
   .pagination__item--active{
-      color: #FDD835;
-      background: #FFEB3B !important;
+      color: #333;
+      background: #333 !important;
   }
 
   .pagination__navigation{

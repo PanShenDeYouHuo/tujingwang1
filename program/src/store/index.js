@@ -5,6 +5,7 @@ import user from './modules/user';
 import login from './modules/login';
 import project from './modules/project';
 import ossFile from './modules/ossFile';
+import admin from './modules/admin';
 
 import socketClass from '../socket.io';
 
@@ -67,7 +68,8 @@ const modules = {
 	user,
 	login,
 	project,
-	ossFile
+	ossFile,
+	admin
 };
 
 
