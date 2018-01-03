@@ -1,4 +1,3 @@
-import { resolve } from "url";
 
 let state = {
     totalAccount: 0, //总注册账号数
@@ -93,7 +92,7 @@ let actions = {
             rootState.socketClass.myEmit('putBossAccount', data)
             .then((res)=> {
                 setTimeout(() => {
-                    rootState.successSnackbar = {state: true, text: res};
+                    rootState.successSnackbar = {state: true, text:'保存成功'};
                     state.putBossAccountLoading = false;
                 }, 800);
                 resolve('success');

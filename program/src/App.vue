@@ -2,7 +2,7 @@
   <v-app id="app">
 
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0"> -->
-    <div class="elevation-2" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+    <div class="elevation-3" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
       
       <pmenu @toLogin="to_login()"></pmenu>
 

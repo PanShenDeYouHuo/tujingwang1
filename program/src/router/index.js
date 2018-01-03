@@ -24,6 +24,11 @@ const Aam = ()=> import('@/components/admin/Aam');
 const Sd = ()=> import('@/components/admin/Sd');
 const Cr = ()=> import('@/components/admin/Cr');
 
+const Boss = ()=> import('@/components/boss');
+const Statistics = ()=> import('@/components/boss/Statistics');
+const Staff = ()=> import('@/components/boss/Staff');
+const Setting = ()=> import('@/components/boss/Setting')
+
 
 
 
@@ -70,6 +75,22 @@ export default new Router({
         {
           path: 'cr',
           component: Cr
+        }
+      ]
+    },
+    { name: 'boss', path: '/boss', component: Boss, meta: {keepAlive: false},
+      children:[
+        {
+          path:'staff',
+          component: Staff
+        },
+        {
+          path: 'statistics',
+          component: Statistics
+        },
+        {
+          path: 'setting',
+          component: Setting
         }
       ]
     },

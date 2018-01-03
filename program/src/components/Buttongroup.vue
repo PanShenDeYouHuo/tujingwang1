@@ -15,7 +15,7 @@
                     flat small
                     :key="item.name"
                     v-bind:class="{'menu-active': item.name === nowActive}"
-                    @click="change(item.name)">
+                    @click="change(item)">
                         {{item.name}}
                      </v-btn>
 
@@ -54,7 +54,7 @@ export default {
         //     this.active = result;
         // },
         change(active) {
-            this.nowActive = active;
+            this.nowActive = active.name;
             // this.$router.replace({name:routerName});
             this.$emit('change',active);
         },

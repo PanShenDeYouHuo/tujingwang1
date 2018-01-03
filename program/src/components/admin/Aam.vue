@@ -148,10 +148,10 @@ export default {
     },
 
     //获取boss级账号列表
-    getBossAccounts(name) {
-      this.active = name;
+    getBossAccounts(item) {
+      this.active = item.name;
       let state = 1;
-      if(name === "禁用") state = 2;
+      if(item.name === "禁用") state = 2;
 
       this.$store.dispatch('getBossAccounts', {pageSize: 18, currentPage: this.currentPage, state})
     },
