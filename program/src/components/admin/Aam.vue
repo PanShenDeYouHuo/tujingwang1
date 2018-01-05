@@ -149,7 +149,7 @@ export default {
 
     //获取boss级账号列表
     getBossAccounts(item) {
-      this.active = item.name;
+      this.active = item;
       let state = 1;
       if(item.name === "禁用") state = 2;
 
@@ -184,11 +184,22 @@ export default {
 
   },
   mounted(){
+    this.active = this.items[0];
       // this.change(this.items[0]);
   },
   beforeCreate() {
+
+    //获取账号列表
     this.$store.dispatch('getBossAccounts',{pageSize: 18, currentPage: this.currentPage, state: 1});
-    this.$store.dispatch('getBossAccountStatistics');
+    //注册成功时刷新
+    this.$store.dispatch('getBossAccountStatistics')
+    .then((res)=> {
+      this.getBossAccounts(this.active);
+      this.$store.dispatch('getBossAccountStatistics');
+    })
+    .catch((err)=> {
+      console.log(err);
+    })
   },
 };
 </script>

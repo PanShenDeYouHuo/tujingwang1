@@ -6,7 +6,7 @@
             <v-container grid-list-xl fluid  class="" style="padding: 12px; padding-top: 16px;">
                 <v-layout row wrap>
                     <v-flex xs12 >
-                        <p>statistics</p>
+                        <p>公司数据统计</p>
                     </v-flex>
 
                 </v-layout>

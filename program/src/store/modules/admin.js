@@ -1,16 +1,18 @@
+import { resolve } from "path";
+
 
 let state = {
-    totalAccount: 0, //总注册账号数
-    disableAccount: 0,  //禁止使用账号数
+    totalAccount: 0,        //总注册账号数
+    disableAccount: 0,      //禁止使用账号数
 
-    bossAccounts: [],   //账号列表
+    bossAccounts: [],       //账号列表
     bossAccountsCount: 0,   //账号总页数
-    bossAccount: {}, 
+    bossAccount: {},        //账号
 
     //状态
-    getBossAccountsLoading: false,  //获取boss账号列表
+    getBossAccountsLoading: false,          //获取boss账号列表
     getBossAccountStatisticsLoading: false, //获取boss账号统计
-    putBossAccountLoading: false, //跟新账号
+    putBossAccountLoading: false,           //跟新账号
 };
 
 let mutations = {
@@ -70,7 +72,6 @@ let actions = {
         .then((res)=> {
             commit('setBossAccountStatistics', res);
             state.getBossAccountStatisticsLoading = false;
-            return 'ok';
         })
         .catch((err)=> {
             setTimeout(()=> {
@@ -113,13 +114,20 @@ let actions = {
      * @param {any} {commit, state, rootState} 
      * @param {any} data 
      */
-    bossWechatRegSuccess({commit, state, rootState}, data) {
-        rootState.socketClass.socket.on('bossWechatRegSuccess',(data)=> {
+    bossWechatRegSuccess({commit, state, rootState}) {
 
-            setTimeout(() => {
-                rootState.successSnackbar = {state: true, text: data};
-            }, 800);
+        return new Promise((resolve, reject)=> {
+            
+            rootState.socketClass.socket.on('bossWechatRegSuccess',(data)=> {
+                setTimeout(() => {
+                    rootState.successSnackbar = {state: true, text: data};
+                }, 800);
+            });
+
+            resolve('success');
+
         });
+
     }
 
 

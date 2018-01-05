@@ -19,6 +19,11 @@
                         </v-card>
                     </v-flex>
 
+    
+                    <v-flex xs12 v-for="staff in boss.staffAccounts" :key="staff._id">
+                        <p>{{staff.nickname}},{{staff.authority}}</p>
+
+                    </v-flex>
 
                 </v-layout>
             </v-container>
@@ -35,26 +40,32 @@ export default {
     props: [],
     data() {
         return {
+            currentPage: 1,
 
             items: [
-                {name: '全部'},
-                {name: '员工'},
-                {name: '财务'},
+                {name: '全部', router: 'all'},
+                {name: '财务', router: 'financial'},
+                {name: '客服', router: 'service'},
+                {name: '组长', router: 'leder'},
+                {name: '组员', router: 'member'},
             ],
 
-            active: '系统详情',
+            active: '全部',
         }
     },
     computed: {
-
+        boss() {
+            return this.$store.state.boss;
+        }
     },
     methods: {
         quit() {
             this.$router.replace({name:'/'});
         },
         change(item) {
-            this.active = item.title;
-            this.$router.replace({path:`/boss`});
+            this.active = item;
+            this.$store.dispatch('getStaffAccounts', {pageSize: 18, currentPage: this.currentPage, authority: item.router, });
+            // this.$router.replace({path:`/boss`});
         },
 
         //staff级账号注册
@@ -68,10 +79,13 @@ export default {
         },
     },
     mounted(){
-
+        //获取账号列表
+        console.log('hello')
+        this.$store.dispatch('getStaffAccounts', {pageSize: 18, currentPage: this.currentPage, authority: 'all'});
     },
     beforeCreate() {
-        
+        // //获取账号列表
+        // this.$store.dispatch('getStaffAccounts', {pageSize: 18, currentPage: this.currentPage, authority: 'all'});
         // this.change(this.items[0]);
     },
 
