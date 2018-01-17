@@ -47,12 +47,76 @@
                         <!-- <span>发布</span> -->
                     </v-btn>
 
+                    <v-menu offset-y left min-width="310" max-width="310" v-if="user._id" >
+                        <v-btn flat slot="activator" class="menu-btn-o">
+                            <i class="material-icons">notifications</i>
+                            <!-- <span>通知</span> -->
+                        </v-btn>
+                        <v-card flat>
+                            <v-card-title style="">
+                                <span class="subheading" style="font-weight:bold; ">消息盒</span>
+                            </v-card-title>
+     
+                        <v-divider></v-divider>
+
+            
+
+                            <v-list style="height: 230px; overflow-y:scroll;">
+                                <v-list-tile @click="change('admin')">
+                                    <v-list-tile-content>
+                                    <v-list-tile-title class="body-2 " style="font-weight:bold;">【系统】</v-list-tile-title>
+                                    <v-list-tile-title class="caption" >张三进行账号认证</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                                <v-list-tile @click="change('admin')">
+                                    <v-list-tile-content>
+                                    <v-list-tile-title class="body-2" style="font-weight:bold;">【团队】</v-list-tile-title>
+                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                                <v-list-tile  @click="change('admin')">
+                                    <v-list-tile-content>
+                                    <v-list-tile-title class="body-2 grey--text">【任务】</v-list-tile-title>
+                                    <v-list-tile-title class="caption grey--text">你有一个新的任务，赶紧去完成。</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                                <v-list-tile  @click="change('admin')">
+                                    <v-list-tile-content>
+                                    <v-list-tile-title class="body-2">【团队】</v-list-tile-title>
+                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-divider></v-divider>
+                                <v-list-tile  @click="change('admin')">
+                                    <v-list-tile-content>
+                                    <v-list-tile-title class="body-2">【团队】</v-list-tile-title>
+                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+
+                                <span>{{user.notify}}</span>
+                            </v-list>
+    
+                        <v-divider></v-divider>
+
+                            <v-card-actions>
+                                <v-flex xs12 class="text-xs-center" >
+                                    <span class="body-2" style="font-weight:bold; ">查看全部</span>
+                                </v-flex>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu> 
+
+
                     <v-menu offset-y left v-if="user._id">
                         <!-- 头像按钮 -->
-                        <v-btn flat  slot="activator"  style="height: 50px; width: 50px; min-width: 20px; margin: 0px; padding: 0px;">
+                        <v-btn flat  slot="activator" class="menu-btn-o"  style="height: 50px; width: 64px; min-width: 20px; margin: 0px; padding: 0px;">
 
                             <v-avatar size="38px">
-                                <img :src="user.headimgurl" alt="Avatar" >
+                                <img :src=" user.headimgurl " alt="Avatar" >
                             </v-avatar>
 
                         </v-btn>
@@ -123,15 +187,15 @@ export default {
                 { title: '我的项目', router: 'projects' },
                 { title: '我的团队', router: 'temas' },
                 { title: '我的统计', router: 'statistics' },
-                { title: '账号管理', reuter: 'account' },
+                { title: '账号管理', router: 'account' },
             ]
         }
     },
     computed: {
         user() {
-            let url = this.$store.state.user.headimgurl;
-            let l = url.length;
-            this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
+            // let url = this.$store.state.user.headimgurl;
+            // let l = url.length;
+            // this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
             return this.$store.state.user;
         }
     },

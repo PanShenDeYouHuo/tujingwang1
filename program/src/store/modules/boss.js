@@ -41,7 +41,7 @@ let actions = {
     getStaffAccounts({commit, state, rootState}, data) {
         state.getStaffAccountsLoading = true;
 
-        rootState.socketClass.myEmit('getStaffAccounts', {pageSize: data.pageSize, currentPage: data.currentPage, authority: data.authority, _id})
+        rootState.socketClass.myEmit('getStaffAccounts', {pageSize: data.pageSize, currentPage: data.currentPage, authority: data.authority, _id: rootState.user._id})
         .then((res)=> {
             commit('setStaffAccounts', res);
             state.getStaffAccountsLoading = false;
@@ -68,8 +68,8 @@ let actions = {
                 setTimeout(() => {
                     rootState.successSnackbar = {state: true, text: data};
                 }, 800);
+                resolve('success');
             });
-            resolve('success');
         });
     }
 

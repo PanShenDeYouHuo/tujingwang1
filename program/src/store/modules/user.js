@@ -9,6 +9,19 @@ let state = {
 	city: '',					//城市
 	country: '',				//国家
 
+	contactInformation:{		//联系信息
+        QQ:'',       			//qq账号
+        wechat:'',   			//微信账号
+	},
+	
+	realInformation:{			//真实信息
+		state: 0,				//0未认证， 1审核中， 2已认证
+		name:'',				//真实姓名
+	},
+
+	notify: [],					//通知
+	notifyType: '',				//请求通知类型
+
 	loading: true,				//登入时是等待状态
 	isRemember: false,			//是否记住密码
 };
@@ -19,6 +32,10 @@ let mutations = {
 			state[key] = newUser[key];
 		}
 	},
+
+	setNotify(state, data) {
+		state.notify = data; 
+	}
 };
 
 let actions = {
@@ -53,7 +70,7 @@ let actions = {
 		rootState.socketClass.socket.on('authenticationSuccess', (data)=> {
 			//储存accessToken到localStorage
 			localStorage.setItem('accessToken', data.accessToken);
-
+			console.log(data);
 			//用户数据保存
 			commit('setUser', data);
 		});
@@ -69,8 +86,21 @@ let actions = {
 			}
 
 		});
-	}
+	},
 
+	//通知接口
+	notify({commit, state, rootState}) {
+		rootState.socketClass.socket.on('notify', ()=> {
+			rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
+			.then((res)=> {
+				console.log(res);
+				commit('setNotify', res);
+			})
+			.catch((err)=> {
+				console.log(err);
+			});
+		});
+	}
 
 };
 

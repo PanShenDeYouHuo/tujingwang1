@@ -26,7 +26,7 @@
                                     <v-card-media :src=" file.src !== '' ? file.src : fileIcon " height="195px">
                                         <div v-if=" file.src === ''" style="width: 100%; margin: 8px; display: flex; justify-content: center; align-items: flex-end;">
                                             <span class="title white--text">
-                                                {{file.name.substring(file.name.lastIndexOf('.')+1)}}
+                                                {{file.file.name.substring(file.file.name.lastIndexOf('.')+1)}}
                                             </span>
                                         </div>
                                     </v-card-media>
@@ -54,7 +54,7 @@
                         <!-- 需要上传文件列表 -->
                         <v-flex xs2  v-for="(file, index) in uploadFileList" :key="index">
                             <div class="big">
-                                <v-card>
+                                  <v-card>
                                     <v-card-media :src=" file.src !== '' ? file.src : '' " height="195px">
                                         <div style="background-color: rgba(0, 0, 0, .7); width: 100%; display: flex; flex-direction: column;  justify-content: center; align-items: center;">
                                             <v-progress-circular
@@ -68,7 +68,7 @@
                                             </v-progress-circular>
                                             <br>
                                             <span class="title white--text">
-                                                {{file.name.substring(file.name.lastIndexOf('.')+1)}}
+                                                {{file.file.name.substring(file.file.name.lastIndexOf('.')+1)}}
                                             </span>
                                         </div>
                                     </v-card-media>
@@ -142,15 +142,22 @@ export default {
 
             for( let file of this.$refs.file.files ) {
 
+                //缓存区
+                let buf = {
+                    state: false,   //是否上次成功
+                    progress: 0,    //进度
+                    src: ''         //二进制文件，文件过大是不会读取
+                };
                 //文件是否同名
                 for (let key of uploadFileList) {
                     if(file.name === key.name) continue;
                 }
-                file.progress = 0;
+                //添加进度属性
+                // file.progress = 0;
                 //判断是否是图片
                 if(file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif' && file.type !== 'image/bmp' && file.type !== 'image/jpg') {
-                    file.src = '';
-                    uploadFileList.push(file);
+                    buf.file = file;
+                    uploadFileList.push(buf);
                     continue;
                 }
                 
@@ -159,8 +166,9 @@ export default {
                 let oFReader = new FileReader();
 
                 oFReader.onloadend = function(oFRevent){
-                    file.src = oFRevent.target.result;
-                    uploadFileList.push(file);
+                    buf.src = oFRevent.target.result;
+                    buf.file = file;
+                    uploadFileList.push(buf);
                 };
                 //根据inputfile的files读取文件
                 oFReader.readAsDataURL(file);
@@ -177,7 +185,12 @@ export default {
 
         //上传文件
         upload(files) {
-            this.$store.dispatch('uploadFile');
+            this.$store.dispatch('getWriteStsToken');
+
+            for(let index in files) {
+                
+                this.$store.dispatch('uploadFile',{callbackUrl:'60.205.225.197/osscallback', objectKey:`productionProject/${this.$store.state.user._id}`, file: files[index]});
+            }
                 // .then((res)=> {
                 //     console.log(res);
                 // })

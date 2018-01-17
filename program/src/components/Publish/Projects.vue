@@ -50,10 +50,10 @@
                                 </v-container>
                             </v-card-media>
                             <v-card-title>
-                            <div>
-                                <span class="body-2">{{project.name}}</span><br>
-                                <!-- <span class="grey--text caption">Whitehaven Beach</span> -->
-                            </div>
+                                <div>
+                                    <span class="body-2">{{project.name}}</span><br>
+                                    <!-- <span class="grey--text caption">Whitehaven Beach</span> -->
+                                </div>
                             </v-card-title>
                             <v-card-actions>
                                 <v-btn class="my-btn text-xs-center" flat small color="orange" @click="editProject(project._id)">

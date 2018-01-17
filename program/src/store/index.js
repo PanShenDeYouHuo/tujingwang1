@@ -7,6 +7,7 @@ import project from './modules/project';
 import ossFile from './modules/ossFile';
 import admin from './modules/admin';
 import boss from './modules/boss';
+import account from './modules/account';
 
 import socketClass from '../socket.io';
 
@@ -53,6 +54,7 @@ const actions = {
 			let accessToken = localStorage.getItem('accessToken');
 			console.log(accessToken);
 			if(accessToken) {
+				//进行账号验证
 				state.socketClass.socket.emit('authentication', accessToken);
 			}
 			
@@ -71,7 +73,8 @@ const modules = {
 	project,
 	ossFile,
 	admin,
-	boss
+	boss,
+	account
 };
 
 

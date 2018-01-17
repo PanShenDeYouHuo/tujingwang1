@@ -146,9 +146,9 @@ export default {
     this.$store.dispatch('appError');                   //开启错误接口
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
     this.$store.dispatch('authenticationSuccess');      //开启登入成功接口
+    this.$store.dispatch('notify');                     //开启通知接口
 
-    this.$store.dispatch('initialize');
-    // this.$store.dispatch('loadUserData');               //开始启动app是载入用户数据信息
+    this.$store.dispatch('initialize');                 //程序初始化
 
   },
   created() {
@@ -195,6 +195,7 @@ html,body{overflow:visible; height: 100%;}
 
 .routerView {
   width:100%;height:100%;
+  overflow:visible;
   background-color: #fff;
   min-width: 1280px;
   -webkit-box-sizing: border-box;

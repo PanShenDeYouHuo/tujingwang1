@@ -46,7 +46,7 @@
                 
                 <v-btn flat fab class="hand" style="height: 80px; width: 80px; min-width: 20px; margin: 0px; padding: 0px;" @click="openAuth(index)">
                   <v-avatar size="80px">
-                    <img :src=" bossAccount.headimgurl.substr(0, bossAccount.headimgurl.length-1) + '0' " alt="Avatar" >
+                    <img :src=" bossAccount.headimgurl " alt="Avatar" >
                   </v-avatar>
                 </v-btn>
                 <div class="body-1" style="padding-top:10px;font-weight:bold; ">{{bossAccount.nickname}}</div>
@@ -74,12 +74,7 @@
                               <v-switch v-bind:label="`基础系统: ${ex11 ? '允许' : '禁止'}`" v-model="ex11"></v-switch>
                             </v-card-text>
                           </v-card>
-                          <!-- <v-form v-model="nproject.valid" ref="br" lazy-validation>
-                              <v-text-field label="手机号码" v-model="nproject.name" :rules="nproject.rules" 
-                              @keyup.enter=""></v-text-field> -->
-                              <!-- 用来消除空格提交 -->
-                              <!-- <v-text-field  label="登入密码"></v-text-field>
-                          </v-form> -->
+                          
                       </v-flex>
                   </v-layout>
               </v-container>
@@ -184,15 +179,13 @@ export default {
 
   },
   mounted(){
-    this.active = this.items[0];
-      // this.change(this.items[0]);
-  },
-  beforeCreate() {
 
-    //获取账号列表
-    this.$store.dispatch('getBossAccounts',{pageSize: 18, currentPage: this.currentPage, state: 1});
+    this.$store.dispatch('getBossAccountStatistics');
+    //初始化，获得账号列表
+    this.getBossAccounts(this.items[0]);
+
     //注册成功时刷新
-    this.$store.dispatch('getBossAccountStatistics')
+    this.$store.dispatch('bossWechatRegSuccess')
     .then((res)=> {
       this.getBossAccounts(this.active);
       this.$store.dispatch('getBossAccountStatistics');
@@ -200,6 +193,10 @@ export default {
     .catch((err)=> {
       console.log(err);
     })
+    
+  },
+  beforeCreate() {
+
   },
 };
 </script>

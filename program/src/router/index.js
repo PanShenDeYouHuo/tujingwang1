@@ -26,10 +26,13 @@ const Cr = ()=> import('@/components/admin/Cr');
 
 const Boss = ()=> import('@/components/boss');
 const Statistics = ()=> import('@/components/boss/Statistics');
-const Staff = ()=> import('@/components/boss/Staff');
+const Authority = ()=> import('@/components/boss/Authority');
+const Authenticate = ()=> import('@/components/boss/Authenticate');
 const Setting = ()=> import('@/components/boss/Setting')
 
-
+const Account = ()=> import('@/components/account');
+const PersonalData = ()=> import('@/components/account/PersonalData');
+const AccountSecurity = ()=> import('@/components/account/AccountSecurity');
 
 
 Vue.use(Router);
@@ -81,8 +84,12 @@ export default new Router({
     { name: 'boss', path: '/boss', component: Boss, meta: {keepAlive: false},
       children:[
         {
-          path:'staff',
-          component: Staff
+          path:'Authority',
+          component: Authority
+        },
+        {
+          path:'Authenticate',
+          component: Authenticate
         },
         {
           path: 'statistics',
@@ -94,6 +101,18 @@ export default new Router({
         }
       ]
     },
+    { name: 'account', path: '/account', component: Account, meta: {keepAlive: false},
+      children:[
+        {
+          path:'personalData',
+          component: PersonalData
+        },
+        {
+          path:'accountSecurity',
+          component: AccountSecurity
+        }
+      ]
+    }
 
   ],
 });

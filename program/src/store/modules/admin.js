@@ -33,7 +33,6 @@ let mutations = {
 
 let actions = {
 
-
 	//退出登入
 	// signOut({commit, state, rootState}) {
 
@@ -122,9 +121,9 @@ let actions = {
                 setTimeout(() => {
                     rootState.successSnackbar = {state: true, text: data};
                 }, 800);
+                resolve('success');
             });
 
-            resolve('success');
 
         });
 
