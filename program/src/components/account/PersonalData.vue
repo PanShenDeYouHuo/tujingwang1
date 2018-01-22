@@ -17,19 +17,12 @@
                                 </v-btn>
 
                                 <div class="body-1" style="padding-top:10px;">
-                                    <!-- <span class="grey--text">
-                                        {{!!user.realInformation.name ? '名字：' : ''}}
-                                    </span>
-                                    <span style="font-weight:bold;">
-                                        {{!!user.realInformation.name ? user.realInformation.name : '未实名认证'}}
-                                    </span>
-                                    <span class="grey--text">
-                                        ,昵称：
-                                    </span> -->
+
                                     <span style="font-weight:bold;">
                                         {{user.nickname}}
                                     </span>
-                                    <v-chip small v-if="user.realInformation.name" color="green" text-color="white">已认证</v-chip>
+                                    <v-chip small v-if="user.realInformation.state === 2" color="green" text-color="white">已认证</v-chip>
+                                    <v-chip small v-else-if="user.realInformation.state === 1" color="red" text-color="white">审核中</v-chip>
                                     <v-chip v-else small color="red" text-color="white">未认证</v-chip>
                                 </div>
 
@@ -137,15 +130,7 @@ export default {
             // ],
 
             active: '系统详情',
-            items: [
-                { active: true, title: 'Jason Oner', avatar: '/static/doc-images/lists/1.jpg' },
-                { active: true, title: 'Ranee Carlson', avatar: '/static/doc-images/lists/2.jpg' },
-                { title: 'Cindy Baker', avatar: '/static/doc-images/lists/3.jpg' },
-                { title: 'Ali Connors', avatar: '/static/doc-images/lists/4.jpg' },
-            ],
-            items2: [
-                { title: 'Travis Howard', avatar: '/static/doc-images/lists/5.jpg' },
-            ],
+
             row: 1
         }
     },

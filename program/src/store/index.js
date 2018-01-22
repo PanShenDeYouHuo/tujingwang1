@@ -27,6 +27,15 @@ const state = {
 		state: false,
 		text: 'what are you doing',
 	},
+	//成功提示栏
+	infoSnackbar: {
+		state: false,
+		text: 'what are you doing',
+	},
+
+	appLoading: false,
+	//路由拆解
+	url:[],
 
 };
 
@@ -43,6 +52,25 @@ const actions = {
 	initialize({commit, state}) {
 		//路由初始化
 		state.router.beforeEach((to, from, next) => {
+			state.url = [];
+			let routerStr = to.path;
+			let pos = 0;
+			let epos = 0;
+			let i = 0;
+			while (i < 10) {
+				i = i + 1;
+				epos = to.path.indexOf('/', pos + 1)
+				if (epos == -1)	{
+					state.url.push(routerStr);
+					break;
+				};
+				let buf = routerStr.slice(pos, epos);
+				state.url.push(buf);
+				routerStr = routerStr.slice(epos++);
+				pos = epos++;
+
+			}
+			console.log(state.url);
 			next();
 		});
 
@@ -59,6 +87,28 @@ const actions = {
 			}
 			
 		});
+	},
+
+	//初始化路由
+	initRouter({commit, state}, path) {
+		state.url = [];
+		let routerStr = path;
+		let pos = 0;
+		let epos = 0;
+		let i = 0;
+		while (i < 10) {
+			i = i + 1;
+			epos = path.indexOf('/', pos + 1)
+			if (epos == -1)	{
+				state.url.push(routerStr);
+				break;
+			};
+			let buf = routerStr.slice(pos, epos);
+			state.url.push(buf);
+			routerStr = routerStr.slice(epos++);
+			pos = epos++;
+
+		}
 	}
 
 };

@@ -33,10 +33,24 @@
     <v-snackbar
       :timeout="6000"
       top
-      color="green"
+      color="success"
       v-model="successSnackbar.state"
     >
       {{ successSnackbar.text }}
+    </v-snackbar>
+
+        <!-- 通知信息提示窗口 -->
+    <v-snackbar
+      :timeout="0"
+      top
+      color="info"
+      v-model="infoSnackbar.state"
+    >
+      {{ infoSnackbar.text }}
+      <v-btn dark flat fab small @click="infoSnackbar.state = false" style="min-wight:0px;">
+        <!-- <i class="material-icons">close</i> -->
+        <v-icon>close</v-icon>
+      </v-btn>
     </v-snackbar>
 
 
@@ -95,6 +109,9 @@ export default {
     },
     successSnackbar() {
       return this.$store.state.successSnackbar;
+    },
+    infoSnackbar() {
+      return this.$store.state.infoSnackbar;
     }
   },
 
@@ -135,10 +152,13 @@ export default {
     
   },
   mounted(){
+    setTimeout(()=> {
+          if( !this.$store.state.url[1]) {
+            console.log(this.$route.path)
+              this.$store.dispatch('initRouter', this.$route.path);
+          }
 
-    // setTimeout(()=> {
-    //   this.loading = false;
-    // }, 3000);
+    }, 100);
   },
   beforeCreate() {
     //app初始化

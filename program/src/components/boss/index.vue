@@ -34,7 +34,7 @@
                     <v-flex xs12 class="py-2">
                         <v-card >
                             <v-card-title style="padding: 0px 16px; height: 48px;">
-                                <buttongroup title="" :items="items" active="统计" @change="change"></buttongroup>
+                                <buttongroup title="" :items="items" :active="this.$store.state.url[1]" @change="urlChange"></buttongroup>
                                 <v-spacer></v-spacer>
 
                             </v-card-title>
@@ -69,13 +69,12 @@ export default {
         return {
 
             items: [
-                {name: '统计', router: 'statistics'},
-                {name: '权限', router: 'Authority'},
-                {name: '认证', router: 'Authenticate'},
-                {name: '设置', router: 'setting'},
+                {name: '统计', router: 'statistics', url: '/statistics'},
+                {name: '权限', router: 'Authority', url: '/Authority'},
+                {name: '认证', router: 'Authenticate', url: '/Authenticate'},
+                {name: '设置', router: 'setting', url: '/setting'},
             ],
 
-            active: '系统详情',
         }
     },
     computed: {
@@ -85,14 +84,14 @@ export default {
         quit() {
             this.$router.replace({name:'/'});
         },
-        change(item) {
-            this.active = item.name;
-            this.$router.replace({path:`/boss/${item.router}`});
-        },
+
+        urlChange( url ) {
+            this.$router.replace({path: `/boss${url}`});
+        }
 
     },
     mounted(){
-        this.change(this.items[0]);
+        // this.change(this.items[0]);
     },
     beforeCreate() {
         
@@ -107,6 +106,8 @@ export default {
 
   .boss {
       width: 100%;
+      background-color: rgb(254, 254, 254);
+
 
   }
 

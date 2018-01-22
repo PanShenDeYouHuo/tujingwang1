@@ -35,18 +35,25 @@ let actions = {
     
     //账号认证
     putRealInformation({commit, state, rootState},data) {
-        state.putRealInformationLoading = true;
-        rootState.socketClass.myEmit('putRealInformation', {name: data.name, IDNumber: data.IDNumber, bankCardAccount: data.bankCardAccount, openingBank: data.openingBank})
-        .then((res)=> {
-            rootState.successSnackbar = {state: true, text: '提交成功'};
-            state.putRealInformationLoading = false;
-        })
-        .catch((err)=> {
-            setTimeout(() => {
-                state.putRealInformationLoading = false;
-                rootState.errorSnackbar = {state: true, text: err.message};
-            }, 800);
-        })
+        return new Promise((resolve,reject)=> {
+            
+            rootState.appLoading = true;
+            rootState.socketClass.myEmit('putRealInformation', {name: data.name, IDNumber: data.IDNumber, bankCardAccount: data.bankCardAccount, openingBank: data.openingBank})
+            .then((res)=> {
+                rootState.user.realInformation.state = 1;
+                resolve();
+                setTimeout(() => {
+                    rootState.appLoading = false;
+                    rootState.successSnackbar = {state: true, text: '提交成功'};
+                }, 300);
+            })
+            .catch((err)=> {
+                setTimeout(() => {
+                    rootState.appLoading = false;
+                    rootState.errorSnackbar = {state: true, text: err.message};
+                }, 300);
+            })
+        });
     },
 
 

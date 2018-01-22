@@ -43,61 +43,40 @@
 
                     <!-- 登入显示 -->
                     <v-btn v-if="user._id" flat @click="change('publish')"  class="menu-btn-o">
-                        <i class="material-icons">backup</i>
+                        <i class="material-icons">cloud_upload</i>
                         <!-- <span>发布</span> -->
                     </v-btn>
 
                     <v-menu offset-y left min-width="310" max-width="310" v-if="user._id" >
                         <v-btn flat slot="activator" class="menu-btn-o">
-                            <i class="material-icons">notifications</i>
-                            <!-- <span>通知</span> -->
+                            <v-badge color="red" v-model="this.notifyShow">
+                                    <span slot="badge">{{this.notifyNumber}}</span>
+                                    <i class="material-icons">notifications</i>
+                                    <!-- <span>通知</span> -->
+                            </v-badge>
                         </v-btn>
+
                         <v-card flat>
                             <v-card-title style="">
                                 <span class="subheading" style="font-weight:bold; ">消息盒</span>
                             </v-card-title>
      
-                        <v-divider></v-divider>
+                            <v-divider></v-divider>
 
             
 
                             <v-list style="height: 230px; overflow-y:scroll;">
-                                <v-list-tile @click="change('admin')">
-                                    <v-list-tile-content>
-                                    <v-list-tile-title class="body-2 " style="font-weight:bold;">【系统】</v-list-tile-title>
-                                    <v-list-tile-title class="caption" >张三进行账号认证</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-divider></v-divider>
-                                <v-list-tile @click="change('admin')">
-                                    <v-list-tile-content>
-                                    <v-list-tile-title class="body-2" style="font-weight:bold;">【团队】</v-list-tile-title>
-                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-divider></v-divider>
-                                <v-list-tile  @click="change('admin')">
-                                    <v-list-tile-content>
-                                    <v-list-tile-title class="body-2 grey--text">【任务】</v-list-tile-title>
-                                    <v-list-tile-title class="caption grey--text">你有一个新的任务，赶紧去完成。</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-divider></v-divider>
-                                <v-list-tile  @click="change('admin')">
-                                    <v-list-tile-content>
-                                    <v-list-tile-title class="body-2">【团队】</v-list-tile-title>
-                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-divider></v-divider>
-                                <v-list-tile  @click="change('admin')">
-                                    <v-list-tile-content>
-                                    <v-list-tile-title class="body-2">【团队】</v-list-tile-title>
-                                    <v-list-tile-title class="caption">李四邀请你加入他的团队</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
+                                <div v-for="(notify, index) in notifyData" :key="index">
 
-                                <span>{{user.notify}}</span>
+                                    <v-list-tile @click="urlChange(notify.router)">
+                                        <v-list-tile-content>
+                                        <v-list-tile-title class="body-2 " v-bind:class="{'grey--text': notify.state === 1}" style="font-weight:bold;">【{{notifyType[notify.ntype]}}】</v-list-tile-title>
+                                        <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" > {{notify.state}}{{notify.concent}}</v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                    <v-divider></v-divider>
+                                </div>
+
                             </v-list>
     
                         <v-divider></v-divider>
@@ -124,7 +103,7 @@
                         <v-list dense>
                             <div v-for="(item, index) in items" :key="item.title">
 
-                                <v-list-tile v-if="item.title"  :key="index" @click="change(item.router)">
+                                <v-list-tile v-if="item.title"  :key="index" @click="urlChange(item.url)">
                                     <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
                                 </v-list-tile>
 
@@ -136,15 +115,15 @@
 
                             </div>
 
-                            <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="change('admin')">
+                            <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="urlChange('/admin/sd')">
                                 <v-list-tile-title class="body-1">系统管理</v-list-tile-title>
                             </v-list-tile>
 
-                            <v-list-tile v-if="user.authority.indexOf('boss') !== -1"  @click="change('boss')">
+                            <v-list-tile v-if="user.authority.indexOf('boss') !== -1"  @click="urlChange('/boss/statistics')">
                                 <v-list-tile-title class="body-1">公司管理</v-list-tile-title>
                             </v-list-tile>
 
-                            <v-list-tile v-if="user.authority.indexOf('financial') !== -1"  @click="change('financial')">
+                            <v-list-tile v-if="user.authority.indexOf('financial') !== -1"  @click="urlChange('/financial')">
                                 <v-list-tile-title class="body-1">财务管理</v-list-tile-title>
                             </v-list-tile>
 
@@ -184,11 +163,15 @@ export default {
             active: [],
             items: [
                 // { title: '我的作品', router: 'works' },
-                { title: '我的项目', router: 'projects' },
-                { title: '我的团队', router: 'temas' },
-                { title: '我的统计', router: 'statistics' },
-                { title: '账号管理', router: 'account' },
-            ]
+                { title: '我的项目', router: 'projects', url: '/projects' },
+                { title: '我的团队', router: 'temas', url: '/temas' },
+                { title: '我的统计', router: 'statistics', url: '/statistics' },
+                { title: '账号管理', router: 'account', url: '/account/personalData' },
+            ],
+            show: false,
+
+            //notify类型映射
+            notifyType: [ '','系统', '团队', '任务']
         }
     },
     computed: {
@@ -197,6 +180,24 @@ export default {
             // let l = url.length;
             // this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
             return this.$store.state.user;
+        },
+        notifyData() {
+            return this.$store.state.user.notify;
+        },
+        notifyNumber() {
+            let number = 0;
+            let notifyData = this.$store.state.user.notify;
+            for( let i = 0; i < notifyData.length; i++ ) {
+                if( notifyData[i].state == 0) {
+                    number++;
+                }
+            }
+            // console.log(number);
+            return number;
+        },
+
+        notifyShow() {
+            return this.notifyNumber > 0 ? true : false;
         }
     },
     methods: {
@@ -213,9 +214,11 @@ export default {
             this.active = result;
         },
         change(routerName) {
-            console.log(routerName);
             this.$router.replace({name:routerName});
             // this.$emit('change',aa);
+        },
+        urlChange(path) {
+            this.$router.replace({path});
         },
         // //用户侧变导航开事件
         // toggleRightSidenav() {
@@ -310,6 +313,9 @@ export default {
         color: #ffffff;
     }
 
+    .badge {
+        height: 24px;
+    }
 
     /* .btn--flat {
         border-radius: 0px;

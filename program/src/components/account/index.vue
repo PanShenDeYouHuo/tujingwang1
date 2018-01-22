@@ -32,7 +32,7 @@
                     <v-flex xs12 class="py-2">
                         <v-card >
                             <v-card-title style="padding: 0px 16px; height: 48px;">
-                                <buttongroup title="" :items="items" active="个人资料" @change="change"></buttongroup>
+                                <buttongroup title="" :items="items" :active="this.$store.state.url[1]" @change="change"></buttongroup>
                                 <v-spacer></v-spacer>
 
                             </v-card-title>
@@ -67,8 +67,8 @@ export default {
         return {
 
             items: [
-                {name: '个人资料', router: 'personalData'},
-                {name: '账号安全', router: 'accountSecurity'},
+                {name: '个人资料', router: 'personalData', url: '/personalData'},
+                {name: '账号安全', router: 'accountSecurity', url: '/accountSecurity'},
             ],
 
             active: {},
@@ -81,14 +81,13 @@ export default {
         quit() {
             this.$router.replace({name:'/'});
         },
-        change(item) {
-            this.active = item.name;
-            this.$router.replace({path:`/account/${item.router}`});
+        change(url) {
+            this.$router.replace({path:`/account${url}`});
         },
 
     },
     mounted(){
-        this.change(this.items[0]);
+        // this.change(this.items[0]);
     },
     beforeCreate() {
         

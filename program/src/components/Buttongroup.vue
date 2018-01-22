@@ -10,14 +10,15 @@
             <v-flex xs12>
                 <v-layout justify-center align-content-space-between align-center>
                     <span class="grey--text" style="margin-right: 20px;">{{title}}</span>
-                    <v-btn v-for=" (item, index) in items" 
+                    <v-btn v-for=" item in items" 
                     class="menu-btn"
                     flat small
                     :key="item.name"
-                    v-bind:class="{'menu-active': item.name === nowActive}"
-                    @click="change(item)">
+                    v-bind:class="{'menu-active': item.url === active}"
+                    v-bind="{'disabled': disabled}"
+                    @click="change(item.url)">
                         {{item.name}}
-                     </v-btn>
+                    </v-btn>
 
                 </v-layout>
             </v-flex>
@@ -31,49 +32,23 @@
 <script>
 export default {
     name: 'buttongroup',
-    props: ['items', 'title', 'active'],
+    props: ['items', 'title', 'active', 'disabled'],
     data() {
         return {
             nowActive: '',
         }
     },
     computed: {
-
     },
     methods: {
 
-        // activeSelection(router) {
-        //     let result = [];
-        //     for (var index in this.menuText) {
-        //         if (this.menuText[index].router === '/') {
-        //             result[index] = this.menuText[index].router === router ? true : false;
-        //             continue;
-        //         }
-        //         result[index] = '/' + this.menuText[index].router === router ? true : false; 
-        //     }
-        //     this.active = result;
-        // },
-        change(active) {
-            this.nowActive = active.name;
-            // this.$router.replace({name:routerName});
-            this.$emit('change',active);
+        change(url) {
+            this.$emit('change',url);
         },
-
-        // //登入侧边导航开事件
-        // to_login() {
-        //     this.$emit('toLogin');
-        // },
 
     },
     mounted(){
-        this.nowActive = this.active;
-        // //初始化
-        // this.activeSelection(window.location.pathname);
-        // //捕捉路由变化改变菜单
-        // this.$router.beforeEach((to, from, next) => {
-        //     this.activeSelection(to.path);
-		// 	next();
-		// });
+
     },
     beforeCreate() {
 

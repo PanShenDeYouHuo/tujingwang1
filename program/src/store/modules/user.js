@@ -70,9 +70,17 @@ let actions = {
 		rootState.socketClass.socket.on('authenticationSuccess', (data)=> {
 			//储存accessToken到localStorage
 			localStorage.setItem('accessToken', data.accessToken);
-			console.log(data);
 			//用户数据保存
 			commit('setUser', data);
+
+			//获取通知信息
+			rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
+			.then((res)=> {
+				commit('setNotify', res);
+			})
+			.catch((err)=> {
+				console.log(err);
+			});
 		});
 	},
 
@@ -95,12 +103,14 @@ let actions = {
 			.then((res)=> {
 				console.log(res);
 				commit('setNotify', res);
+				rootState.infoSnackbar = {state: true, text: '您有新的通知'};
 			})
 			.catch((err)=> {
 				console.log(err);
 			});
 		});
-	}
+	},
+
 
 };
 
