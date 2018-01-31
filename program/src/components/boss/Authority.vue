@@ -226,6 +226,7 @@ export default {
             this.$router.replace({name:'/'});
         },
         getStaffAccounts(url) {
+            if (this.active !== url) this.currentPage = 1;
             this.active = url;
             console.log(url.slice(1));
             this.$store.dispatch('getStaffAccounts', {pageSize: 18, currentPage: this.currentPage, authority: url.slice(1), });

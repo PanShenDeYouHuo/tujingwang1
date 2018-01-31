@@ -214,6 +214,7 @@ export default {
             this.$router.replace({name:'/'});
         },
         getAuthenticateAccounts(url) {
+            if (this.active !== url) this.currentPage = 1;
             this.active = url;
             this.$store.dispatch('getAuthenticateAccounts', {pageSize: 18, currentPage: this.currentPage, state: this.map[url], });
             // this.$router.replace({path:`/boss`});

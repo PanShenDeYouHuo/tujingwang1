@@ -41,12 +41,13 @@
                    
                     <!-- <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-show="!user._id">注册</v-btn> -->
 
-                    <!-- 登入显示 -->
-                    <v-btn v-if="user._id" flat @click="change('publish')"  class="menu-btn-o">
+                    <!-- 登入且客服显示显示 -->
+                    <v-btn v-if="user._id && user.authority.indexOf('service') !== -1" flat @click="change('publish')"  class="menu-btn-o">
                         <i class="material-icons">cloud_upload</i>
                         <!-- <span>发布</span> -->
                     </v-btn>
 
+                    <!-- 通知 -->
                     <v-menu offset-y left min-width="310" max-width="310" v-if="user._id" >
                         <v-btn flat slot="activator" class="menu-btn-o">
                             <v-badge color="red" v-model="this.notifyShow">
@@ -71,7 +72,7 @@
                                     <v-list-tile @click="urlChange(notify.router)">
                                         <v-list-tile-content>
                                         <v-list-tile-title class="body-2 " v-bind:class="{'grey--text': notify.state === 1}" style="font-weight:bold;">【{{notifyType[notify.ntype]}}】</v-list-tile-title>
-                                        <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" > {{notify.state}}{{notify.concent}}</v-list-tile-title>
+                                        <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" > {{notify.concent}}</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -83,7 +84,10 @@
 
                             <v-card-actions>
                                 <v-flex xs12 class="text-xs-center" >
+                                    <v-btn @click="urlChange('/notify')">
+
                                     <span class="body-2" style="font-weight:bold; ">查看全部</span>
+                                    </v-btn>
                                 </v-flex>
                             </v-card-actions>
                         </v-card>

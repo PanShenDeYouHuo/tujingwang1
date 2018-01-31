@@ -19,21 +19,26 @@ const Work = () => import('@/components/publish/Work');
 const Projects = () => import('@/components/publish/Projects');
 const Project = () => import('@/components/publish/Project');
 
+//管理员界面
 const Admin = ()=> import('@/components/admin');
 const Aam = ()=> import('@/components/admin/Aam');
 const Sd = ()=> import('@/components/admin/Sd');
 const Cr = ()=> import('@/components/admin/Cr');
 
+//boss界面
 const Boss = ()=> import('@/components/boss');
 const Statistics = ()=> import('@/components/boss/Statistics');
 const Authority = ()=> import('@/components/boss/Authority');
 const Authenticate = ()=> import('@/components/boss/Authenticate');
 const Setting = ()=> import('@/components/boss/Setting')
 
+//账号管理界面
 const Account = ()=> import('@/components/account');
 const PersonalData = ()=> import('@/components/account/PersonalData');
 const AccountSecurity = ()=> import('@/components/account/AccountSecurity');
 
+//通知界面
+const Notify = ()=> import('@/components/notify')
 
 Vue.use(Router);
 
@@ -112,7 +117,8 @@ export default new Router({
           component: AccountSecurity
         }
       ]
-    }
+    },
+    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: false}}
 
   ],
 });

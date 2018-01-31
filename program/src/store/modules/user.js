@@ -111,6 +111,11 @@ let actions = {
 		});
 	},
 
+	//修改通知阅读状态
+	putNotify({commit, state, rootState}) {
+		rootState.socketClass.myEmit('putNotify',)
+	}
+
 
 };
 

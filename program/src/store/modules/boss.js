@@ -23,17 +23,18 @@ let mutations = {
     },
     
     setStaffAccounts(state, data) {
-        let buf = data.users
-        for (let i in buf) {
-
-            buf[i].menu = false;
+        state.staffAccounts = data.users;
+        for (let i in data.users) {
+            state.staffAccounts[i].menu = false;
         }
-        state.staffAccounts = buf;
         state.staffAccountsCount = data.count;
     },
 
     setAuthenticateAccounts(state, data) {
-        state.authenticateAccounts = data.users;
+        state.authenticateAccounts = [];
+        for ( let i in data.users) {
+                state.authenticateAccounts[i] = data.users[i];
+            }
         state.authenticateAccountsCount = data.count;
     },
 
