@@ -28,6 +28,7 @@ let state = {
 
 let mutations = {
 	setUser(state, newUser) {
+		console.log(newUser);
 		for (var key in newUser) {
 			state[key] = newUser[key];
 		}
@@ -76,6 +77,7 @@ let actions = {
 			//获取通知信息
 			rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
 			.then((res)=> {
+				console.log(res);
 				commit('setNotify', res);
 			})
 			.catch((err)=> {
