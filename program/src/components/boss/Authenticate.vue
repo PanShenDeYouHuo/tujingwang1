@@ -23,14 +23,8 @@
                         <v-card style="">
                                     
                             <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="132px">
-                                <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small>{{job}}</v-chip>
                             </v-card-media>
 
-                            <!-- <v-btn flat fab class="hand" style="height: 80px; width: 80px; min-width: 20px; margin: 0px; padding: 0px;" @click="openAuth(index)">
-                                <v-avatar size="80px">
-                                    <img :src=" staff.headimgurl " alt="Avatar" >
-                                </v-avatar>
-                            </v-btn> -->
                             <div class="caption" style="padding-top:10px; padding-left:10px; ">
                                 <span class="grey--text caption">姓名：</span>
                                 <span v-if="staff.realInformation.state === 2" style="font-weight:bold;">{{staff.realInformation.name}}</span>

@@ -1,9 +1,17 @@
 <template>
   <v-app id="app">
+    
+    <!-- 载入进度条 -->
+    <div class="elevation-1" v-show="this.$store.state.appLoading"  style="background-color: #fff; top: 51px;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+
+      <v-progress-linear :indeterminate="this.$store.state.appLoading" style="margin: 0px;" height="3" color="yellow " background-color="black"></v-progress-linear>
+
+    </div>
 
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0"> -->
+
     <div class="elevation-3" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
-      
+
       <pmenu @toLogin="to_login()"></pmenu>
 
     </div>
@@ -153,10 +161,10 @@ export default {
   },
   mounted(){
     setTimeout(()=> {
-          if( !this.$store.state.url[1]) {
-            console.log(this.$route.path)
-              this.$store.dispatch('initRouter', this.$route.path);
-          }
+      if( !this.$store.state.url[0]) {
+        console.log(this.$route.path)
+          this.$store.dispatch('initRouter', this.$route.path);
+      }
 
     }, 100);
   },
@@ -258,12 +266,12 @@ html,body{overflow:visible; height: 100%;}
 
 
 
-.btn--raised {
+/* .btn--raised {
     -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
     box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);
-}
+} */
 
-  .pagination__item{
+  /* .pagination__item{
      -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
     box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);  
   }
@@ -271,16 +279,17 @@ html,body{overflow:visible; height: 100%;}
   .pagination__item--active{
       color: #333;
       background: #333 !important;
-  }
+  } */
 
-  .pagination__navigation{
+  /* .pagination__navigation{
       -webkit-box-shadow: 0 0px 2px rgba(0,0,0,0.15), 0 0px 1px rgba(0,0,0,0.7);
       box-shadow: 0 0px 1px rgba(0,0,0,0.05), 0 0px 1px rgba(0,0,0,0.1);  
-  }
+  } */
 
   .my-btn .btn__content {
 
     padding:0px 6px 0px 6px !important;
+
   }
 
 

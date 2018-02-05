@@ -74,15 +74,14 @@ let actions = {
 			//用户数据保存
 			commit('setUser', data);
 
-			//获取通知信息
-			rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
-			.then((res)=> {
-				console.log(res);
-				commit('setNotify', res);
-			})
-			.catch((err)=> {
-				console.log(err);
-			});
+			// //获取通知信息
+			// rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
+			// .then((res)=> {
+			// 	commit('setNotify', res);
+			// })
+			// .catch((err)=> {
+			// 	console.log(err);
+			// });
 		});
 	},
 
@@ -98,12 +97,16 @@ let actions = {
 		});
 	},
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	//通知接口
 	notify({commit, state, rootState}) {
 		rootState.socketClass.socket.on('notify', ()=> {
-			rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
+			rootState.socketClass.myEmit('getNotify', {notifyType: state.notifyType})
 			.then((res)=> {
-				console.log(res);
 				commit('setNotify', res);
 				rootState.infoSnackbar = {state: true, text: '您有新的通知'};
 			})
@@ -113,9 +116,46 @@ let actions = {
 		});
 	},
 
+	//获取通知
+	getNotify({commit, state, rootState}, data) {
+		return new Promise((resolve, reject)=> {
+
+			rootState.socketClass.myEmit('getNotify', {notifyType: data.notifyType})
+			.then((res)=> {
+				commit('setNotify', res);
+
+				resolve();
+			})
+			.catch((err)=> {
+				console.log(err);
+			})
+		});
+	},
+
+	//获取通知
+	getNotifyReturn({commit, state, rootState}, data) {
+		return new Promise((resolve, reject)=> {
+			rootState.appLoading = true;
+			rootState.socketClass.myEmit('getNotify', {notifyType: data.notifyType,  currentPage: data.currentPage})
+			.then((res)=> {
+				// commit('setNotify', res);
+				rootState.appLoading = false;
+				resolve(res);
+			})
+			.catch((err)=> {
+				rootState.appLoading = false;
+			})
+		});
+	},
+
 	//修改通知阅读状态
-	putNotify({commit, state, rootState}) {
-		rootState.socketClass.myEmit('putNotify',)
+	putNotify({commit, state, rootState}, data) {
+		return new Promise((resolve, reject)=> {
+			rootState.socketClass.myEmit('putNotify', {_id: data._id})
+			.then((res)=> {
+				resolve();
+			});
+		});
 	}
 
 

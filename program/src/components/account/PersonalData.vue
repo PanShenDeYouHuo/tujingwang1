@@ -41,6 +41,13 @@
 
                                 <v-flex>
                                     <span class="grey--text">
+                                        名字：
+                                    </span>
+                                    <span v-if="user.realInformation.state === 2" style="font-weight:bold;">{{user.realInformation.name}}</span>
+                                    <span v-else style="font-weight:bold;" class="red--text">未认证</span>
+                                </v-flex>
+                                <v-flex>
+                                    <span class="grey--text">
                                         手机：
                                     </span>
                                     <span>

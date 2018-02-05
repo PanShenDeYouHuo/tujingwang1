@@ -19,7 +19,7 @@
 
 
         <div style=" overflow:auto; ">
-            <v-container grid-list-lg fluid style=" background-color: #fff; padding-top: 66px;" >
+            <v-container grid-list-lg fluid style=" padding-top: 66px;" >
 
                 <v-layout row wrap v-if="projectList.length">
 
@@ -155,18 +155,17 @@ export default {
         createTime(_id) {
             let nowYear = new Date();
             let createTime = new Date(parseInt(_id.substr(0, 8),16)*1000);
-
-            let year = nowYear.getFullYear() - createTime.getFullYear();     
-            if( year >= 1 ) {
-                return  `${year}年前`
-            }
+            return `${createTime.getFullYear()}/${createTime.getMonth() + 1}/${createTime.getDate()}`;
 
             let timeDifference = (new Date().getTime()) - (parseInt(_id.substr(0, 8),16)*1000)
 
             let dayDifference = Math.round( timeDifference / 1000 / 86400);
 
-            if( dayDifference > 0) {
+            if( dayDifference > 0 && dayDifference < 365) {
                 return `${dayDifference}天前`
+            } else if( dayDifference > 365 ) {
+                let year = nowYear.getFullYear() - createTime.getFullYear();
+                return `${year}年前`
             }
 
             let hoursDifference = Math.round( timeDifference / 1000 / 3600);
@@ -214,7 +213,7 @@ export default {
         /* padding: 16px; */
         /* padding-top: 50px; */
         min-width: 1280px;
-        background-color: #fff;
+        background-color: rgb(244, 244, 244);
         /* display: flex; */
         /* background-position:center;  */
         /* max-width: 1220px; */

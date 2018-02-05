@@ -398,6 +398,8 @@ export default {
             let nowYear = new Date();
             let createTime = new Date(parseInt(_id.substring(0, 8),16)*1000);
 
+            return `${createTime.getFullYear()}/${createTime.getMonth() + 1}/${createTime.getDate()} ${createTime.getHours()}:${createTime.getMinutes()}`;
+
             let year = nowYear.getFullYear() - createTime.getFullYear();     
             if( year >= 1 ) {
                 return  `${year}年前`
@@ -467,7 +469,7 @@ export default {
 
         overflow: auto;
         min-width: 1280px;
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(244, 244, 244);
         /* background-position:center;  */
         /* max-width: 1220px; */
         /* min-width: 965px;

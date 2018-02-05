@@ -15,18 +15,17 @@
                 </v-layout>
             </v-flex>
 
-
             <!-- 导航按钮 -->
 
             <v-flex lg8>
                 <v-layout justify-center align-content-space-between>
-                    <v-btn v-for=" (text, index) in menuText" 
+                    <v-btn v-for=" text in menuText"
                     class="menu-btn"
                     flat
-                    :key="text.name"
-                    v-bind:class="{'menu-active': active[index]}"
-                    @click="change(text.router)">
-                        {{text.name}}
+                    :key="text.title"
+                    v-bind:class="{'menu-active': text.url === active}"
+                    @click="urlChange(text.url)">
+                        {{text.title}}
                      </v-btn>
                 </v-layout>
             </v-flex>
@@ -42,7 +41,7 @@
                     <!-- <v-btn flat style="margin-left: 0px;  min-width: 10px; color: #aaa" v-show="!user._id">注册</v-btn> -->
 
                     <!-- 登入且客服显示显示 -->
-                    <v-btn v-if="user._id && user.authority.indexOf('service') !== -1" flat @click="change('publish')"  class="menu-btn-o">
+                    <v-btn v-if="user._id && user.authority.indexOf('service') !== -1" flat @click="urlChange('/publish')"  class="menu-btn-o">
                         <i class="material-icons">cloud_upload</i>
                         <!-- <span>发布</span> -->
                     </v-btn>
@@ -66,13 +65,13 @@
 
             
 
-                            <v-list style="height: 230px; overflow-y:scroll;">
+                            <v-list style="height: 230px; overflow-y:auto;">
                                 <div v-for="(notify, index) in notifyData" :key="index">
 
-                                    <v-list-tile @click="urlChange(notify.router)">
+                                    <v-list-tile @click="putNotify(notify)">
                                         <v-list-tile-content>
                                         <v-list-tile-title class="body-2 " v-bind:class="{'grey--text': notify.state === 1}" style="font-weight:bold;">【{{notifyType[notify.ntype]}}】</v-list-tile-title>
-                                        <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" > {{notify.concent}}</v-list-tile-title>
+                                        <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" >{{notify.concent}}</v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                     <v-divider></v-divider>
@@ -105,30 +104,36 @@
                         </v-btn>
                         <!-- 菜单 -->
                         <v-list dense>
-                            <div v-for="(item, index) in items" :key="item.title">
 
-                                <v-list-tile v-if="item.title"  :key="index" @click="urlChange(item.url)">
-                                    <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
-                                </v-list-tile>
 
-                                <!-- <v-divider v-else-if="item.divider" :key="index"></v-divider>
+                            <v-list-tile v-for="item in items" :key="item.title"  @click="urlChange(item.url)">
+                                <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
+                            </v-list-tile>
 
-                                <v-list-tile v-else :key="index" @click="signOut()">
-                                    <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
-                                </v-list-tile> -->
+                            <!-- <v-divider v-else-if="item.divider" :key="index"></v-divider>
 
-                            </div>
+                            <v-list-tile v-else :key="index" @click="signOut()">
+                                <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
+                            </v-list-tile> -->
 
-                            <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="urlChange('/admin/sd')">
-                                <v-list-tile-title class="body-1">系统管理</v-list-tile-title>
+                            <v-list-tile v-if="user.authority.indexOf('leder') !== -1"  @click="urlChange('/temas')">
+                                <v-list-tile-title class="body-1">我的团队</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-list-tile v-if="user.authority.indexOf('serviceMaster') !== -1"  @click="urlChange('/customer')">
+                                <v-list-tile-title class="body-1">客户管理</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-list-tile v-if="user.authority.indexOf('financial') !== -1"  @click="urlChange('/financial')">
+                                <v-list-tile-title class="body-1">财务管理</v-list-tile-title>
                             </v-list-tile>
 
                             <v-list-tile v-if="user.authority.indexOf('boss') !== -1"  @click="urlChange('/boss/statistics')">
                                 <v-list-tile-title class="body-1">公司管理</v-list-tile-title>
                             </v-list-tile>
 
-                            <v-list-tile v-if="user.authority.indexOf('financial') !== -1"  @click="urlChange('/financial')">
-                                <v-list-tile-title class="body-1">财务管理</v-list-tile-title>
+                            <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="urlChange('/admin/sd')">
+                                <v-list-tile-title class="body-1">系统管理</v-list-tile-title>
                             </v-list-tile>
 
                             <v-divider></v-divider>
@@ -158,17 +163,16 @@ export default {
             dialog: false,
             text:'首页',
             menuText: [
-                { name: '首页',router: '/' },
-                { name: '项目',router: 'works' },
-                { name: '资讯',router: 'login' },
-                { name: '活动',router: 'activity' },
-                { name: '素材',router: 'material'},
+                { title: '首页',router: '/', url: '/' },
+                { title: '项目',router: 'works', url: '/works'},
+                { title: '资讯',router: 'login', url: '/login'},
+                { title: '活动',router: 'activity', url: '/statistics'},
+                { title: '素材',router: 'material', url: '/material'},
             ],
-            active: [],
+
             items: [
                 // { title: '我的作品', router: 'works' },
                 { title: '我的项目', router: 'projects', url: '/projects' },
-                { title: '我的团队', router: 'temas', url: '/temas' },
                 { title: '我的统计', router: 'statistics', url: '/statistics' },
                 { title: '账号管理', router: 'account', url: '/account/personalData' },
             ],
@@ -184,10 +188,17 @@ export default {
             // let l = url.length;
             // this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
             return this.$store.state.user;
+            console.log(this.$store.state.url[1]);
         },
+
         notifyData() {
             return this.$store.state.user.notify;
         },
+        //当前路由
+        active() {
+             return this.$store.state.url[0];
+        },
+        //当前未读通知个数
         notifyNumber() {
             let number = 0;
             let notifyData = this.$store.state.user.notify;
@@ -196,38 +207,31 @@ export default {
                     number++;
                 }
             }
-            // console.log(number);
             return number;
         },
-
+        //0个是不显示个数
         notifyShow() {
             return this.notifyNumber > 0 ? true : false;
         }
     },
     methods: {
 
-        activeSelection(router) {
-            let result = [];
-            for (var index in this.menuText) {
-                if (this.menuText[index].router === '/') {
-                    result[index] = this.menuText[index].router === router ? true : false;
-                    continue;
-                }
-                result[index] = '/' + this.menuText[index].router === router ? true : false; 
-            }
-            this.active = result;
-        },
-        change(routerName) {
-            this.$router.replace({name:routerName});
-            // this.$emit('change',aa);
-        },
+        //路由跳转
         urlChange(path) {
-            this.$router.replace({path});
+            this.$router.push({path});
         },
-        // //用户侧变导航开事件
-        // toggleRightSidenav() {
-        //     this.$emit('toggleRightSidenav');
-        // },
+
+        //查看通知
+        async putNotify(notify){
+            try {
+                await this.$store.dispatch('putNotify', {_id: notify._id});
+                this.urlChange(notify.router);
+                this.$store.dispatch('getNotify', {notifyType: 0});
+            } catch (err) {
+                console.log(err);                
+            }
+        },
+
         //登入侧边导航开事件
         to_login() {
             this.$emit('toLogin');
@@ -237,13 +241,7 @@ export default {
         }
     },
     mounted(){
-        //初始化
-        this.activeSelection(window.location.pathname);
-        //捕捉路由变化改变菜单
-        this.$router.beforeEach((to, from, next) => {
-            this.activeSelection(to.path);
-			next();
-		});
+
     },
     beforeCreate() {
 

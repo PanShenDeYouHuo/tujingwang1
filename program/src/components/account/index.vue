@@ -101,6 +101,7 @@ export default {
 <style scoped> 
 
   .account {
+      background-color: rgb(244, 244, 244);
       width: 100%;
   }
 

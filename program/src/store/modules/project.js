@@ -118,17 +118,21 @@ let actions = {
 
     //创建项目
     postProject({commit, state, rootState}, projectName) {
-        state.postProjectLoading = true;
-        rootState.socketClass.myEmit( 'postProject',{name: projectName, uid:rootState.user._id})
-        .then((pid)=> {
-            rootState.router.replace({name: 'project', params:{pid}});
-            state.postProjectLoading = false;
-        })
-        .catch((err)=> {
-            setTimeout(() => {
-                state.postProjectLoading = false;
+        return new Promise((resolve, reject)=> {
+            rootState.appLoading = true;
+            console.log('开始')
+            rootState.socketClass.myEmit( 'postProject',{name: projectName, uid:rootState.user._id})
+            .then((pid)=> {
+                console.log('返回')
+                rootState.router.replace({name: 'project', params:{pid}});
+                rootState.appLoading = false;
+                resolve();
+            })
+            .catch((err)=> {
+                rootState.appLoading = false;
                 rootState.errorSnackbar = { state: true, text: err.message };
-            }, 800);
+                reject(err);
+            });
         });
 
     },

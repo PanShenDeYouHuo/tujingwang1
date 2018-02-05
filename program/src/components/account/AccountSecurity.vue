@@ -185,7 +185,7 @@
                             </v-layout>
 
                          </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions v-if="accountSecurity.btnState">
                         <v-spacer></v-spacer>
                         <v-btn small flat @click="accountSecurity.dialog = false" :disabled="this.$store.state.appLoading">取消</v-btn>
                         <v-btn small  color="yellow darken-1" style="min-width: 0px;" @click="accountSecurity.dialog = true; InfoAuth()" :disabled="this.$store.state.appLoading">申请认证</v-btn>
@@ -216,6 +216,8 @@ export default {
                 IDNumber: '',           //身份证号码
                 bankCardAccount: '',    //银行卡账号
                 openingBank: '',        //开户行
+
+                btnState: true,         //是否显示按钮
             },
             //身份证正面
             IDCardFront: {

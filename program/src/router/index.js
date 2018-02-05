@@ -89,11 +89,11 @@ export default new Router({
     { name: 'boss', path: '/boss', component: Boss, meta: {keepAlive: false},
       children:[
         {
-          path:'Authority',
+          path:'authority',
           component: Authority
         },
         {
-          path:'Authenticate',
+          path:'authenticate',
           component: Authenticate
         },
         {
@@ -118,7 +118,7 @@ export default new Router({
         }
       ]
     },
-    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: false}}
+    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: true}}
 
   ],
 });

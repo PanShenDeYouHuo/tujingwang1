@@ -9,7 +9,7 @@
 
             <v-flex xs12>
                 <v-layout justify-center align-content-space-between align-center>
-                    <span class="grey--text" style="margin-right: 20px;">{{title}}</span>
+                    <!-- <span class="grey--text" style="margin-right: 20px;">{{title}}</span> -->
                     <v-btn v-for=" item in items" 
                     class="menu-btn"
                     flat small
@@ -80,13 +80,14 @@ export default {
     .menu-btn {
         margin-left: 0px;
         margin-right: 0px;
-        min-width: 0px;
-        /* height: 50px; */
-        /* margin: 0px; */
-        /* font-size: 16px; */
-        /* border-radius: 0px; */
-        /* padding-top: 5px;  */
-        /* border-style:solid; border-width: 0px 0px 4px 0px; border-color: rgba(0, 0, 0, 0); */
+        min-width: 75px;
+        height: 50px;
+        margin: 0px;
+        font-size: 16px;
+        border-radius: 0px;
+        padding-top: 5px;
+        color: #aaaaaa;
+        border-style:solid; border-width: 0px 0px 2px 0px; border-color: rgba(0, 0, 0, 0);
     }
 
     /* .menu-btn-o {
@@ -98,8 +99,8 @@ export default {
     } */
 
     .menu-active {
-        color: #e53935;
-        /* border-style:solid; border-width: 0px 0px 4px 0px; border-color: #ffeb3b; */
+        color: #000;
+        border-style:solid; border-width: 0px 0px 2px 0px; border-color: #000;
         
         
     }

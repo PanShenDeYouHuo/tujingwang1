@@ -23,9 +23,11 @@ let mutations = {
     },
     
     setStaffAccounts(state, data) {
-        state.staffAccounts = data.users;
+        state.staffAccounts = [];
         for (let i in data.users) {
-            state.staffAccounts[i].menu = false;
+            setTimeout(() => {
+                state.staffAccounts.push(data.users[i]);
+            }, i*25);
         }
         state.staffAccountsCount = data.count;
     },
@@ -61,8 +63,8 @@ let actions = {
         rootState.appLoading = true;
         rootState.socketClass.myEmit('getStaffAccounts', {pageSize: data.pageSize, currentPage: data.currentPage, authority: data.authority, _id: rootState.user._id})
         .then((res)=> {
-            commit('setStaffAccounts', res);
             setTimeout(() => {
+                commit('setStaffAccounts', res);
                 rootState.appLoading = false;
             }, 300);
         })

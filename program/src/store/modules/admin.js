@@ -1,6 +1,4 @@
-import { resolve } from "path";
-
-
+//"vuetify": "^0.16.9",
 let state = {
     totalAccount: 0,        //总注册账号数
     disableAccount: 0,      //禁止使用账号数
@@ -107,27 +105,27 @@ let actions = {
         });
     },
 
-    /**
-     * 注册成功回掉
-     * 
-     * @param {any} {commit, state, rootState} 
-     * @param {any} data 
-     */
-    bossWechatRegSuccess({commit, state, rootState}) {
+    // /**
+    //  * 注册成功回掉
+    //  * 
+    //  * @param {any} {commit, state, rootState} 
+    //  * @param {any} data 
+    //  */
+    // bossWechatRegSuccess({commit, state, rootState}) {
 
-        return new Promise((resolve, reject)=> {
+    //     return new Promise((resolve, reject)=> {
             
-            rootState.socketClass.socket.on('bossWechatRegSuccess',(data)=> {
-                setTimeout(() => {
-                    rootState.successSnackbar = {state: true, text: data};
-                }, 800);
-                resolve('success');
-            });
+    //         rootState.socketClass.socket.on('bossWechatRegSuccess',(data)=> {
+    //             setTimeout(() => {
+    //                 rootState.successSnackbar = {state: true, text: data};
+    //             }, 800);
+    //             resolve('success');
+    //         });
 
 
-        });
+    //     });
 
-    }
+    // }
 
 
 };

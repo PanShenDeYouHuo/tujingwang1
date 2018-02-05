@@ -20,12 +20,12 @@
                     </v-flex>
 
 
-                    <v-flex xs2 v-for="staff in boss.staffAccounts" :key="staff._id">
+                    <v-flex xs2 v-for="(staff, index) in boss.staffAccounts" :key="staff._id">
 
                         <v-card style="">
                                     
-                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="132px" @click="">
-                                <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small>{{job}}</v-chip>
+                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="132px" @click="1">
+                                <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small >{{job}}</v-chip>
                             </v-card-media>
 
                             <!-- <v-btn flat fab class="hand" style="height: 80px; width: 80px; min-width: 20px; margin: 0px; padding: 0px;" @click="openAuth(index)">
@@ -47,22 +47,19 @@
                            <v-divider></v-divider>
                             <v-card-actions>
 
-                                <!-- <v-btn class="my-btn text-xs-center" flat small @click="authority.dialog = true">
-                                    <span class="grey--text caption">权限设置</span>
-                                </v-btn> -->
 
                                 <v-menu
                                     offset-x
                                     :close-on-content-click="false"
                                     :nudge-width="200"
-                                    v-model="staff.menu"
+                                    v-model="staffMenu[index]"
                                     max-width='350'
                                 >
-                                    <v-btn class="my-btn text-xs-center" flat small slot="activator" @click="open()">
+                                    <v-btn class="my-btn text-xs-center" flat small slot="activator" @click="open(staff.authority)">
                                         <span class="grey--text caption">设置</span>
                                     </v-btn>
                                     <!-- <v-btn color="indigo" dark slot="activator">Menu as Popover</v-btn> -->
-                                    <v-card>
+                                    <v-card v-if="staffMenu[index]">
                                         <v-list>
                                             <v-list-tile avatar>
                                                 <v-list-tile-avatar>
@@ -71,15 +68,7 @@
                                                 <v-list-tile-content>
                                                     <v-list-tile-title>{{staff.nickname}}</v-list-tile-title>
                                                 </v-list-tile-content>
-                                                <v-list-tile-action>
-                                                <!-- <v-btn
-                                                    icon
-                                                    :class="fav ? 'red--text' : ''"
-                                                    @click="fav = !fav"
-                                                >
-                                                    <v-icon>favorite</v-icon>
-                                                </v-btn> -->
-                                                </v-list-tile-action>
+ 
                                             </v-list-tile>
                                         </v-list>
                                         <v-divider></v-divider>
@@ -88,16 +77,15 @@
                                             <v-flex xs12 style="padding: 12px;">
 
                                                 <v-select
-                                                    label="权限"
-                                                    v-bind:items="people"
-                                                    v-model="staff.authority"
-                                                    item-text="router"
-                                                    item-value="router"
-                                                    multiple
-                                                    chips
-                                                    max-height="auto"
-                                                    autocomplete
-                
+                                                label="权限"
+                                                v-bind:items="people"
+                                                v-model="staff.authority"
+                                                item-text="router"
+                                                item-value="router"
+                                                multiple
+                                                chips
+                                                max-height="auto"
+                                                autocomplete
                                                 >
                                                     <template slot="selection" slot-scope="data">
                                                         <v-chip
@@ -108,10 +96,7 @@
                                                             :key="JSON.stringify(data.item)"
                                                             color="red"
                                                         >
-                                                        <!-- <v-avatar>
-                                                            <img :src="data.item.avatar">
-                                                        </v-avatar> -->
-                                                            {{ data.item.router }}
+                                                        {{ data.item.router }}
                                                         </v-chip>
                                                     </template>
                                                     <template slot="item" slot-scope="data">
@@ -129,14 +114,16 @@
                                                         </template>
                                                         
                                                     </template>
+                                                    
                                                 </v-select>
+
                                             </v-flex>
                                         </v-layout>
 
                                         <v-card-actions>
                                             <v-spacer></v-spacer>
-                                            <v-btn flat small @click="cancel(staff)" :disabled="appLoading">取消</v-btn>
-                                            <v-btn color="primary" flat small @click="putAuthority(staff)" :disabled="appLoading" :loading="appLoading">保存</v-btn>
+                                            <v-btn flat small @click="cancel(staff, index)" :disabled="appLoading">取消</v-btn>
+                                            <v-btn color="primary" flat small @click="putAuthority(staff, index)" :disabled="appLoading" :loading="appLoading">保存</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                 </v-menu>
@@ -177,7 +164,7 @@ export default {
     data() {
         return {
             authority: {
-                menu: false,
+                menu: true,
             },
             currentPage: 1,
 
@@ -192,24 +179,15 @@ export default {
             active: '',
 
             e11: [],
+
+            staffMenu: [],
+
             people: [
-                // { header: 'Group 1'},
-                // { name: 'Sandra Adams', group: 'Group 1',  },
-                // { name: 'Ali Connors', group: 'Group 1', },
-                // { name: 'Trevor Hansen', group: 'Group 1', },
-                // { name: 'Tucker Smith', group: 'Group 1',},
-                // { divider: true },
-                // { header: 'Group 2'},
-                // { name: 'Britta Holt', group: 'Group 2'},
-                // { name: 'Jane Smith ', group: 'Group 2', },
-                // { name: 'John Smith', group: 'Group 2', },
-                // { name: 'Sandra Williams', group: 'Group 2', }
                 { name: '财务', description: '授权财务的权限', router: 'financial' },
                 { name: '客服', description: '授权客服的基本权限', router: 'service'},
                 { name: '客服主管', description: '授权客服处理客户账号的权限', router: 'serviceMaster' },
                 { name: '组长', description: '授权组长的权限', router: 'leder'},
                 { name: '渲染师', description: '授权渲染师的权限', router: 'render'}
-                
             ],
         }
     },
@@ -243,26 +221,28 @@ export default {
             }#wechat_redirect`);
         },
 
-        cancel(staff) {
-            if( !this.e11) {
+        cancel(staff, index) {
+            if( !this.e11.length ) {
                 staff.authority = [];
             } else {
                 for (let i in this.e11) {
+                    staff.authority = [];
                     staff.authority[i] = this.e11[i];
                 }
             }
-            staff.menu = false;
+            this.staffMenu[index] = false;
         },
 
-        open(authority) {
+        open(authority, index) {
+            this.staffMenu[index] = true;
             this.e11 = authority;
         },
 
         //修改员工权限
-        async putAuthority(staff) {
+        async putAuthority(staff, index) {
             try {
                 await this.$store.dispatch('putAuthority', {_id: staff._id, authority: staff.authority});
-                staff.menu = false;
+                this.staffMenu[index] = false;
             } catch (err) {
                 cancel(staff);
                 console.log(err);
@@ -271,7 +251,9 @@ export default {
     },
     mounted(){
         //初始化，获取账号列表
-        this.getStaffAccounts(this.items[0].url);
+        setTimeout(() => {
+            this.getStaffAccounts(this.items[0].url);
+        }, 300);
 
         //注册成功的回调
         this.$store.state.socketClass.socket.on('staffWechatRegSuccess', (data)=> {

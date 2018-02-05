@@ -70,8 +70,8 @@ export default {
 
             items: [
                 {name: '统计', router: 'statistics', url: '/statistics'},
-                {name: '权限', router: 'Authority', url: '/Authority'},
-                {name: '认证', router: 'Authenticate', url: '/Authenticate'},
+                {name: '权限', router: 'authority', url: '/authority'},
+                {name: '认证', router: 'authenticate', url: '/authenticate'},
                 {name: '设置', router: 'setting', url: '/setting'},
             ],
 
@@ -82,11 +82,12 @@ export default {
     },
     methods: {
         quit() {
-            this.$router.replace({name:'/'});
+           this.$router.go(-1)
+            // this.$router.replace({name:'/'});
         },
 
         urlChange( url ) {
-            this.$router.replace({path: `/boss${url}`});
+            this.$router.push({path: `/boss${url}`});
         }
 
     },
@@ -106,7 +107,7 @@ export default {
 
   .boss {
       width: 100%;
-      background-color: rgb(254, 254, 254);
+      background-color: rgb(244, 244, 244);
 
 
   }
