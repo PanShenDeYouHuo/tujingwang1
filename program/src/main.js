@@ -2,12 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue';
-// const Vue = () => import('vue')
-
 
 //vuetify
 import Vuetify from 'vuetify'
-// const Vuetify = () => import('vuetify')
 
 Vue.use(Vuetify)
 

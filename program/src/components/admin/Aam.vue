@@ -1,7 +1,7 @@
 <template>
   <div class="aam">
 
-    <v-container grid-list-xl fluid >
+    <v-container grid-list-xl fluid  class="" style="padding: 12px; padding-top: 16px; ">
       <v-layout row wrap>
         <v-flex xs4>
           <v-card class="text-xs-center" style="padding:20px">
@@ -27,7 +27,7 @@
           <v-card>
 
             <v-card-title style="padding: 0px 16px;">
-              <buttongroup title="状态" :items="items" active="使用" @change="getBossAccounts"></buttongroup>
+              <buttongroup title="状态" :items="items" :active="active" @change="getBossAccounts"></buttongroup>
               <v-spacer></v-spacer>
               <v-btn outline color="black" @click="bossWechatReg()">
                     注册
@@ -71,7 +71,7 @@
 
                           <v-card flat>
                             <v-card-text>
-                              <v-switch v-bind:label="`基础系统: ${ex11 ? '允许' : '禁止'}`" v-model="ex11"></v-switch>
+                              <v-switch color='yellow' v-bind:label="`基础系统: ${ex11 ? '允许' : '禁止'}`" v-model="ex11"></v-switch>
                             </v-card-text>
                           </v-card>
                           
@@ -103,8 +103,8 @@ export default {
       currentPage: 1,
       active: '',
       items: [
-        {name: '使用'},
-        {name: '禁用'},
+        {name: '使用', router: 'ok', url: '/ok'},
+        {name: '禁用', router: 'no', url: '/no'},
       ],
       nproject: {
         dialog: false,
@@ -143,12 +143,12 @@ export default {
     },
 
     //获取boss级账号列表
-    getBossAccounts(item) {
-      this.active = item;
-      let state = 1;
-      if(item.name === "禁用") state = 2;
+    getBossAccounts(url) {
+      this.active = url;
+      let isDisable = 0;
+      if(url === '/no') isDisable = 1;
 
-      this.$store.dispatch('getBossAccounts', {pageSize: 18, currentPage: this.currentPage, state})
+      this.$store.dispatch('getBossAccounts', {pageSize: 18, currentPage: this.currentPage, isDisable})
     },
 
     //打开权限设置
@@ -156,17 +156,16 @@ export default {
       // console.log(this.admin.bossAccounts[index].state);
       this.admin.bossAccount = this.admin.bossAccounts[index];
       this.ex11 = true;
-      if( this.admin.bossAccounts[index].state == 2 ) this.ex11 = false;
+      if( this.admin.bossAccounts[index].isDisable === 1 ) this.ex11 = false;
       this.nproject.dialog = true;
-
     },
 
     //修改权限
     putBossAccount() {
-      let state = 0;
-      if(this.ex11 === false) state = 2;
+      let isDisable = 0;
+      if(this.ex11 === false) isDisable = 1;
       let _id = this.admin.bossAccount._id;
-      this.$store.dispatch('putBossAccount', {_id,state})
+      this.$store.dispatch('putBossAccount', {_id,isDisable})
       .then((res)=> {
         this.getBossAccounts(this.active);
         this.$store.dispatch('getBossAccountStatistics');
@@ -180,19 +179,20 @@ export default {
   },
   mounted(){
 
+    //初始化账号统计
     this.$store.dispatch('getBossAccountStatistics');
     //初始化，获得账号列表
-    this.getBossAccounts(this.items[0]);
+    this.getBossAccounts(this.items[0].url);
 
-    //注册成功时刷新
-    this.$store.dispatch('bossWechatRegSuccess')
-    .then((res)=> {
-      this.getBossAccounts(this.active);
-      this.$store.dispatch('getBossAccountStatistics');
-    })
-    .catch((err)=> {
-      console.log(err);
-    })
+
+    //注册成功的回调
+    this.$store.state.socketClass.socket.on('bossWechatRegSuccess', (data)=> {
+        setTimeout(() => {
+            this.$store.state.successSnackbar = {state: true, text: data};
+        }, 800);
+        this.getBossAccounts(this.active);
+        this.$store.dispatch('getBossAccountStatistics');
+    });
     
   },
   beforeCreate() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="st">
+  <div class="sd">
 
     <v-layout row justify-center>
       <p>sd</p>
@@ -24,7 +24,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
   .sd {
-
+    width:100%;
   }
 
   

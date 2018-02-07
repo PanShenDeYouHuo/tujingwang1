@@ -44,7 +44,7 @@ let actions = {
      */
     getBossAccounts({commit, state, rootState}, data) {
         state.getBossAccountsLoading = true;
-        rootState.socketClass.myEmit('getBossAccounts', {pageSize: data.pageSize, currentPage: data.currentPage, state: data.state})
+        rootState.socketClass.myEmit('getBossAccounts', {pageSize: data.pageSize, currentPage: data.currentPage, isDisable: data.isDisable})
         .then((res)=> {
             commit('setBossAccounts', res);
             state.getBossAccountsLoading = false;

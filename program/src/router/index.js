@@ -38,31 +38,16 @@ const PersonalData = ()=> import('@/components/account/PersonalData');
 const AccountSecurity = ()=> import('@/components/account/AccountSecurity');
 
 //通知界面
-const Notify = ()=> import('@/components/notify')
+const Notify = ()=> import('@/components/notify');
+
+//客户管理
+const Customer = ()=> import('@/components/customer');
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
-    // { name: '/', path: '/', component: Home, meta: {keepAlive: true} },
-    // { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: true}
-    //   // children:[
-    //   //   {        
-    //   //     path: 'works',
-    //   //     component: Works
-    //   //   },
-    //   //   {
-    //   //     path: 'tasks',
-    //   //     component: Tasks
-    //   //   }
-    //   // ],
-    // },
-    // { name: 'works', path: '/works', component: Works },
-    // { name: 'work', path: '/works/:wid', component: Work },
-    // { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: false} },
-    // { name: 'project', path: '/projects/:pid', component: Project, meta: {keepAlive: false} },
-
     { name: '/', path: '/', component: Home, meta: {keepAlive: true} },
     { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: true} },
     { name: 'works', path: '/works', component: Works },
@@ -118,7 +103,8 @@ export default new Router({
         }
       ]
     },
-    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: true}}
+    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: true} },
+    { name: 'customer', path: '/customer', component: Customer, meta: {keepAlive: false} },
 
   ],
 });

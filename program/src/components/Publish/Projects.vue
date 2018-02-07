@@ -26,8 +26,9 @@
                     <!-- 状态筛选 -->
                     <v-flex xs12 class="py-2">
                         <v-card>
-                            <v-card-title style="padding: 0px 16px;">
-                                <buttongroup title="状态" :items="items" active="全部"></buttongroup>
+                            <v-card-title style="padding: 0px 16px; height: 48px;">
+                                <buttongroup title="" :items="items" :active="active" :disabled="this.$store.state.appLoading" @change="getNotifi"></buttongroup>
+                                <!-- <buttongroup title="状态" :items="items" active="全部"></buttongroup> -->
                             </v-card-title>
                         </v-card>
                     </v-flex>
@@ -113,141 +114,140 @@
 <script>
 import buttongroup from "../Buttongroup";
 export default {
-    name: 'projects',
-    components:{buttongroup},
-    props: [],
-    data() {
-        return {
-            text: 'center',
-            icon: 'justify',
-            toggle_none: null,
-            toggle_one: 0,
-            toggle_exclusive: 2,
-            toggle_multiple: [0, 1, 2],
+  name: "projects",
+  components: { buttongroup },
+  props: [],
+  data() {
+    return {
+      text: "center",
+      icon: "justify",
+      toggle_none: null,
+      toggle_one: 0,
+      toggle_exclusive: 2,
+      toggle_multiple: [0, 1, 2],
 
-            workingImage: require('../../assets/working1.jpg'),
-            items: [
-                {name: '全部'},
-                {name: '完成'},
-                {name: '未完成'}
-            ],
-            currentPage: 1,
-        }
+      workingImage: require("../../assets/working1.jpg"),
+
+      items: [{ name: "全部" }, { name: "完成" }, { name: "未完成" }],
+      active: "",
+      currentPage: 1
+    };
+  },
+  computed: {
+    projectList() {
+      return this.$store.state.project.listData;
     },
-    computed: {
-        projectList() {
-            return this.$store.state.project.listData;
-        },
-        projectCount() {
-            return this.$store.state.project.listCount;
-        },
-        getProjectsLoading() {
-            return this.$store.state.project.getProjectsLoading;
-        },
+    projectCount() {
+      return this.$store.state.project.listCount;
     },
-    methods: {
-        toTask() {
-            this.$router.push('/publish/task');
-        },
-        paginationChange() {
-            this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
-        },
-        createTime(_id) {
-            let nowYear = new Date();
-            let createTime = new Date(parseInt(_id.substr(0, 8),16)*1000);
-            return `${createTime.getFullYear()}/${createTime.getMonth() + 1}/${createTime.getDate()}`;
-
-            let timeDifference = (new Date().getTime()) - (parseInt(_id.substr(0, 8),16)*1000)
-
-            let dayDifference = Math.round( timeDifference / 1000 / 86400);
-
-            if( dayDifference > 0 && dayDifference < 365) {
-                return `${dayDifference}天前`
-            } else if( dayDifference > 365 ) {
-                let year = nowYear.getFullYear() - createTime.getFullYear();
-                return `${year}年前`
-            }
-
-            let hoursDifference = Math.round( timeDifference / 1000 / 3600);
-
-            if(hoursDifference > 0) {
-                return `${hoursDifference}小时前`
-            }
-
-            let minutesDifference = Math.round( timeDifference / 1000 / 60);
-             
-            return  minutesDifference !== 0 ? `${minutesDifference}分钟前` : '1分钟前';
-        },
-
-        change(routerName) {
-            console.log(routerName);
-            this.$router.replace({name:routerName});
-            // this.$emit('change',aa);
-        },
-
-        editProject(pid) {
-            this.$store.dispatch('editProject', pid);
-        }
+    getProjectsLoading() {
+      return this.$store.state.project.getProjectsLoading;
+    }
+  },
+  methods: {
+    toTask() {
+      this.$router.push("/publish/task");
     },
-    mounted(){
-        // this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
+    paginationChange() {
+        this.$store.dispatch("getProjects", {
+            pageSize: 18,
+            currentPage: this.currentPage
+        });
     },
-    beforeCreate() {
-        this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage});
+    createTime(_id) {
+      let nowYear = new Date();
+      let createTime = new Date(parseInt(_id.substr(0, 8), 16) * 1000);
+      return `${createTime.getFullYear()}/${createTime.getMonth() +
+        1}/${createTime.getDate()}`;
+
+      let timeDifference =
+        new Date().getTime() - parseInt(_id.substr(0, 8), 16) * 1000;
+
+      let dayDifference = Math.round(timeDifference / 1000 / 86400);
+
+      if (dayDifference > 0 && dayDifference < 365) {
+        return `${dayDifference}天前`;
+      } else if (dayDifference > 365) {
+        let year = nowYear.getFullYear() - createTime.getFullYear();
+        return `${year}年前`;
+      }
+
+      let hoursDifference = Math.round(timeDifference / 1000 / 3600);
+
+      if (hoursDifference > 0) {
+        return `${hoursDifference}小时前`;
+      }
+
+      let minutesDifference = Math.round(timeDifference / 1000 / 60);
+
+      return minutesDifference !== 0 ? `${minutesDifference}分钟前` : "1分钟前";
     },
 
+    change(routerName) {
+      console.log(routerName);
+      this.$router.replace({ name: routerName });
+      // this.$emit('change',aa);
+    },
+
+    editProject(pid) {
+      this.$store.dispatch("editProject", pid);
+    }
+  },
+  mounted() {
+    this.$store.dispatch("getProjects", {
+      pageSize: 18,
+      currentPage: this.currentPage
+    });
+  },
+  beforeCreate() {}
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .projects {
-        /* width:100%;
+.projects {
+  /* width:100%;
         height:50px;
         padding: 10px;
         padding-top: 70px;
         overflow:auto;
         position: absolute; */
-        /* margin: auto; */
+  /* margin: auto; */
 
-        /* padding: 16px; */
-        /* padding-top: 50px; */
-        min-width: 1280px;
-        background-color: rgb(244, 244, 244);
-        /* display: flex; */
-        /* background-position:center;  */
-        /* max-width: 1220px; */
-        /* min-width: 965px;
+  /* padding: 16px; */
+  /* padding-top: 50px; */
+  min-width: 1280px;
+  background-color: rgb(244, 244, 244);
+  /* display: flex; */
+  /* background-position:center;  */
+  /* max-width: 1220px; */
+  /* min-width: 965px;
         background-color: #fff;
         z-index:1; */
-    }
+}
 
-    .container.fluid {
-        max-width: 1320px;
-        overflow:visible
-    }
+.container.fluid {
+  max-width: 1320px;
+  overflow: visible;
+}
 
-    .card__title {
-        padding: 4px 8px 4px 10px;
-    }
-    .card__actions {
-        border-style:solid; border-width: 1px 0px 0px 0px; border-color: #ddd;
-        padding: 4px 8px 4px 6px;
-    }
+.card__title {
+  padding: 4px 8px 4px 10px;
+}
+.card__actions {
+  border-style: solid;
+  border-width: 1px 0px 0px 0px;
+  border-color: #ddd;
+  padding: 4px 8px 4px 6px;
+}
 
+.my-btn {
+  margin-left: 0px;
+  margin-right: 0px;
+  min-width: 0px;
+}
 
-    .my-btn {
-        margin-left: 0px;
-        margin-right: 0px;
-        min-width: 0px;
-        
-    }
-
-    .my-a {
-        text-decoration:none
-    }
-
-
-
-
+.my-a {
+  text-decoration: none;
+}
 </style>

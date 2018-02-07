@@ -163,9 +163,7 @@ export default {
     props: [],
     data() {
         return {
-            authority: {
-                menu: true,
-            },
+
             currentPage: 1,
 
             items: [
@@ -204,6 +202,7 @@ export default {
             this.$router.replace({name:'/'});
         },
         getStaffAccounts(url) {
+            //判断是否切换页面，如果切换重置当前页数
             if (this.active !== url) this.currentPage = 1;
             this.active = url;
             console.log(url.slice(1));

@@ -82,8 +82,8 @@ export default {
     },
     methods: {
         quit() {
-           this.$router.go(-1)
-            // this.$router.replace({name:'/'});
+        //    this.$router.go(-1)
+            this.$router.replace({name:'/'});
         },
 
         urlChange( url ) {
@@ -112,12 +112,12 @@ export default {
 
   }
 
-  .menu-active {
-      background-color: #bbb;
-  }
+    .menu-active {
+        background-color: #bbb;
+    }
 
-      .container.fluid {
-        max-width: 1180px;
+    .container.fluid {
+        max-width: 1280px;
     }
 
 </style>

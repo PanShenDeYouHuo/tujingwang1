@@ -225,7 +225,7 @@ html,body{overflow:visible; height: 100%;}
   width:100%;height:100%;
   overflow:visible;
   background-color: #fff;
-  min-width: 1280px;
+  min-width: 1480px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   overflow: auto;

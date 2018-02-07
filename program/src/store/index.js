@@ -8,6 +8,7 @@ import ossFile from './modules/ossFile';
 import admin from './modules/admin';
 import boss from './modules/boss';
 import account from './modules/account';
+import customer from './modules/customer';
 
 import socketClass from '../socket.io';
 
@@ -124,7 +125,8 @@ const modules = {
 	ossFile,
 	admin,
 	boss,
-	account
+	account,
+	customer
 };
 
 
