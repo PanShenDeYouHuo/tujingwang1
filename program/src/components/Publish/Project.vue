@@ -1,92 +1,92 @@
 <template>
     <div class="project">
-        <div  style="background-color: #000; height: 50px;  position: absolute; width: 100%; z-index:3; ">
+        <div  style="background-color: #fff; ">
             <v-layout align-center style="height: 100%;">
-                <v-btn flat icon @click="quit('projects')" color="yellow">
+                <v-btn flat icon @click="quit('projects')" color="yellow darken-1">
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn @click="savaProject()" color="yellow">
+                <v-btn depressed @click="savaProject()" color="yellow darken-1">
                     发布
                 </v-btn>
             </v-layout>
         </div>
 
 
-        <v-container fluid grid-list-lg style="padding-top: 66px;">
+        <v-container fluid grid-list-lg >
             <v-layout row wrap>
-                    <v-flex xs12 d-flex>
-                        <v-card >
+                    <v-flex xs6 d-flex>
+                        <v-card flat>
                             <v-card-title style=" height: 100%;">
-                                <div>
-                                    <span class="title">{{project.name}}</span>
-                                    <br>
-                                    <span class="grey--text caption">{{createTime1(project._id)}}</span>
-                                </div>  
+                
+                                    <v-text-field
+                                    v-model="project.name"
+                                    label="项目名"
+                                    id="testing"
+                                    disabled
+                                    ></v-text-field>
+         
                             </v-card-title>
                         </v-card>
                     </v-flex>
 
-                    <v-flex xs4 d-flex >
-                        <v-card >
-                            <v-card-title style="padding: 0px 16px;">
-                                <v-flex xs12>
-                                    <v-layout justify-center align-center>
-                                        <v-btn  color="yellow" class="text-xs-center">
-                                            设置完成时间
-                                        </v-btn>
-                                    </v-layout>
-                                </v-flex>
+                    <v-flex xs3 d-flex>
+                        <v-card flat>
+                            <v-card-title style=" height: 100%;">
+                
+                                    <v-text-field
+                                    v-model="project.publisherName"
+                                    label="客户名"
+                                    id="testin"
+                                    disabled
+                                    ></v-text-field>
+         
                             </v-card-title>
                         </v-card>
                     </v-flex>
+
 
                     <!-- 选择发布者 -->
-                    <v-flex xs4 d-flex >
-                        <v-card >
-                            <v-card-title style="padding: 0px 16px;">
-                                <v-flex xs12>
-                                    <v-layout justify-center align-center>
-                                        <v-btn  color="yellow" class="text-xs-center">
-                                            选择发布者
-                                        </v-btn>
-                                    </v-layout>
-                                </v-flex>
+                    <!-- <v-flex xs3 d-flex >
+                        <v-card flat>
+                            <v-card-title style=" height: 100%;">
+                                <v-select
+                                    label="客户名"
+                                    autocomplete
+                                    :loading="customer.loading"
+                                    cache-items
+                                    :items="customer.items"
+                                    :rules="[() => customer.select.length > 0 || '必须选择一个客户']"
+                                    :search-input.sync="search"
+                                    v-model="customer.select"
+                                    disabled
+                                ></v-select>
+
+                            </v-card-title>
+                        </v-card>
+                    </v-flex> -->
+
+                    <v-flex xs3 d-flex >
+                        <v-card flat>
+                            <v-card-title style=" height: 100%;" >
+                                     <v-text-field
+                                    :value="createTime1(project._id)"
+                                    label="创建时间"
+                                    disabled
+                                    ></v-text-field>
                             </v-card-title>
                         </v-card>
                     </v-flex>
 
-                    <!-- 选择制作者 -->
-                    <v-flex xs4 d-flex>
-                        <v-card >
-                            <v-card-title style="padding: 0px 16px; height: 100%;">
-                                <v-flex xs12>
-                                    <v-layout align-center>
-                                        <span class="subheading" style="height: 100%;">制作：</span>
-                                        <v-avatar size="38px">
-                                            <img src="../../assets/bb.jpg" alt="Avatar" >
-                                        </v-avatar>
-
-                                        <span class="body-2" style=" padding-left: 8px; white-space: nowrap; display: inline-block; overflow: hidden; width: 185px; text-overflow: ellipsis;">潘神的诱惑</span>
-                                    </v-layout>
-                                </v-flex>
-                            </v-card-title>
-                        </v-card>
-                    </v-flex> 
-
-                    <!-- 设置按钮 -->
+                    <!-- 项目设置按钮 -->
                     <v-flex xs12>
-                        <v-card>
+                        <v-card flat>
                             <v-card-title style="padding: 0px 16px;">
                                 <span class="grey--text caption">共有 {{project.image ? project.image.length || 0 : 0}} 个任务</span>
                                 <v-spacer></v-spacer>
-                                <v-btn color="yellow" @click="imageDialogOpen()">
-                                    添加任务
+                                <v-btn flat @click="imageDialogOpen()" color="grey" style="min-width: 0px;">
+                                    <v-icon>add</v-icon>
                                 </v-btn>
-                                <v-btn color="yellow" @click="uploadDialogOpen()">
-                                    添加参考
-                                </v-btn>
-
                             </v-card-title>
                         </v-card>
                     </v-flex> 
@@ -94,47 +94,80 @@
                     <!-- 项目任务区 -->
                     <v-flex xs12 v-if="project.image">
                         <v-layout row wrap>
+                        <v-flex xs6 v-for="(image, index) in project.image" :key="image._id">
+                            <v-card hover flat>
+                                <v-container fluid grid-list-lg>
+                                    <v-layout row>
+                                        <v-flex xs3>
+                                            <v-card-media
 
-                            <v-flex v-bind="{ [`xs${image.imageType === '默认' ? 3 : 3}`]: true }"  v-for="(image, index) in project.image" :key="index + image.name">
-                            <div class="big">
-                                <v-card>
-                                    <v-card-media :src="!!image.iurl || noImage" height="195px">
-                                        <v-container fill-height fluid>
-                                            <v-layout fill-height align-start>
-                                                <v-flex xs12  flexbox style="height: 100%;">
-                                                    <span class="subheading white--text" v-text="`${index+1}.${image.space}-${image.area}`"></span><br>
-                                                    <span class="caption  white--text" v-text="`${image.designType}-${image.imageType}角度`"></span>
-                                                    <br>
-                                                    <br>
-                                                    <br>
-                                                    <br>
-                                                    <br>
-                                                    <span class="subheading white--text" v-text="`￥${image.price}`"></span>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-container>
-                                    </v-card-media>
-                                    <v-card-actions class="white">
-                                        <v-btn flat small class="my-btn">
-                                           <span class="grey--text caption">编辑</span>
-                                        </v-btn>
-                                        <v-btn flat small class="my-btn">
-                                            <span class="grey--text caption">删除</span>
-                                        </v-btn>
-                                        <v-spacer></v-spacer>
-                                        <span class="caption">制作中</span>
-                                    </v-card-actions>
-                                </v-card>
-                            </div>                   
+                                            :src="noImage"
+                                            height="123px"
+                                            ></v-card-media>
+                                        </v-flex>
+                                        <v-flex xs9>
+                                            <div style="padding-bottom: 8px;">
+                                                <div class="subheading">{{`${image.style}-${image.designType}-${image.space}-${image.area}-${image.imageType}视角-${index+1}`}}</div>
+                                                <div style=" padding-top: 8px; display: flex; align-items: center; " class="grey--text  caption">{{`价格：￥${image.price}，已收：￥${image.payment}`}}
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn flat small class="my-btn">
+                                                        <span class="grey--text caption">修改</span>
+                                                    </v-btn>
+                                                    <v-btn flat small class="my-btn">
+                                                        <span class="grey--text caption">收款</span>
+                                                    </v-btn>
+                                                    <v-btn flat small class="my-btn">
+                                                        <span class="grey--text caption">结算</span>
+                                                    </v-btn>
+                                                </div>
+                                                <div style=" display: flex; align-items: center;" class="grey--text  caption">
+                                                    {{`状态：未完成`}}
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn flat small class="my-btn">
+                                                        <span class="grey--text  caption">完成</span>
+                                                    </v-btn>
+                                                    <v-btn flat small class="my-btn">
+                                                        <span class="grey--text caption">编辑</span>
+                                                    </v-btn>
+                                                    <v-btn flat small class="my-btn" @click="removeImage( image._id )" :loading="appLoading">
+                                                        <span class="grey--text caption">删除</span>
+                                                    </v-btn>
+                                                </div>
+            
+                                            </div>
+                                            <v-divider></v-divider>
 
+                                            <div style="padding-left: 2px; padding-top: 8px; display: flex; align-items: center;" class="grey--text  caption">{{`建模：无，渲染：无`}}
+                                                <v-spacer></v-spacer>
+                                                <span class="caption">{{createTime1(image._id)}}</span>
+                                            </div>
+
+                                        </v-flex>
+
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
                         </v-flex>
 
                      
                         </v-layout>
            
                     </v-flex >
-                    <!-- <input type="file" accept=".doc,.docx" multiple> -->
-                    <!-- <input type="file" id="xFile" ref="file" @change="fileChange()" multiple style="position:absolute;clip:rect(0 0 0 0);" > -->
+                    
+                    <!-- 参考文件 -->
+                    <v-flex xs12>
+                        <v-card flat>
+                            <v-card-title style="padding: 0px 16px; height: 48px;">
+                                <span class="grey--text caption">参考文件</span>
+
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                    <!-- 参考文件操作区 -->
+                    <v-flex>
+                        <file @close="uploadDialogClose()" :pid="project._id" :fileList="project.referenceFile"></file>
+                    </v-flex>
+
             </v-layout >                  
         </v-container>
         
@@ -187,7 +220,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn  flat color="deep-orange"  @click="imageDialogClose()">取消</v-btn>
-                    <v-btn color="yellow" @click="addImage( image )">添加</v-btn>
+                    <v-btn color="yellow" @click="addImage( image )" :loading="this.$store.state.appLoading">添加</v-btn>
                 </v-card-actions>
             </v-card>
          
@@ -195,7 +228,7 @@
 
 <!-- 添加upload模态框 -->
         <v-dialog v-model="uploadDialog" persistent max-width="1300px">
-            <file @close="uploadDialogClose()"></file>
+            <!-- <file @close="uploadDialogClose()"></file> -->
         </v-dialog>
 
  <!-- 添加是否保存修改模态框 -->       
@@ -224,6 +257,15 @@ export default {
     props: [],
     data() {
         return {
+
+            customer: {
+                loading: false,
+                items: [],
+                search: null,
+                select: [],
+            },
+            search: null,
+
             loading: false,
             noImage: require('../../assets/22.png'),
 
@@ -334,12 +376,30 @@ export default {
             },
         }
     },
+    watch: {
+        async search (val) {
+
+            if (!val) return; 
+
+            let re=/[^\u4e00-\u9fa5]/;  
+            if(re.test(val)) return;
+
+            let items = await this.$store.dispatch('getCustomers', {pageSize: 50, currentPage: 1, search: this.search});
+            for ( let index in items) {
+                this.customer.items.push(items[index].name);
+            }
+
+        }
+    },
     computed: {
         project() {
             return this.$store.state.project.changeData;
         },
         projects() {
             return this.$store.state.project.listData;
+        },
+        appLoading() {
+            return this.$store.state.appLoading;
         }
     },
     methods: {
@@ -347,37 +407,42 @@ export default {
         imageDialogOpen() {
             this.imageDialog = true;
         },
+
         //关闭创建任务模态框
         imageDialogClose() {
             //清空form数据
             this.$refs.imageForm.reset();
             this.imageDialog = false;
         },
+
         //添加任务
-        addImage( image ) {
+        async addImage( image ) {
+            
             //验证表单数据
             if(!this.$refs.imageForm.validate()) return;
-            //插入数据
-            this.$store.commit('addImage', image);
-            //同步到数据库
-            this.$store.dispatch('putProject')
-                .then((res)=> {
-                    //关闭模态框
-                    this.imageDialogClose();
-                })
-                .catch((err)=> {
-                    //关闭模态框
-                    this.imageDialogClose();
-                })
 
+            //同步到数据库
+            await this.$store.dispatch('postProImage', {pid: this.project._id, image});
+            //数据库同步到本地
+            await this.$store.dispatch('getProject', this.project._id);
+
+            this.imageDialogClose();
+        },
+
+        //删除任务
+        async removeImage( iid ) {
+            console.log(iid);
+            //删除任务
+            await this.$store.dispatch('deleteProImage', {pid: this.project._id, iid});
+            //同步数据
+            await this.$store.dispatch('getProject', this.project._id);
         },
 
         //设计类型发生改变
         designTypeChange() {
-                this.image.space = '';
-                this.image.area = '';
+            if (this.image.space) this.image.space = '';
+            if (this.image.area) this.image.area = '';
         },
-
 
         //打开文件模态框
         uploadDialogOpen() {
@@ -425,6 +490,7 @@ export default {
 
         },
 
+        //离开
         quit(routerName) {
             this.$store.commit('removeChangeDate');
             this.$router.replace({name:'projects'});
@@ -441,6 +507,7 @@ export default {
             this.change('projects')
         },
 
+         //
         change(routerName) {
             console.log(routerName);
             this.$router.replace({name:routerName});
@@ -448,12 +515,20 @@ export default {
         },
 
     },
-    mounted(){
-        // this.$store.dispatch('getProject',this.$route.params.pid);
+    async mounted(){
+        //载入项目数据
+        await this.$store.dispatch('getProject',this.$route.params.pid);
+
+        //设置客户名
+        this.customer.items.push(this.project.publisherName);
+        this.customer.select = this.project.publisherName;
+
     },
 
+
+
     beforeCreate() {
-        this.$store.dispatch('getProject',this.$route.params.pid);
+
     },
 
 };
@@ -466,10 +541,10 @@ export default {
         height:50px;
         overflow:auto;
         position: absolute; */
-
-        overflow: auto;
+        /* overflow: auto; */
         min-width: 1280px;
-        background-color: rgb(244, 244, 244);
+        background-color: rgb(240, 240, 240);
+        position: absolute; width: 100%; z-index:3;
         /* background-position:center;  */
         /* max-width: 1220px; */
         /* min-width: 965px;
@@ -495,9 +570,17 @@ export default {
         padding: 2px 0px 2px 0px;
     } */
 
-        .my-btn {
+    .my-btn {
         margin-left: 0px;
         margin-right: 0px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        min-width: 0px;
+        
+    }
+    .two-btn {
+        margin-left: 0px;
+        margin-right: 8px;
         min-width: 0px;
         
     }

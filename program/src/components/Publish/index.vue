@@ -32,22 +32,41 @@
                 <v-card-text>
                     <v-container grid-list-md>
                         <v-layout wrap>
-                            <v-flex xs12>
-                                <v-form v-model="nproject.valid" ref="projectForm" lazy-validation>
-                                    <v-text-field label="任务名称" v-model="nproject.name" :rules="nproject.rules" color="yellow darken-1" 
-                                    @keyup.enter="projectCreate(nproject.name)"></v-text-field>
-                                    <!-- 用来消除空格提交 -->
-                                    <v-text-field v-show="false" label="任务名称"></v-text-field>
-                                </v-form>
-                            </v-flex>
- 
+
+                            <v-form v-model="nproject.valid" ref="projectForm" lazy-validation style="width: 100%;">
+                                <v-flex xs12>
+                                        <v-text-field label="任务名称" v-model="nproject.name" :rules="nproject.rules" color="yellow darken-1" 
+                                        @keyup.enter="projectCreate(nproject.name)"></v-text-field>
+                                        <!-- 用来消除空格提交 -->
+                                        <v-text-field v-show="false" label="任务名称"></v-text-field>
+                    
+                                </v-flex>
+
+                                <!-- 选择发布者 -->
+                                <v-flex xs12>
+
+                                    <v-select
+                                        label="客户名"
+                                        autocomplete
+                                        :loading="customer.loading"
+                                        cache-items
+                                        :items="customer.items"
+                                        :rules="[v => !!v || '请选择客户']"
+                                        :search-input.sync="search"
+                                        v-model="customer.select"
+                                    ></v-select>
+
+                                </v-flex>
+
+
+                            </v-form>
                         </v-layout>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn small flat @click="projectDialogClose()">取消</v-btn>
-                    <v-btn small flat :loading="this.$store.state.appLoading" @click="projectCreate(nproject.name)">创建</v-btn>
+                    <v-btn small flat :loading="this.$store.state.appLoading" @click="projectCreate(nproject.name, customer.select)">创建</v-btn>
                 </v-card-actions>
             </v-card>
          
@@ -71,7 +90,35 @@ export default {
                     (v) => !!v || '请填写任务名称',
                 ]
             },
+
+            customer: {
+                loading: false,
+                items: [],
+                select: null,
+                idMap: [],
+            },
+            search: null,
         }
+    },
+    watch: {
+        async search (val) {
+
+            if (!val) return; 
+
+            let re=/[^\u4e00-\u9fa5]/;  
+            if(re.test(val)) return;  
+
+            let items = await this.$store.dispatch('getCustomers', {pageSize: 50, currentPage: 1, search: this.search});
+            this.customer.items = [];
+            this.customer.idMap = [];
+            for ( let index in items) {
+                this.customer.items.push(items[index].name);
+                this.customer.idMap.push(items[index]._id);
+            }
+            console.log(this.customer.idMap);
+
+        }
+        
     },
     computed: {
         project() {
@@ -94,11 +141,13 @@ export default {
         },
 
         //创建项目
-        async projectCreate(taskName) {
+        async projectCreate(name, customer) {
             //验证表单数据
             if(!this.$refs.projectForm.validate()) return;
-            //路由跳转
-            await this.$store.dispatch('postProject',taskName);
+
+            let publisherId = this.customer.idMap[this.customer.items.indexOf(customer)]
+   
+            await this.$store.dispatch('postProject', {name, publisherId});
             //关闭模态框
             this.projectDialogClose();
         }

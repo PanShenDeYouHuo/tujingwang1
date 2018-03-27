@@ -106,15 +106,23 @@
                         <v-list dense>
 
 
-                            <v-list-tile v-for="item in items" :key="item.title"  @click="urlChange(item.url)">
+                            <!-- <v-list-tile v-for="item in items" :key="item.title"  @click="urlChange(item.url)">
                                 <v-list-tile-title class="body-1">{{ item.title }}</v-list-tile-title>
-                            </v-list-tile>
+                            </v-list-tile> -->
 
                             <!-- <v-divider v-else-if="item.divider" :key="index"></v-divider>
 
                             <v-list-tile v-else :key="index" @click="signOut()">
                                 <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
                             </v-list-tile> -->
+
+                            <v-list-tile v-if="user.authority.indexOf('service') !== -1"  @click="urlChange('/projects')">
+                                <v-list-tile-title class="body-1">客服项目</v-list-tile-title>
+                            </v-list-tile>
+
+                            <v-list-tile v-if="user.authority.indexOf('serviceMaster') !== -1"  @click="urlChange('/projects')">
+                                <v-list-tile-title class="body-1">项目管理</v-list-tile-title>
+                            </v-list-tile>
 
                             <v-list-tile v-if="user.authority.indexOf('leder') !== -1"  @click="urlChange('/temas')">
                                 <v-list-tile-title class="body-1">我的团队</v-list-tile-title>
@@ -134,6 +142,14 @@
 
                             <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="urlChange('/admin/sd')">
                                 <v-list-tile-title class="body-1">系统管理</v-list-tile-title>
+                            </v-list-tile>
+
+                            <!-- <v-list-tile v-if="user.authority.indexOf('admin') !== -1"  @click="urlChange('/admin/sd')">
+                                <v-list-tile-title class="body-1">我的统计</v-list-tile-title>
+                            </v-list-tile> -->
+
+                            <v-list-tile @click="urlChange('/account/personalData')">
+                                <v-list-tile-title class="body-1">账号管理</v-list-tile-title>
                             </v-list-tile>
 
                             <v-divider></v-divider>
@@ -172,7 +188,7 @@ export default {
 
             items: [
                 // { title: '我的作品', router: 'works' },
-                { title: '我的项目', router: 'projects', url: '/projects' },
+                // { title: '我的项目', router: 'projects', url: '/projects' },
                 { title: '我的统计', router: 'statistics', url: '/statistics' },
                 { title: '账号管理', router: 'account', url: '/account/personalData' },
             ],
@@ -263,7 +279,7 @@ export default {
         margin: 0px auto;
         min-width: 1280px;
 
-        background-color: #222;
+  
         z-index:1;
 
         display: -webkit-flex; /* Safari */
@@ -300,19 +316,19 @@ export default {
     }
 
     .menu-active {
-        color: #fff;
-        border-style:solid; border-width: 0px 0px 4px 0px; border-color: #ffeb3b;
+        color: #000;
+        border-style:solid; border-width: 0px 0px 4px 0px; border-color: #FDD835;
         
         
     }
     
     .menu-btn:hover {
-        color: #ffffff;
+        color: #000;
         background-color: rgba(99, 99, 99, 0.3)  !important;
     }
 
     .menu-btn-o:hover {
-        color: #ffffff;
+        color: #000;
     }
 
     .badge {

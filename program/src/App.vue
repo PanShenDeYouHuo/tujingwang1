@@ -1,8 +1,8 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" >
     
     <!-- 载入进度条 -->
-    <div class="elevation-1" v-show="this.$store.state.appLoading"  style="background-color: #fff; top: 51px;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+    <div class="elevation-1" v-show="this.$store.state.appLoading"  style="background-color: #fff; top: 51px;  position: absolute; width: 100%;min-width: 1280px; z-index:10; ">
 
       <v-progress-linear :indeterminate="this.$store.state.appLoading" style="margin: 0px;" height="3" color="yellow " background-color="black"></v-progress-linear>
 
@@ -10,7 +10,7 @@
 
     <!-- <div style="background-color: #fff;  position: absolute; width: 100%; z-index:2;border-style:solid; border-width: 0px 0px 1px 0px; border-color: #E0E0E0"> -->
 
-    <div class="elevation-3" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
+    <div class="elevation-1" style="background-color: #fff;  position: absolute; width: 100%;min-width: 1280px; z-index:2; ">
 
       <pmenu @toLogin="to_login()"></pmenu>
 
@@ -67,12 +67,12 @@
     <!-- 路由页面 -->
 
   <keep-alive>
-    <router-view class="routerView" v-if="$route.meta.keepAlive">
+    <router-view class="routerView" v-if="$route.meta.keepAlive" >
         <!-- 这里是会被缓存的视图组件，比如 Home！ -->
     </router-view>
   </keep-alive>
 
-  <router-view class="routerView" v-if="!$route.meta.keepAlive">
+  <router-view class="routerView" v-if="!$route.meta.keepAlive" >
       <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
   </router-view>
 
@@ -160,13 +160,17 @@ export default {
     
   },
   mounted(){
-    setTimeout(()=> {
-      if( !this.$store.state.url[0]) {
+          if( !this.$store.state.url[0]) {
         console.log(this.$route.path)
           this.$store.dispatch('initRouter', this.$route.path);
       }
+    // setTimeout(()=> {
+    //   if( !this.$store.state.url[0]) {
+    //     console.log(this.$route.path)
+    //       this.$store.dispatch('initRouter', this.$route.path);
+    //   }
 
-    }, 100);
+    // }, 100);
   },
   beforeCreate() {
     //app初始化
@@ -206,7 +210,7 @@ export default {
   /* font-family: 'Avenir', Helvetica, Arial, sans-serif; */
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   box-sizing:border-box;
-  background-color: #fff;
+  background-color: rgb(244, 244, 244);
   /* -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -290,6 +294,11 @@ html,body{overflow:visible; height: 100%;}
 
     padding:0px 6px 0px 6px !important;
 
+  }
+
+  .menu__content {
+
+    box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 8px 1px rgba(0,0,0,0.14), 0px 1px 14px 2px rgba(0,0,0,0.12);
   }
 
 

@@ -28,7 +28,7 @@ const state = {
 		state: false,
 		text: 'what are you doing',
 	},
-	//成功提示栏
+	//信息提示栏
 	infoSnackbar: {
 		state: false,
 		text: 'what are you doing',
@@ -53,6 +53,7 @@ const actions = {
 	initialize({commit, state}) {
 		//路由初始化
 		state.router.beforeEach((to, from, next) => {
+			//将路径转化为数组
 			state.url = [];
 			let routerStr = to.path;
 			let pos = 0;
@@ -72,6 +73,10 @@ const actions = {
 
 			}
 			console.log(state.url);
+
+			//检查用户是否登入，登入中时等待登入成功在跳转，或者登入失败跳转到首页
+			//代码待定
+
 			next();
 		});
 

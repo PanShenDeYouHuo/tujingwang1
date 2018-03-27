@@ -24,7 +24,7 @@
 
                         <v-card style="">
                                     
-                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="132px" @click="1">
+                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="120px" @click="1">
                                 <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small >{{job}}</v-chip>
                             </v-card-media>
 
@@ -203,9 +203,10 @@ export default {
         },
         getStaffAccounts(url) {
             //判断是否切换页面，如果切换重置当前页数
-            if (this.active !== url) this.currentPage = 1;
-            this.active = url;
-            console.log(url.slice(1));
+            if (this.active !== url) {
+                this.currentPage = 1;
+                this.active = url;
+            }
             this.$store.dispatch('getStaffAccounts', {pageSize: 18, currentPage: this.currentPage, authority: url.slice(1), });
             // this.$router.replace({path:`/boss`});
         },

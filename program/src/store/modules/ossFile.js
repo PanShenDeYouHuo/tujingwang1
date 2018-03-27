@@ -40,80 +40,109 @@ let actions = {
 
 /////////////////////******写权限*******////////////////////
 
-    //获得oss productionProject写权限的sts临时token
-    getWriteStsToken({commit, state, rootState}) {
-        return new Promise((resolve, reject)=> {
-            rootState.socketClass.myEmit( 'getWriteStsToken',rootState.user._id)
-                .then((stsToken)=> {
-                    commit('setStsToken', stsToken);
-                    resolve();
-                })
-                .catch((err)=> {
-                    reject(err);
-                 });
-        });
+    //获得oss project读写权限的sts临时token
+    async getWriteAndReadProjectStsToken({commit, state, rootState}, data) {
+        try {
+            let stsToken = await rootState.socketClass.myEmit( 'getWriteAndReadProjectStsToken',{ pid: data.pid});
+            commit('setStsToken', stsToken);
+        } catch (err) {
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
     },
 
     //获得oss Account写权限的sts临时token
-    getWriteAccountStsToken({commit, state, rootState}) {
-        return new Promise((resolve, reject)=> {
-            rootState.socketClass.myEmit( 'getWriteAccountStsToken',{})
-                .then((stsToken)=> {
-                    console.log(stsToken);
-                    commit('setStsToken', stsToken);
-                    resolve();
-                })
-                .catch((err)=> {
-                    reject(err);
-                });
-        });
+    async getWriteAccountStsToken({commit, state, rootState}) {
+        try {
+            let stsToken = await rootState.socketClass.myEmit('getWriteAccountStsToken', {});
+            commit('setStsToken', stsToken);
+        } catch (err) {
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
     },
 
 
-/////////////////////******写操作*******////////////////////
+/////////////////////******上传操作*******////////////////////
 
     //上传文件
-    uploadFile({commit, state, rootState}, data) {
-        return new Promise((resolve, reject)=> {
-
+    async uploadFile({commit, state, rootState}, data) {
+        try {
+            
             //回调服务器头
             let callBack = {
                 callbackUrl:data.callbackUrl,
                 callbackHost:"tujingcloud.oss-cn-beijing.aliyuncs.com",
-                callbackBody:"{\"mimeType\":${mimeType},\"size\":${size}}",
-                callbackBodyType:"application/json"
+                callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&var1=${x:var1}&var2=${x:var2}",
+                callbackBodyType:"application/json",
             }
-    
             //转化成字符串
             callBack = new Buffer(JSON.stringify(callBack));
-    
             //转化成base64编码
             callBack = callBack.toString('base64');
-
-   
-            state.client.multipartUpload(data.objectKey, data.file.file, {
+                      
+            let res = await state.client.multipartUpload(data.objectKey, data.buf.file, {
                 progress: function* (p) {
-
-                    data.file.progress = p;
+                    data.buf.progress = p;
                 },
                 headers: {
-                    'x-oss-callback': callBack
+                    'x-oss-callback': callBack,
+                }
+            });
+
+            return res;
+        } catch (err) {
+            console.log(err);
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
+
+
+
+    },
+
+    //project文件上传
+    async uploadprojectFile({commit, state, rootState}, data) {
+        // try {
+        return new Promise((resolve, reject)=> {
+            //回调服务器头
+            let callBack = {
+                callbackUrl:data.callbackUrl,
+                callbackHost:"tujingcloud.oss-cn-beijing.aliyuncs.com",
+                callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&pid=${x:pid}",
+                callbackBodyType:"application/json",
+            }
+            //转化成字符串
+            callBack = new Buffer(JSON.stringify(callBack));
+            //转化成base64编码
+            callBack = callBack.toString('base64');
+            
+            let callBackVar = {'x:pid': data.pid};
+            callBackVar = new Buffer(JSON.stringify(callBackVar))
+            callBackVar = callBackVar.toString('base64');
+            
+            state.client.multipartUpload(data.objectKey, data.buf.file, {
+                progress: function* (p) {
+                    data.buf.progress = p;
+                },
+                headers: {
+                    'x-oss-callback': callBack,
+                    'x-oss-callback-var': callBackVar,
                 }
             })
             .then((res)=> {
-                data.file.state = true;
-                resolve();
+                resolve(res);
             })
             .catch((err)=> {
                 reject(err);
-            });
+            })
+
         });
+        
+
     },
 
 
 /////////////////////******读权限*******////////////////////
 
-    //获得oss Account写权限的sts临时token
+    //获得oss Account读权限的sts临时token
     getReadAccountStsTokenBoss({commit, state, rootState}, data) {
         return new Promise((resolve, reject)=> {
             rootState.socketClass.myEmit( 'getReadAccountStsTokenBoss',data._id)

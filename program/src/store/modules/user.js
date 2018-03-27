@@ -28,7 +28,6 @@ let state = {
 
 let mutations = {
 	setUser(state, newUser) {
-		console.log(newUser);
 		for (var key in newUser) {
 			state[key] = newUser[key];
 		}
@@ -61,7 +60,6 @@ let actions = {
 			rootState.loginDialog = false;
 			//用户数据保存
 			commit('setUser', data);
-			console.log(data);
 		});
 
 	},

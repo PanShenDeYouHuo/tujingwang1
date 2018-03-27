@@ -2,28 +2,7 @@ import { setTimeout } from "timers";
 
 let state = {
 
-    _id: '',
-    name: '我的项目名称',
-    publisher: {},
-    service: {},
-    manager: {},
-    referenceFile: [],
-    projectFile: [],
-    image: [
-        {
-            state: 0,
-            designType: '工装',
-            space: '别墅',
-            style: '现代',
-            area: '客厅',
-            imageType: '全景',
-            price: 300,
-            murl: '',
-            iurl: '',
-            productionsGroup: []
-            
-        }
-    ],
+    pid: {},        //当前项目id
 
     listData:[],
     listCount: 0,
@@ -31,15 +10,15 @@ let state = {
     changeData: {}, //项目设置内存区
     // oldChangeData: {},    //旧数据判断是否更改
 
-    //状态
-    postProjectLoading: false,  //创建项目状态
+    // //状态
+    // postProjectLoading: false,  //创建项目状态
 
-    getProjectLoading: false,   //获取项目状态
-    getProjectsLoading: false,  //获取项目列表状态
+    // getProjectLoading: false,   //获取项目状态
+    // getProjectsLoading: false,  //获取项目列表状态
 
-    putProjectLoading: false,   //保存项目状态
+    // putProjectLoading: false,   //保存项目状态
 
-    deleteProjectLoading: false, //删除项目状态
+    // deleteProjectLoading: false, //删除项目状态
 
 };
 
@@ -49,6 +28,11 @@ let mutations = {
         // let newProject =JSON.parse( JSON.stringify(project) );
         state.changeData = project;
         // state.oldChangeData = newProject;
+    },
+
+    //当前项目id
+    setPid(state, pid) {
+        state.pid = pid;
     },
 
     //设置项目列表数据
@@ -116,107 +100,121 @@ let actions = {
         }
     },
 
-    //创建项目
-    postProject({commit, state, rootState}, projectName) {
-        return new Promise((resolve, reject)=> {
+    //客服创建项目
+    async postProject({commit, state, rootState}, project) {
+        try {
             rootState.appLoading = true;
-            console.log('开始')
-            rootState.socketClass.myEmit( 'postProject',{name: projectName, uid:rootState.user._id})
-            .then((pid)=> {
-                console.log('返回')
-                rootState.router.replace({name: 'project', params:{pid}});
-                rootState.appLoading = false;
-                resolve();
-            })
-            .catch((err)=> {
-                rootState.appLoading = false;
-                rootState.errorSnackbar = { state: true, text: err.message };
-                reject(err);
-            });
-        });
+            let pid = await rootState.socketClass.myEmit( 'postProject',{name: project.name, publisherId: project.publisherId, uid:rootState.user._id});
+            rootState.appLoading = false;
+            rootState.router.replace({name: 'project', params:{pid}});
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
 
     },
 
     //保存项目
-    putProject({commit, state, rootState}) {
-        state.putProjectLoading = true;
-        rootState.socketClass.myEmit('putProject', state.changeData)
-        .then((res)=> {
-            // rootState.successSnackbar = { state: true, text: '保存成功'}
+    async putProject({commit, state, rootState}) {
+        try {
+            rootState.appLoading = true;
+            console.log(state.changeData);
+            let res = await rootState.socketClass.myEmit('putProject', state.changeData)
             commit('setChangeProject', state.changeData);
-            state.putProjectLoading = false;
 
-        })
-        .catch((err)=> {
-            console.log(err);
-            setTimeout(()=> {
-                state.putProjectLoading = false;
-                rootState.errorSnackbar = { state: true, text: err.message };
-            }, 800);
-        });
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
     },
 
     //根据pid获取项目
-    getProject({commit, state, rootState}, pid) {
-        state.getProjectsLoading = true;
-        rootState.socketClass.myEmit('getProject', {pid})
-        .then((res)=> {
+    async getProject({commit, state, rootState}, pid) {
+        try {
+            rootState.appLoading = true;
+            let res = await rootState.socketClass.myEmit('getProject', {pid})
             commit('setChangeProject', res);
-            setTimeout(()=> {
-                state.getProjectsLoading = false;
-            },1000)
-
-        })
-        .catch((err)=> {
-            console.log(err);
-            setTimeout(()=> {
-                rootState.errorSnackbar = { state: true, text: err.message };
-                state.getProjectsLoading = false;
-            }, 800);
-        });
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
     },
 
 
-    //根据发布人id查询项目列表
-    getProjects({commit, state, rootState}, data) {
-        state.getProjectsLoading = true;
-        rootState.socketClass.myEmit('getProjects', {uid: rootState.user._id, currentPage: data.currentPage, pageSize: data.pageSize})
-        .then((res)=> {
+    //根据客服id查询项目列表
+    async getProjects({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            let res = await rootState.socketClass.myEmit('getProjects', {uid: rootState.user._id, state: data.state, currentPage: data.currentPage, pageSize: data.pageSize});
             commit('setProjectList', res);
-            state.getProjectsLoading = false;
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
 
-        })
-        .catch((err)=> {
-            setTimeout(()=> {
-                state.getProjectsLoading = false;
-                rootState.errorSnackbar = { state: true, text: err.message };
-            }, 800);
-        });
+
     },
 
     //根据项目_id删除项目
-    deleteProject({commit, state, rootState}, index) {
-        state.deleteProjectLoading = true;
-        rootState.socketClass.myEmit('deleteProjects', {pid})
-        .then((res)=> {
-            commit('deleteProjectList', index)
-            state.deleteProjectLoading = false;
-        })
-        .catch((err)=> {
-            setTimeout(()=> {
-                state.deleteProjectLoading = false;
-                rootState.errorSnackbar = { state: true, text: err.message};
-            }, 800)
-        });
+    async deleteProject({commit, state, rootState}, pid) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('deleteProjectById', {pid});
+            rootState.appLoading = false;
+            rootState.successSnackbar = { state: true, text: '删除成功' };
+
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
     },
 
     //在项目列表中编辑项目
     editProject({commit, state, rootState}, pid) {
         rootState.router.replace({name: 'project', params:{pid}});
+    },
+
+//////////////////////////任务///////////////////////////
+    //创建任务
+    async postProImage({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('postProImage', {pid: data.pid, iid: data.iid, image: data.image});
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
+    //更新任务
+    async putProImage({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('putProImage', {pid: data.pid, iid: data.iid, image: data.image});
+            rootState.appLoading = false;
+
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
+    //删除任务
+    async deleteProImage({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('deleteProImage', {pid: data.pid, iid: data.iid});
+            rootState.appLoading = false;
+
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
     }
-
-
-
 };
 
 let getters = {

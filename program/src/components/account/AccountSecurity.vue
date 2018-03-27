@@ -28,7 +28,7 @@
                                     <v-card-text>用于工作人员的身份认证</v-card-text>
                                 </v-flex>
                                 <v-flex xs2 class="text-xs-left">
-                                    <v-btn v-if="true" small  color="yellow darken-1" style="min-width: 0px;" @click="openAccountSecurityDialog()" :disabled="accountSecurity.buttonDisabled === !accountSecurity.bottonLoading1 ">认证</v-btn>
+                                    <v-btn v-if="user.realInformation.state !== 0" small  color="yellow darken-1" style="min-width: 0px;" @click="openAccountSecurityDialog()" :disabled="accountSecurity.buttonDisabled === !accountSecurity.bottonLoading1 ">认证</v-btn>
                                     <v-btn v-else-if="user.realInformation.state === 1" small  color="yellow darken-1" style="min-width: 0px;" :loading="accountSecurity.bottonLoading1"  :disabled="true">审核中</v-btn>
                                     <v-btn v-else small  color="green " style="min-width: 0px;" @click="1" >已认证</v-btn>
                                 </v-flex>
@@ -289,7 +289,7 @@ export default {
         },
 
         //选取上传文件完成时触发
-        fileChange() {
+        async fileChange() {
 
             let uploadMap = this.uploadMap;
             let buf = this[uploadMap];
@@ -307,17 +307,17 @@ export default {
                 //读取文件类
                 let oFReader = new FileReader();
 
-                oFReader.onloadend = function(oFRevent){
+                oFReader.onloadend = async function(oFRevent){
                     buf.src = oFRevent.target.result;
                     buf.file = file;
                     buf.progress = 0;
                     buf.validate = true;
-                    store.dispatch(
+                    await store.dispatch(
                         'uploadFile',
                         {
                             callbackUrl:'60.205.225.197/osscallback',
                             objectKey:`temporaryFile/account/${store.state.user._id}/authenticate/${uploadMap}.${ file.type === 'image/jpeg' ? 'jpg' : 'png'}`,
-                            file: buf
+                            buf
                         });
                 };
                 //根据inputfile的files读取文件

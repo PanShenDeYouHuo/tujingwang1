@@ -26,10 +26,10 @@ export default {
   .home {
     width:100%;
     height:100%;
-    min-width: 920px;
+    min-width: 1280px;
     padding: 0px;
     padding-top: 50px;
-    background-color: #fff;
+    background-color: rgb(240, 240, 240);
     box-sizing:border-box;
     overflow:auto;
     position: absolute;

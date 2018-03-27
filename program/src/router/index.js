@@ -1,7 +1,5 @@
 import Vue from 'vue';
-// const Vue = () => import('vue')
 import Router from 'vue-router';
-// const Router = () => import('vue-router')
 
 // import Home from '@/components/Home';
 // import Login from '@/components/user_component/Login';
@@ -49,10 +47,10 @@ export default new Router({
   mode: 'history',
   routes: [
     { name: '/', path: '/', component: Home, meta: {keepAlive: true} },
-    { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: true} },
+    { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: false} },
     { name: 'works', path: '/works', component: Works },
     { name: 'work', path: '/works/:wid', component: Work },
-    { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: false} },
+    { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: true} },
     { name: 'project', path: '/projects/:pid', component: Project, meta: {keepAlive: false} },
 
     { name: 'admin', path: '/admin', component: Admin, meta: {keepAlive: false},

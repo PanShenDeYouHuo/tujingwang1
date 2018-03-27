@@ -50,7 +50,7 @@ let actions = {
                 setTimeout(() => {
                     rootState.appLoading = false;
                     commit('setcustomers', res);
-                    resolve();
+                    resolve(res.customers);
                 }, 300);
             })
             .catch((err)=> {
