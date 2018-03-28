@@ -99,8 +99,7 @@ let actions = {
     },
 
     //project文件上传
-    async uploadprojectFile({commit, state, rootState}, data) {
-        // try {
+    uploadprojectFile({commit, state, rootState}, data) {
         return new Promise((resolve, reject)=> {
             //回调服务器头
             let callBack = {
@@ -134,11 +133,21 @@ let actions = {
                 reject(err);
             })
 
-        });
+        });   
         
-
     },
-
+    
+    //删除项目文件
+    async deleteRefFile({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('deleteRefFile', {pid: data.pid, name: data.name});
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
 
 /////////////////////******读权限*******////////////////////
 
