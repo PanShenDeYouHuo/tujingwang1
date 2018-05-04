@@ -28,7 +28,7 @@
                                     <v-card-text>用于工作人员的身份认证</v-card-text>
                                 </v-flex>
                                 <v-flex xs2 class="text-xs-left">
-                                    <v-btn v-if="user.realInformation.state !== 0" small  color="yellow darken-1" style="min-width: 0px;" @click="openAccountSecurityDialog()" :disabled="accountSecurity.buttonDisabled === !accountSecurity.bottonLoading1 ">认证</v-btn>
+                                    <v-btn v-if="user.realInformation.state === 0" small  color="yellow darken-1" style="min-width: 0px;" @click="openAccountSecurityDialog()" :disabled="accountSecurity.buttonDisabled === !accountSecurity.bottonLoading1 ">认证</v-btn>
                                     <v-btn v-else-if="user.realInformation.state === 1" small  color="yellow darken-1" style="min-width: 0px;" :loading="accountSecurity.bottonLoading1"  :disabled="true">审核中</v-btn>
                                     <v-btn v-else small  color="green " style="min-width: 0px;" @click="1" >已认证</v-btn>
                                 </v-flex>

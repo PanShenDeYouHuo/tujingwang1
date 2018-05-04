@@ -14,8 +14,6 @@ const Home = () => import('@/components/Home');
 const Publish = () => import('@/components/publish');
 const Works = () => import('@/components/publish/Works');
 const Work = () => import('@/components/publish/Work');
-const Projects = () => import('@/components/publish/Projects');
-const Project = () => import('@/components/publish/Project');
 
 //管理员界面
 const Admin = ()=> import('@/components/admin');
@@ -41,16 +39,20 @@ const Notify = ()=> import('@/components/notify');
 //客户管理
 const Customer = ()=> import('@/components/customer');
 
+//项目管理
+const Projects = () => import('@/components/publish/Projects');
+const Project = () => import('@/components/publish/Project');
+
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
   routes: [
     { name: '/', path: '/', component: Home, meta: {keepAlive: true} },
-    { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: false} },
-    { name: 'works', path: '/works', component: Works },
-    { name: 'work', path: '/works/:wid', component: Work },
-    { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: true} },
+    { name: 'publish', path: '/publish',component: Publish, meta: {keepAlive: true} },
+    { name: 'works', path: '/works', component: Works, meta: {keepAlive: false} },
+    { name: 'work', path: '/works/:pid', component: Work, meta: {keepAlive: false}  },
+    { name: 'projects', path: '/projects', component: Projects, meta: {keepAlive: false} },
     { name: 'project', path: '/projects/:pid', component: Project, meta: {keepAlive: false} },
 
     { name: 'admin', path: '/admin', component: Admin, meta: {keepAlive: false},

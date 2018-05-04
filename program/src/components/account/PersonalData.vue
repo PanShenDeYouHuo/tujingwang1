@@ -10,7 +10,7 @@
  
                             <v-flex xs12 class="text-xs-center" >
 
-                                <v-btn flat fab class="hand" style="height: 100px; width: 100px; min-width: 20px; margin: 0px; padding: 0px;" @click="">
+                                <v-btn flat fab class="hand" style="height: 100px; width: 100px; min-width: 20px; margin: 0px; padding: 0px;">
                                     <v-avatar size="100px">
                                         <img :src=" user.headimgurl" alt="Avatar" >
                                     </v-avatar>

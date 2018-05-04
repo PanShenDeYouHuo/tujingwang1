@@ -47,7 +47,7 @@
       {{ successSnackbar.text }}
     </v-snackbar>
 
-        <!-- 通知信息提示窗口 -->
+    <!-- 通知信息提示窗口 -->
     <v-snackbar
       :timeout="0"
       top
@@ -138,30 +138,11 @@ export default {
       this.$store.state.loginDialog = true;
     },
 
-    // //用户信息管理右侧边导航
-    // toggleRightSidenav() {
-    //   this.$refs.rightSidenav.toggle();
-    // },
-    // closeRightSidenav() {
-    //   this.$refs.rightSidenav.close();
-    // },
-
-    // //登入右侧导航
-    // closeLoginSidenav() {
-    //   this.$refs.loginSidenav.close();
-    // },
-
-    // open(ref) {
-    //   console.log('Opened: ' + ref);
-    // },
-    // close(ref) {
-    //   console.log('Closed: ' + ref);
-    // },
     
   },
   mounted(){
-          if( !this.$store.state.url[0]) {
-        console.log(this.$route.path)
+      if( !this.$store.state.url[0]) {
+          console.log(this.$route.path)
           this.$store.dispatch('initRouter', this.$route.path);
       }
     // setTimeout(()=> {
@@ -253,9 +234,16 @@ html,body{overflow:visible; height: 100%;}
   }
 
 
-.list__tile__title {
+  .list__tile__title {
     line-height: 28px;
-}
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
 
 
 /* .card {
@@ -299,6 +287,10 @@ html,body{overflow:visible; height: 100%;}
   .menu__content {
 
     box-shadow: 0px 1px 1px -1px rgba(0,0,0,0.2), 0px 1px 8px 1px rgba(0,0,0,0.14), 0px 1px 14px 2px rgba(0,0,0,0.12);
+  }
+
+  mytextcolor {
+    color:#E0E0E0;
   }
 
 

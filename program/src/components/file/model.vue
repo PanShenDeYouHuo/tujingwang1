@@ -1,10 +1,10 @@
 <template>
-    <div class="fileEdir">
+    <div class="model">
 
         <v-layout wrap>
-                 
+            
             <input type="file" id="xFile" ref="file" @change="fileChange()" multiple style="position:absolute; clip:rect(0 0 0 0); " v-show="false" >
-            <v-flex xs2 v-if="user.authority.indexOf('service') !== -1">
+            <v-flex xs2>
 
                 <v-btn depressed @click="openFile"  style="height: 217px; width: 100%; padding: 0px; margin: 0px;">
                     <v-flex xs12>
@@ -44,7 +44,7 @@
                                     <v-menu offset-y>
                                     <v-btn icon small light style="margin: 0px; margin-top: 4px;" dark slot="activator"><v-icon color="grey darken-2" >more_vert</v-icon></v-btn>
                                     <v-list>
-                                        <v-list-tile v-if="user.authority.indexOf('service') !== -1" @click="deleteRefFile(file.name)">
+                                        <v-list-tile  @click="deleteRefFile(file.name)">
                                             <v-list-tile-title class="body-1">删除</v-list-tile-title>
                                         </v-list-tile>
 
@@ -171,6 +171,7 @@ export default {
 
                 //判断如果是图片，读取图片文件保存到src属性
                 if(file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif' || file.type === 'image/bmp' || file.type === 'image/jpg') {
+                    continue;
                     //读取图片
                     let oFReader = new FileReader();
                     //设置回调
@@ -183,29 +184,31 @@ export default {
 
                 }
                 this.fileList.push(buf);
-                console.log(11)
+                // console.log(11)
                 this.$store.dispatch(
                     'uploadprojectFile',
                     {
-                        callbackUrl:'60.205.225.197/osscallback/refFileUpload',
-                        objectKey:`temporaryFile/project/${ this.pid }/reference/${ buf.file.name }`,
+                        callbackUrl:'60.205.225.197/osscallback/proFileUpload',
+                        objectKey:`temporaryFile/project/${ this.pid }/model/${ buf.file.name }`,
                         buf,
                         pid: this.pid
                     })
                     .then((res)=> {
-                                          console.log(res.data)
                         for (let index in this.fileList) {
                             if(!this.fileList[index].file) continue;
                             if(this.fileList[index].file.name !== res.data.name) continue;
                             
                             // console.log(this.fileList[index].name);
-                            console.log(res.data)
                             this.fileList.splice(index, 1, res.data);
                         }
+                        // buf = res.data;
+                        // for( let a in res.data) {
+                        //     buf[a] = res.data[a];
+                        // }
+                        // console.log(buf);
  
                     })
                     .catch((err)=> {
-                                  console.log(err)
                         //从数组中移除
                         buf.state = 2;
                     })
@@ -221,7 +224,7 @@ export default {
 
         //删除文件
         async deleteRefFile(name) {
-            await this.$store.dispatch('deleteRefFile', {pid: this.pid, name});
+            await this.$store.dispatch('deleteModFile', {pid: this.pid, name});
             for (let index in this.fileList) {
                 if(this.fileList[index].name !== name) continue;
 
@@ -251,24 +254,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    .fileEdir {
-        /* width:100%;
-        height:50px;
-        padding: 10px;
-        padding-top: 70px;
-        overflow:auto;
-        position: absolute; */
-        /* margin: auto; */
-        /* padding-top: 50px;
-        min-width: 1080px; */
+    .model {
         display: flex;
-        /* width: 1300px; */
-        /* background-color: #fff; */
-        /* background-position:center;  */
-        /* max-width: 1220px; */
-        /* min-width: 965px;
-        background-color: #fff;
-        z-index:1; */
     }
 
     .lengthLimit {

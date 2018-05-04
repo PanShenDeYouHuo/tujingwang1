@@ -33,7 +33,7 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
 
-                            <v-form v-model="nproject.valid" ref="projectForm" lazy-validation style="width: 100%;">
+                            <v-form v-model="nproject.valid" ref="mproForm" lazy-validation style="width: 100%;">
                                 <v-flex xs12>
                                         <v-text-field label="任务名称" v-model="nproject.name" :rules="nproject.rules" color="yellow darken-1" 
                                         @keyup.enter="projectCreate(nproject.name)"></v-text-field>
@@ -136,14 +136,15 @@ export default {
         //关闭创建任务模态框
         projectDialogClose() {
             //清空form数据
-            this.$refs.projectForm.reset();
+
             this.nproject.dialog = false;
+            this.$refs.mproForm.reset();
         },
 
         //创建项目
         async projectCreate(name, customer) {
             //验证表单数据
-            if(!this.$refs.projectForm.validate()) return;
+            if(!this.$refs.mproForm.validate()) return;
 
             let publisherId = this.customer.idMap[this.customer.items.indexOf(customer)]
    
@@ -164,22 +165,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .publish {
-        /* width:100%;
-        height:50px;
-        padding: 10px;
-        padding-top: 70px;
-        overflow:auto;
-        position: absolute; */
-        /* margin: auto; */
-
-        /* padding: 16px; */
         padding-top: 50px;
         display: flex;
-        /* background-position:center;  */
-        /* max-width: 1220px; */
-        /* min-width: 965px;
-        background-color: #fff;
-        z-index:1; */
     }
 
     .mycard {

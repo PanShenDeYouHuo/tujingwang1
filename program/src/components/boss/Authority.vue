@@ -8,7 +8,7 @@
                 <v-layout row wrap>
 
                     <v-flex xs12 >
-                        <v-card>
+                        <v-card flat>
                             <v-card-title style="padding: 0px 16px;">
                                 <buttongroup title="" :items="items" :active="active" :disabled="this.$store.state.appLoading" @change="getStaffAccounts"></buttongroup>
                                 <v-spacer></v-spacer>
@@ -22,10 +22,10 @@
 
                     <v-flex xs2 v-for="(staff, index) in boss.staffAccounts" :key="staff._id">
 
-                        <v-card style="">
+                        <v-card flat style="">
                                     
                             <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="120px" @click="1">
-                                <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small >{{job}}</v-chip>
+                                <!-- <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small >{{job}}</v-chip> -->
                             </v-card-media>
 
                             <!-- <v-btn flat fab class="hand" style="height: 80px; width: 80px; min-width: 20px; margin: 0px; padding: 0px;" @click="openAuth(index)">
@@ -170,7 +170,7 @@ export default {
                 {name: '全部', router: 'all', url: '/all'},
                 {name: '财务', router: 'financial', url: '/financial'},
                 {name: '客服', router: 'service', url: '/service'},
-                {name: '组长', router: 'leder', url: '/leder'},
+                // {name: '组长', router: 'leder', url: '/leder'},
                 {name: '渲染', router: 'member', url: '/render'},
             ],
 
@@ -183,8 +183,9 @@ export default {
             people: [
                 { name: '财务', description: '授权财务的权限', router: 'financial' },
                 { name: '客服', description: '授权客服的基本权限', router: 'service'},
-                { name: '客服主管', description: '授权客服处理客户账号的权限', router: 'serviceMaster' },
-                { name: '组长', description: '授权组长的权限', router: 'leder'},
+                { name: '客服经理', description: '授权客户经理处理客户的安排的权限', router: 'customerManager' },
+                // { name: '项目经理', description: '授权项目经理安排项目任务的安排的权限', router: 'projectManager' },
+                // { name: '组长', description: '授权组长的权限', router: 'leder'},
                 { name: '渲染师', description: '授权渲染师的权限', router: 'render'}
             ],
         }
@@ -225,8 +226,8 @@ export default {
             if( !this.e11.length ) {
                 staff.authority = [];
             } else {
+                staff.authority = [];
                 for (let i in this.e11) {
-                    staff.authority = [];
                     staff.authority[i] = this.e11[i];
                 }
             }

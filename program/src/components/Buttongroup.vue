@@ -11,7 +11,7 @@
                 <v-layout justify-center align-content-space-between align-center>
                     <!-- <span class="grey--text" style="margin-right: 20px;">{{title}}</span> -->
                     <v-btn v-for=" item in items" 
-                    class="menu-btn"
+                    class="menu-btn body-1"
                     flat small
                     :key="item.name"
                     v-bind:class="{'menu-active': item.url === active}"

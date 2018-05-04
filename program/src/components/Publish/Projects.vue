@@ -27,7 +27,7 @@
 
                     <!-- 状态筛选 -->
                     <v-flex xs12 class="py-2">
-                        <v-card >
+                        <v-card flat>
                             <v-card-title style="padding: 0px 16px;">
                                 <buttongroup title="" :items="items" :active="active" :disabled="this.$store.state.appLoading" @change="getProjects"></buttongroup>
                                 <!-- <buttongroup title="状态" :items="items" active="全部"></buttongroup> -->
@@ -211,8 +211,8 @@
         },
         //编辑项目
         async editProject(pid) {
-            //获取读写权限
-            await this.$store.dispatch('getWriteAndReadProjectStsToken', {pid});
+            // //获取读写权限
+            // await this.$store.dispatch('getWriteAndReadProjectStsToken', {pid});
             this.$store.state.router.replace({name: 'project', params:{pid}});
         }
     },

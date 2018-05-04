@@ -102,22 +102,22 @@ export default {
             items: [
                 {name: '全部', router: 'all', url: '/all', ntype: 0},
                 {name: '系统', router: 'system', url: '/system', ntype: 1},
-                {name: '团队', router: 'team', url: '/team', ntype: 2},
-                {name: '任务', router: 'task', url: '/task', ntype: 3},
+                // {name: '团队', router: 'team', url: '/team', ntype: 2},
+                {name: '任务', router: 'task', url: '/task', ntype: 2},
             ],
             active: '',
             //通知类型映射
             ntypeMap: {
                 '/all': 0,
                 '/system': 1,
-                '/team': 2,
-                '/task': 3
+                // '/team': 2,
+                '/task': 2
             },
 
             notifys: [],		//通知数据
 
             //notify类型映射
-            notifyType: [ '','系统', '团队', '任务']
+            notifyType: [ '','系统', '任务']
 
         }
     },

@@ -1,272 +1,255 @@
 <template>
-  <div class="works">
-    <!-- <Row  type="flex" justify="space-around">
-        <Col span="5">
-            <Card >
-                <div>
-                <h2>
-                    <Icon type="ios-keypad"></Icon>
-                    风格
-                </h2>
-                <a href="javascript:open(' ', '_self').close();" ></a>
-                <br>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>现代简约</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>现代奢华</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>后现代</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>北欧</Button>
-                </Col>
-                <Col :span="12" style="padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>中式</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>新中式</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>欧式</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>简欧</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>法式</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>新古典</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>地中海</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>美式</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-left: 0px;">
-                    <Button type="ghost" long>简美</Button>
-                </Col>
-                <Col :span="12" style=" padding-bottom: 20px; padding-right: 0px;">
-                    <Button type="ghost" long>东南亚</Button>
-                </Col>
-                <Col :span="12" style="padding-left: 0px;">
-                    <Button type="ghost" long>日式</Button>
-                </Col>
-                <Col :span="12" style="padding-right: 0px;">
-                    <Button type="ghost" long>混搭</Button>
-                </Col>
-                <div style="clear:both;"></div>
-                </div>
-            </Card>
-            <br>
-            <Card>
-                <div>
-                    <h2>
-                        <Icon type="ios-keypad"></Icon>
-                        类型
-                    </h2>
-                    <br>
-                    <Col :span="12" style="padding-left: 0px;">
-                        <Button type="ghost" long >家装</Button>
-                    </Col>
-                    <Col :span="12" style="padding-right: 0px;">
-                        <Button type="ghost" long >工装</Button>
-                    </Col>
-                    <div style="clear:both;"></div>
-                </div>
-            </Card>
-        </Col>
-        <Col span="8">
-            <Card >
-                <div style="">
-                    <h2>
-                        <Icon type="ios-keypad"></Icon>
-                        角度
-                    </h2>
-                    <br>
-                    <Form ref="form" :model="form" inline >
-                                <FormItem style="width: 80%;"
-                                    v-for="(image, index) in form.images"
-                                    :key="index"
-                                    :prop="'images.' + index + '.value'"
-                                    :rules="{required: true, message: '项目' + (index + 1) +'不能为空', trigger: 'blur'}">
-                                        <Cascader :data="data" v-model="image.value"></Cascader>
-                                </FormItem>
-                                <FormItem>
-                                        <Button type="ghost" long @click="handleRemove(index)">删除</Button>
-                                </FormItem>
-                    </Form>
-                    <Form>
-                        <FormItem>
-                            <Button type="dashed" long icon="plus-round" @click="handleAdd" >新增</Button>
-                        </FormItem>
-                    </Form>
-                </div>
-            </Card>
-        </Col>
-        <Col span="5">
-            <Card >
-                <div >
-                    <h2>
-                        <Icon type="ios-keypad"></Icon>
-                        项目说明
-                    </h2>
-                    <br>
-                    <Input v-model="value" type="textarea" :rows="10" placeholder="请输入..." style="margin-bottom: 20px;"></Input>
-                </div>
-            </Card>
-            <br>
-            <Card>
-                <div>
-                    <h2>
-                        <Icon type="ios-keypad"></Icon>
-                        图片参考
-                    </h2>
-                    <br>
-                </div>
-            </Card>
-        </Col>
-        <Col span="5">
-            <Card>
-                <div>
-                    <h2>
-                        <Icon type="ios-keypad"></Icon>
-                        项目资料
-                    </h2>
-                    <br>
-                    <Upload
-                        multiple
-                        type="drag"
-                        action="//jsonplaceholder.typicode.com/posts/">
-                        <div style="padding: 20px 0">
-                            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                            <p>点击或将文件拖拽到这里上传</p>
-                        </div>
-                    </Upload>
-                </div>
-            </Card>
-        </Col>
+    <div class="projects">
 
-    </Row> -->
-  </div>
+        <div  style="background-color: #fff; ">
+            <v-layout align-center style="height: 100%;">
+                <v-flex xs1>
+                    <v-btn flat icon @click="change('/')" color="yellow">
+                        <v-icon>arrow_back</v-icon>
+                    </v-btn>
+                </v-flex>
+
+                <v-layout justify-center>
+                    <span class="subheading">我的任务</span>
+                </v-layout>
+
+                <v-flex xs1>
+                </v-flex>
+
+            </v-layout>
+        </div>
+
+
+        <div style=" overflow:auto; ">
+            <v-container grid-list-lg fluid >
+
+                <v-layout row wrap >
+
+                    <!-- 状态筛选 -->
+                    <v-flex xs12 class="py-2">
+                        <v-card flat>
+                            <v-card-title style="padding: 0px 16px;">
+                                <buttongroup title="" :items="items" :active="active" :disabled="this.$store.state.appLoading" @change="getProjects"></buttongroup>
+                                <!-- <buttongroup title="状态" :items="items" active="全部"></buttongroup> -->
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                    
+                    <!-- 项目列表 -->
+                    <v-flex xs2 v-for="(project ) in projectList" :key="project._id" v-if="projectList.length">
+                        
+                        <v-card hover flat>
+                            <v-card-media
+                            class="white--text"
+                            height="200px"
+                            :src="workingImage"
+                            @click="editProject(project._id)"
+                            >
+                                <v-container fill-height fluid>
+                                    <v-layout fill-height>
+                                    <v-flex xs12 >
+                                        <span class="title">{{project.name}}</span><br>
+                                        <span class="body-2 ">制作中</span>
+                                    </v-flex>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-media>
+                        </v-card>
+                    </v-flex>
+
+                    <!-- 没有数据 -->
+                    <v-layout row wrap v-else align-center>
+                        <v-flex xs12>
+                            <v-layout justify-center>
+                            <img src="../../assets/nothing.png"  alt="没有找到符合条件的结果" />
+                            </v-layout>
+                        </v-flex>
+
+                        <v-flex xs12>
+                        <v-layout justify-center>
+                            <p>没有找到符合条件的结果</p>
+                            </v-layout>
+                        </v-flex>
+
+                    </v-layout>
+
+                    <!-- 页面 -->
+                    <v-flex xs12 class="py-2" v-if="projectCount > 1">
+                        <v-card>
+                            <v-card-title style="padding: 0px 16px;" >
+                                 <div class="text-xs-center" style="width: 100%;">
+                                    <v-pagination  
+                                    v-bind="{'disabled': getProjectsLoading}"
+                                    :length="projectCount" v-model="currentPage" :total-visible="7" @input="getProjects(active)"></v-pagination>
+                                </div>
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+
+                </v-layout>
+
+                
+            </v-container>
+        </div>
+       
+        
+    </div>
 </template>
 
-<script>
-export default {
-  name: 'home',
-  data() {
-    return {
-        value: "",
-        form: {
-            images: [
-                {
-                    value: [],
-                }
-            ]     
-        },
-        data: [{
-                value: 'beijing',
-                label: '家装',
-                children: [
-                    {
-                        value: '单帧',
-                        label: '单帧',
-                        children: [
-                            {
-                                value: '客厅',
-                                label: '客厅'
-                            },
-                            {
-                                value: '餐厅',
-                                label: '餐厅' 
-                            },
-                            {
-                                value: '卧室',
-                                label: '卧室'
-                            }
-                        ]
-                    },
-                    {
-                        value: '全景',
-                        label: '全景',
-                        children: [
-                            {
-                                value: '客厅',
-                                label: '客厅'
-                            },
-                            {
-                                value: '餐厅',
-                                label: '餐厅' 
-                            },
-                            {
-                                value: '卧室',
-                                label: '卧室'
-                            }
-                        ]
-                    }
-                ]
-            }, {
-                value: 'jiangsu',
-                label: '工装',
-                children: [
-                    {
-                        value: 'nanjing',
-                        label: '南京',
-                        children: [
-                            {
-                                value: 'fuzimiao',
-                                label: '夫子庙',
-                            }
-                        ]
-                    },
-                    {
-                        value: 'suzhou',
-                        label: '苏州',
-                        children: [
-                            {
-                                value: 'zhuozhengyuan',
-                                label: '拙政园',
-                            },
-                            {
-                                value: 'shizilin',
-                                label: '狮子林',
-                            }
-                        ]
-                    }
-                ],
-            }]
-    }
-  },
-  methods:{
-    handleAdd () {
-        this.form.images.push({
-            value: []
-        });
+    <script>
+    import buttongroup from "../Buttongroup";
+    export default {
+    name: "projects",
+    components: { buttongroup },
+    props: [],
+    data() {
+        return {
+            text: "center",
+            icon: "justify",
+            toggle_none: null,
+            toggle_one: 0,
+            toggle_exclusive: 2,
+            toggle_multiple: [0, 1, 2],
+
+            workingImage: require("../../assets/working1.jpg"),
+
+            items: [
+                { name: '全部', url:'/all' },
+                { name: '完成',  url: '/finish'}, 
+                { name: "未完成", url: '/unfinished'}
+            ],
+            active: "",
+        };
     },
-  },
-};
-</script>
+    computed: {
+        currentPage: {
+                get: function () {
+                    return this.$store.state.project.work.currentPage;
+                },
+                set: function () {
+                }
+        },
+        projectList() {
+            return this.$store.state.project.listData;
+        },
+        projectCount() {
+            return this.$store.state.project.listCount;
+        },
+        getProjectsLoading() {
+            return this.$store.state.project.getProjectsLoading;
+        },
+    },
+    methods: {
+        test() {
+            console.log(1);
+        },
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .works {
-    width:100%;
-    height:100%;
-    padding: 10px;
-    padding-top: 70px;
-    background-color: #fff;
-    overflow:auto;
-    position: absolute;
-    z-index:1;
-  }
+        toTask() {
+            this.$router.push("/publish/task");
+        },
 
-  .ivu-card {
-    font-size: 12px;
-}
+        createTime(_id) {
+            let nowYear = new Date();
+            let createTime = new Date(parseInt(_id.substr(0, 8), 16) * 1000);
+            return `${createTime.getFullYear()}/${createTime.getMonth() +
+                1}/${createTime.getDate()}`;
 
+            let timeDifference =
+                new Date().getTime() - parseInt(_id.substr(0, 8), 16) * 1000;
 
+            let dayDifference = Math.round(timeDifference / 1000 / 86400);
 
-</style>
+            if (dayDifference > 0 && dayDifference < 365) {
+                return `${dayDifference}天前`;
+            } else if (dayDifference > 365) {
+                let year = nowYear.getFullYear() - createTime.getFullYear();
+                return `${year}年前`;
+            }
+
+            let hoursDifference = Math.round(timeDifference / 1000 / 3600);
+
+            if (hoursDifference > 0) {
+                return `${hoursDifference}小时前`;
+            }
+
+            let minutesDifference = Math.round(timeDifference / 1000 / 60);
+
+            return minutesDifference !== 0 ? `${minutesDifference}分钟前` : "1分钟前";
+        },
+
+        change(routerName) {
+            console.log(routerName);
+            this.$router.replace({ name: routerName });
+        },  
+
+        //获取项目列表数据 state："all"全部， 1完成， 2未完成
+        async getProjects(url) {
+
+                //判断是否切换页面，如果切换重置当前页数
+                if (this.active !== url) {
+                    this.currentPage = 1;
+                    this.active = url;
+                }
+                await this.$store.dispatch('getRenderProjects', {pageSize: 18, currentPage: this.currentPage, state: url.slice(1)});        
+
+        },
+        //删除项目
+        async deleteProject(pid) {
+
+            await this.$store.dispatch('deleteProject', pid);
+            //重新载入
+            await this.$store.dispatch('getProjects', {pageSize: 18, currentPage: this.currentPage, state: this.active.slice(1)});
+ 
+        },
+        //编辑项目
+        async editProject(pid) {
+            // //获取读写权限
+            // await this.$store.dispatch('getWriteAndReadProjectStsToken', {pid});
+            this.$store.state.router.replace({name: 'work', params:{pid}});
+        }
+    },
+
+    mounted() {
+        this.getProjects(this.items[0].url);
+
+    },
+
+    beforeCreate() {}
+    };
+    </script>
+
+    <!-- Add "scoped" attribute to limit CSS to this component only -->
+    <style scoped>
+        .projects {
+
+            min-width: 1280px;
+            background-color: rgb(244, 244, 244);
+            position: absolute; width: 100%; min-width: 1280px; z-index:3;
+
+        }
+
+        .container.fluid {
+            max-width: 1320px;
+            overflow: visible;
+        }
+
+        .card__title {
+            padding: 4px 8px 4px 10px;
+        }
+        .card__actions {
+            border-style: solid;
+            border-width: 1px 0px 0px 0px;
+            border-color: #ddd;
+            padding: 4px 8px 4px 6px;
+        }
+
+        .my-btn {
+            margin-left: 0px;
+            margin-right: 0px;
+            min-width: 0px;
+        }
+
+        .my-a {
+            text-decoration: none;
+        }
+    </style>

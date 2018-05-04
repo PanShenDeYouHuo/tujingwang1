@@ -6,9 +6,9 @@
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn depressed @click="savaProject()" color="yellow darken-1">
+                <!-- <v-btn depressed @click="savaProject()" color="yellow darken-1">
                     发布
-                </v-btn>
+                </v-btn> -->
             </v-layout>
         </div>
 
@@ -46,25 +46,6 @@
                     </v-flex>
 
 
-                    <!-- 选择发布者 -->
-                    <!-- <v-flex xs3 d-flex >
-                        <v-card flat>
-                            <v-card-title style=" height: 100%;">
-                                <v-select
-                                    label="客户名"
-                                    autocomplete
-                                    :loading="customer.loading"
-                                    cache-items
-                                    :items="customer.items"
-                                    :rules="[() => customer.select.length > 0 || '必须选择一个客户']"
-                                    :search-input.sync="search"
-                                    v-model="customer.select"
-                                    disabled
-                                ></v-select>
-
-                            </v-card-title>
-                        </v-card>
-                    </v-flex> -->
 
                     <v-flex xs3 d-flex >
                         <v-card flat>
@@ -92,54 +73,87 @@
                     </v-flex> 
 
                     <!-- 项目任务区 -->
-                    <v-flex xs12 v-if="project.image">
+                    <v-flex xs12 v-if="project.image ? project.image.length || 0 : 100">
                         <v-layout row wrap>
                         <v-flex xs6 v-for="(image, index) in project.image" :key="image._id">
-                            <v-card hover flat>
+                            <v-card flat>
                                 <v-container fluid grid-list-lg>
                                     <v-layout row>
                                         <v-flex xs3>
                                             <v-card-media
-
-                                            :src="noImage"
-                                            height="123px"
-                                            ></v-card-media>
+                                            height="131.5px"
+                                            >
+                                            <upload :pid="project._id" :image="image"></upload>
+                                            </v-card-media>
                                         </v-flex>
                                         <v-flex xs9>
-                                            <div style="padding-bottom: 8px;">
-                                                <div class="subheading">{{`${image.style}-${image.designType}-${image.space}-${image.area}-${image.imageType}视角-${index+1}`}}</div>
-                                                <div style=" padding-top: 8px; display: flex; align-items: center; " class="grey--text  caption">{{`价格：￥${image.price}，已收：￥${image.payment}`}}
+                                            <div >
+                                                <div class="subheading" style=" display: flex; align-items: center; ">{{`${image.style}-${image.designType}-${image.space}-${image.area}-${image.imageType}视角-${index+1}`}}
+                                                <v-spacer></v-spacer>
+                                                <span class="grey--text caption">{{createTime1(image._id)}}</span>
+                                                </div>
+
+                                                <v-divider style="margin-top: 12px; margin-bottom: 10px;"></v-divider>
+                                                
+                                                <div v-if="image.isSettlement !== 1" style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                    <span  class="">{{`价格：￥${image.price}，已收：`}}</span>
+                                                    <span style="font-weight:bold;" class="black--text">{{`￥${image.payment}`}}</span>
                                                     <v-spacer></v-spacer>
-                                                    <v-btn flat small class="my-btn">
-                                                        <span class="grey--text caption">修改</span>
+                                                    <v-btn outline flat small class="my-btn" @click="modifyImageDialogPriceOpen(image)">
+                                                        <span class=" caption">修改</span>
                                                     </v-btn>
-                                                    <v-btn flat small class="my-btn">
-                                                        <span class="grey--text caption">收款</span>
-                                                    </v-btn>
-                                                    <v-btn flat small class="my-btn">
-                                                        <span class="grey--text caption">结算</span>
+                                                    <v-btn outline flat small class="my-btn" @click="proPayDialogOpen(image)">
+                                                        <span class=" caption">收款</span>
                                                     </v-btn>
                                                 </div>
-                                                <div style=" display: flex; align-items: center;" class="grey--text  caption">
+                                                <div v-else style="  display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                    <span class="green--text">已结算：</span>
+                                                    <span style="font-weight:bold;" class="black--text">{{`￥${image.payment}`}}</span>
+                                                    <v-spacer></v-spacer>
+                                                    <span>{{createTime2(image.settlementTime)}}</span>
+                                                </div>
+
+                                                <div v-if="image.isFinish !== 1" style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
                                                     {{`状态：未完成`}}
                                                     <v-spacer></v-spacer>
-                                                    <v-btn flat small class="my-btn">
-                                                        <span class="grey--text  caption">完成</span>
+                                                    <v-btn outline flat small class="my-btn" @click="putProImageFinish(image)">
+                                                        <span class=" caption">完成</span>
                                                     </v-btn>
-                                                    <v-btn flat small class="my-btn">
-                                                        <span class="grey--text caption">编辑</span>
+                                                    <v-btn outline flat small class="my-btn" @click="modifyImageDialogOpen(image)" >
+                                                        <span class=" caption">编辑</span>
                                                     </v-btn>
-                                                    <v-btn flat small class="my-btn" @click="removeImage( image._id )" :loading="appLoading">
-                                                        <span class="grey--text caption">删除</span>
+                                                    <v-btn outline flat small class="my-btn" @click="deleteProImage( image._id )" :loading="appLoading">
+                                                        <span class=" caption">删除</span>
                                                     </v-btn>
+                                                </div>
+                                                <div v-else style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                    <span  class="green--text">状态：</span>
+                                                    <span style="font-weight:bold;" class="black--text">完成</span>
+                                                    <v-spacer></v-spacer>
+                                                    <span>{{createTime2(image.finishTime)}}</span>
                                                 </div>
             
                                             </div>
-                                            <v-divider></v-divider>
+                         
 
-                                            <div style="padding-left: 2px; padding-top: 8px; display: flex; align-items: center;" class="grey--text  caption">{{`建模：无，渲染：无`}}
+                                            <div style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                <span v-if="!image.modelId">建模：</span>
+                                                <span v-else class="green--text">建模：</span>
+                                                <span v-if="!image.modelId">无</span>
+                                                <span v-else style="font-weight:bold;" class="black--text">{{`${image.modelName}`}}</span>
                                                 <v-spacer></v-spacer>
-                                                <span class="caption">{{createTime1(image._id)}}</span>
+                                                <v-btn v-if="image.isFinish !== 1" outline flat small class="my-btn" @click="arrangeDialogOpen(image, 'model')">
+                                                    <span class=" caption">设置</span>
+                                                </v-btn>
+                                                <span>，</span>
+                                                <span v-if="!image.renderId">渲染：</span>
+                                                <span v-else class="green--text">渲染：</span>
+                                                <span v-if="!image.renderId">无</span>
+                                                <span v-else style="font-weight:bold;" class="black--text">{{`${image.modelName}`}}</span>
+                                                 <v-spacer></v-spacer>
+                                                <v-btn v-if="image.isFinish !== 1" outline flat small class="my-btn" @click="arrangeDialogOpen(image, 'render')">
+                                                    <span class=" caption">设置</span>
+                                                </v-btn>
                                             </div>
 
                                         </v-flex>
@@ -226,23 +240,148 @@
          
         </v-dialog>
 
-<!-- 添加upload模态框 -->
-        <v-dialog v-model="uploadDialog" persistent max-width="1300px">
-            <!-- <file @close="uploadDialogClose()"></file> -->
+<!-- 修改image模态框 -->
+        <v-dialog v-model="modifyDialog" persistent max-width="900px">
+            <v-card>
+                <v-card-title>
+                    <span class="title">修改任务</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container grid-list-md>
+                        <v-form v-model="modifyValid" ref="modifyImageForm" lazy-validation style="width: 100%;">
+                            <v-layout wrap>
+
+                                <v-flex xs12 sm6 md4>
+                                    <v-select label="设计风格"
+                                        :items="styleItems"
+                                        v-model="modifyImage.style" color="yellow darken-2"
+                                        :rules="rules.style"
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select label="设计类型"
+                                        v-bind:items="designTypeItems"
+                                        v-model="modifyImage.designType" color="yellow darken-2" :rules="rules.designType" @input=" designTypeChange()">
+                                    </v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select label="设计空间" :items="modifyImage.designType == '工装' ? workDesignItems : homeDesignItems" v-model="modifyImage.space" :rules="rules.space" color="yellow darken-2" 
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select label="空间区域" :items="modifyImage.designType == '工装' ? workSpaceItems : homeSpaceItems" v-model="modifyImage.area" :rules="rules.area" color="yellow darken-2" 
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex xs12 sm6 md4>
+                                    <v-select label="图片类型" :items="imageTypeItems" v-model="modifyImage.imageType" color="yellow darken-2" :rules="rules.imageType"></v-select>
+                                </v-flex>
+                                <!-- <v-flex xs12 sm6 md4>
+                                    <v-text-field
+                                    label="价格" color="yellow darken-2" :rules="rules.price" v-model="modifyImage.price"
+                                    ></v-text-field>
+                                </v-flex> -->
+
+ 
+                            </v-layout>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn  flat color="deep-orange"  @click="modifyImageDialogClose()">取消</v-btn>
+                    <v-btn color="yellow" @click="putProImage()" :loading="this.$store.state.appLoading">保存</v-btn>
+                </v-card-actions>
+            </v-card>
+         
         </v-dialog>
 
- <!-- 添加是否保存修改模态框 -->       
-    <v-dialog v-model="saveDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">是否保存已修改项目？</v-card-title>
-        <v-card-actions>
-            <v-layout justify-center>
-                <v-btn color="yellow darken-1" flat="flat" @click.native="saveDialog = false; savaProject(); toProjects();">保存</v-btn>
-                <v-btn color="deep-orange darken-1" flat="flat" @click.native="saveDialog = false; toProjects();">放弃</v-btn>
-                </v-layout>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>       
+
+<!-- 修改image模态框,只修改价格 -->
+        <v-dialog v-model="modifyDialogPrice" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                    <span class="title">修改金额</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-container grid-list-md>
+                        <v-form v-model="modifyValid" ref="modifyImageForm" lazy-validation style="width: 100%;">
+                            <v-layout wrap>
+
+                                <v-flex xs12 sm12 md12>
+                                    <v-text-field label="价格" color="yellow darken-2" :rules="rules.price" v-model="modifyImage.price" ></v-text-field>
+                                    <!-- 用来消除空格提交 -->
+                                    <v-text-field label="手机号码" v-show="false"></v-text-field>
+                                </v-flex>
+
+                             </v-layout>
+                        </v-form>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn  flat color="deep-orange"  @click="modifyImageDialogPriceClose()">取消</v-btn>
+                    <v-btn color="yellow" @click="putProImage()" :loading="this.$store.state.appLoading">保存</v-btn>
+                </v-card-actions>
+            </v-card>
+         
+        </v-dialog>
+
+<!-- 收款模态框 -->
+        <v-dialog v-model="proPayDialog" persistent max-width="350px">
+            <v-card>
+                <v-card-title>
+                    <span class="title text-xs-center" style="width: 100%">收款</span>
+                </v-card-title>
+                     <v-divider></v-divider>
+                <v-card-text>
+                                                       
+                    <v-flex xs12 sm12 md12>
+                            <payfilm :pid="project._id" :image="proPayImage" @close="proPayDialogClose()"></payfilm>
+                    </v-flex>
+
+                </v-card-text>
+
+            </v-card>
+            
+        </v-dialog>
+
+<!-- 安排工作模态框 -->
+        <v-dialog v-model="arrangeDialog" persistent max-width="350px">
+            <v-card>
+                <v-card-title>
+                    <span class="title text-xs-center" style="width: 100%">工作安排</span>
+                </v-card-title>
+                     <v-divider></v-divider>
+                <v-card-text>
+                    <v-form v-model="arrangeValid" ref="arrangeForm" lazy-validation style="width: 100%;">                                
+                    <v-flex xs12 sm12 md12>
+                        <!-- 选择工作人员 -->
+                        <v-select
+                            label="渲染师"
+                            autocomplete
+                            :loading="customer.loading"
+                            cache-items
+                            :items="customer.items"
+                            :rules="[v => !!v || '请选择渲染师']"
+                            :search-input.sync="search"
+                            v-model="customer.select"
+                        ></v-select>
+
+                    </v-flex>
+                    </v-form>
+
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn  flat color="deep-orange"  @click="arrangeDialogClose()">取消</v-btn>
+                    <v-btn  flat @click="putProImgArrange(workType)" :loading="this.$store.state.appLoading">保存</v-btn>
+                </v-card-actions>
+
+            </v-card>
+            
+        </v-dialog>
+
         
 
     </div>
@@ -250,37 +389,47 @@
 
 <script>
 import file from '../file'
+import payfilm from '../file/pay'
+import upload from '../file/upload'
 
 export default {
-    name: 'task',
-    components:{ file },
+    name: 'project',
+    components:{ file, payfilm, upload },
     props: [],
     data() {
         return {
 
-            customer: {
-                loading: false,
-                items: [],
-                search: null,
-                select: [],
-            },
-            search: null,
 
             loading: false,
             noImage: require('../../assets/22.png'),
 
             projectName: this.$route.params.pid,
-            cards:[
-                { title: '客厅', src: require('../../assets/1.jpg'), flex: 4 },
-                { title: '餐厅', src: require('../../assets/2.jpg'), flex: 2 },
-                { title: '厨房', src: require('../../assets/3.jpg'), flex: 2 },
-                { title: '卧室', src: require('../../assets/3.jpg'), flex: 2 }
-            ],
-            imageDialog: false,
+
+            imageDialog: false,         //任务模态框
             imageValid: false,
-            uploadDialog: false,
-            uploadValid: false,
-            saveDialog: false,
+
+            modifyDialog: false,        //修改任务模态框
+            modifyDialogPrice: false,   //修改价格模态框
+            modifyValid: false,
+            modifyImage: {
+                style: '',
+                designType: '',
+                space:'',
+                area: '',
+                imageType: '',
+            },
+
+            proPayDialog: false,        //收款模态框
+            proPayValid: false,                
+            proPayImage: {},
+
+            arrangeDialog: false,       //安排模态框
+            arrangeValid: false,        
+            arrangeImage: {},     
+            workType:'',                //工作类型，model， render
+
+            saveDialog: false,          //保存模态框
+
             designTypeItems: [
                 { text: '家装', value: '家装'},
                 { text: '工装', value: '工装'}
@@ -374,6 +523,13 @@ export default {
                     (v) => !!v || '请选择图片类型'
                 ],
             },
+            customer: {
+                loading: false,
+                items: [],
+                select: null,
+                idMap: [],
+            },
+            search: null,
         }
     },
     watch: {
@@ -384,15 +540,21 @@ export default {
             let re=/[^\u4e00-\u9fa5]/;  
             if(re.test(val)) return;
 
-            let items = await this.$store.dispatch('getCustomers', {pageSize: 50, currentPage: 1, search: this.search});
-            for ( let index in items) {
-                this.customer.items.push(items[index].name);
+            let items = await this.$store.dispatch('getRender', {pageSize: 50, currentPage: 1, authority: 'render',  search: this.search });
+            console.log(items);
+            if (items.count === 0) return;
+            this.customer.items = [];
+            this.customer.idMap = [];
+            for ( let index in items.users) {
+                this.customer.items.push(items.users[index].realInformation.name);
+                this.customer.idMap.push(items.users[index]._id);
             }
 
         }
     },
     computed: {
         project() {
+            console.log(this.$store.state.project.changeData);
             return this.$store.state.project.changeData;
         },
         projects() {
@@ -400,9 +562,13 @@ export default {
         },
         appLoading() {
             return this.$store.state.appLoading;
+        },
+        voucher() {
+            return this.$store.state.project.voucher;
         }
     },
     methods: {
+
         //打开创建任务模态框
         imageDialogOpen() {
             this.imageDialog = true;
@@ -415,6 +581,61 @@ export default {
             this.imageDialog = false;
         },
 
+        //打开修改任务模态框
+        modifyImageDialogOpen(image) {
+            this.modifyImage = JSON.parse(JSON.stringify(image));
+
+            this.modifyDialog = true;
+        },
+
+        //关闭修改任务模态框
+        modifyImageDialogClose() {
+            //清空form数据
+            // this.$refs.modifyImageForm.reset();
+            this.modifyDialog = false;
+        },
+
+        //打开修改任务价格模态框
+        modifyImageDialogPriceOpen(image) {
+
+            this.modifyImage = JSON.parse(JSON.stringify(image));
+
+            this.modifyDialogPrice = true;
+            console.log(this.modifyDialogPrice);
+        },
+
+        //关闭修改任务价格模态框
+        modifyImageDialogPriceClose() {
+            //清空form数据
+            // this.$refs.modifyImageForm.reset();
+            this.modifyDialogPrice = false;
+        },
+
+        //打开收款模态框
+        proPayDialogOpen(image) {
+            this.proPayImage = JSON.parse(JSON.stringify(image));
+            this.proPayDialog = true;
+        },
+
+        //关闭修改任务模态框
+        proPayDialogClose() {
+            this.proPayDialog = false;
+            // this.$refs.proPayForm.reset();
+        },
+
+        //打开安排模态框
+        arrangeDialogOpen(image, workType) {
+            this.arrangeImage = JSON.parse(JSON.stringify(image));
+            this.workType = workType
+            this.arrangeDialog = true;
+        },
+
+        //关闭安排任务模态框
+        arrangeDialogClose() {
+            this.arrangeDialog = false;
+            this.$refs.arrangeForm.reset();
+        },
+
         //添加任务
         async addImage( image ) {
             
@@ -424,18 +645,56 @@ export default {
             //同步到数据库
             await this.$store.dispatch('postProImage', {pid: this.project._id, image});
             //数据库同步到本地
-            await this.$store.dispatch('getProject', this.project._id);
+            await this.$store.dispatch('getProImage', this.project._id);
 
             this.imageDialogClose();
         },
 
         //删除任务
-        async removeImage( iid ) {
+        async deleteProImage( iid ) {
             console.log(iid);
             //删除任务
             await this.$store.dispatch('deleteProImage', {pid: this.project._id, iid});
             //同步数据
-            await this.$store.dispatch('getProject', this.project._id);
+            await this.$store.dispatch('getProImage', this.project._id);
+        },
+
+        //修改任务
+        async putProImage() {
+            //修改任务
+            await this.$store.dispatch('putProImage', {pid: this.project._id, image: this.modifyImage});
+            //同步数据
+            await this.$store.dispatch('getProImage', this.project._id);
+            
+            this.modifyImageDialogClose();
+            this.modifyImageDialogPriceClose();
+        },
+
+        //完成任务
+        async putProImageFinish(image) {
+
+            //设置为完成任务状态
+            await this.$store.dispatch('putProImageFinish', {pid: this.project._id, image});
+            //同步数据
+            await this.$store.dispatch('getProImage', this.project._id);
+        },
+
+        //安排工作
+        async putProImgArrange() {
+            let uid = this.customer.idMap[this.customer.items.indexOf(this.customer.select)];
+            console.log(uid);
+             //设置工作人员
+            await this.$store.dispatch('putProImgArrange', { workType: this.workType, pid: this.project._id, iid: this.arrangeImage._id, uid });
+            //同步数据
+            await this.$store.dispatch('getProImage', this.project._id)
+
+            this.arrangeDialogClose();
+        },
+
+        //项目付款
+        async projectPay() {
+            //收款
+            await this.$store.dispatch('projectPay', {pid: this.project._id, image: this.proPayImage});
         },
 
         //设计类型发生改变
@@ -444,16 +703,6 @@ export default {
             if (this.image.area) this.image.area = '';
         },
 
-        //打开文件模态框
-        uploadDialogOpen() {
-            this.uploadDialog = true;
-            //获取ststoken
-            this.$store.dispatch('getWriteStsToken');
-        },
-        //关闭文件模态框
-        uploadDialogClose() {
-            this.uploadDialog = false;
-        },
 
         //创建时间解析
         createTime1(_id) {
@@ -490,6 +739,13 @@ export default {
 
         },
 
+        createTime2(time) {
+            let createTime = new Date(time);
+            console.log(createTime);
+            return `${createTime.getFullYear()}/${createTime.getMonth() + 1}/${createTime.getDate()} ${createTime.getHours()}:${createTime.getMinutes()}`;
+
+        },
+
         //离开
         quit(routerName) {
             this.$store.commit('removeChangeDate');
@@ -497,10 +753,10 @@ export default {
 
         },
 
-        //保存项目
-        savaProject() {
-            this.$store.dispatch('putProject');
-        },
+        // //保存项目
+        // savaProject() {
+        //     this.$store.dispatch('putProject');
+        // },
 
         //跳转到project
         toProjects() {
@@ -516,12 +772,14 @@ export default {
 
     },
     async mounted(){
+        //获取读写权限
+        await this.$store.dispatch('getWriteAndReadProjectStsToken', {pid: this.$route.params.pid});
         //载入项目数据
         await this.$store.dispatch('getProject',this.$route.params.pid);
 
-        //设置客户名
-        this.customer.items.push(this.project.publisherName);
-        this.customer.select = this.project.publisherName;
+        // //设置客户名
+        // this.customer.items.push(this.project.publisherName);
+        // this.customer.select = this.project.publisherName;
 
     },
 
@@ -571,11 +829,12 @@ export default {
     } */
 
     .my-btn {
-        margin-left: 0px;
+        margin-left: 2px;
         margin-right: 0px;
         margin-top: 0px;
         margin-bottom: 0px;
         min-width: 0px;
+        height: 20px;
         
     }
     .two-btn {

@@ -8,17 +8,17 @@ let state = {
     listCount: 0,
 
     changeData: {}, //项目设置内存区
-    // oldChangeData: {},    //旧数据判断是否更改
+    voucher: {      //付款凭证
+        bucket: '',
+        name: '',
+        object: '',
+    },
+    
+    currentPage: 1,
 
-    // //状态
-    // postProjectLoading: false,  //创建项目状态
-
-    // getProjectLoading: false,   //获取项目状态
-    // getProjectsLoading: false,  //获取项目列表状态
-
-    // putProjectLoading: false,   //保存项目状态
-
-    // deleteProjectLoading: false, //删除项目状态
+    work: {
+        currentPage: 1,
+    }
 
 };
 
@@ -28,6 +28,10 @@ let mutations = {
         // let newProject =JSON.parse( JSON.stringify(project) );
         state.changeData = project;
         // state.oldChangeData = newProject;
+    },
+    //设置任务数据
+    setChangeProjectImage(state, project) {
+        state.changeData.image = project.image; 
     },
 
     //当前项目id
@@ -158,6 +162,21 @@ let actions = {
 
     },
 
+    //根据渲染师id查询项目列表
+    async getRenderProjects({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            let res = await rootState.socketClass.myEmit('getRenderProjects', {uid: rootState.user._id, state: data.state, currentPage: data.currentPage, pageSize: data.pageSize});
+            commit('setProjectList', res);
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+
+
+    },
+
     //根据项目_id删除项目
     async deleteProject({commit, state, rootState}, pid) {
         try {
@@ -203,6 +222,19 @@ let actions = {
         }
     },
 
+    //设置完成任务
+    async putProImageFinish({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('putProImageFinish', {pid: data.pid, image: data.image});
+            rootState.appLoading = false;
+
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
     //删除任务
     async deleteProImage({commit, state, rootState}, data) {
         try {
@@ -210,6 +242,59 @@ let actions = {
             await rootState.socketClass.myEmit('deleteProImage', {pid: data.pid, iid: data.iid});
             rootState.appLoading = false;
 
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
+    //查询任务
+    async getProImage({commit, state, rootState}, pid) {
+        try {
+            rootState.appLoading = true;
+            let res = await rootState.socketClass.myEmit('getProject', {pid})
+            commit('setChangeProjectImage', res);
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
+    //添加模型文件
+    async putProImgMod({commit, stata, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            console.log(data);
+            await rootState.socketClass.myEmit('putProImgMod', { model: data.model, pid: data.pid, iid: data.iid});
+            rootState.appLoading = false;
+
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
+    },
+
+    //安排工作
+    async putProImgArrange({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+
+            await rootState.socketClass.myEmit('putProImgArrange', { workType: data.workType, pid: data.pid, iid: data.iid, uid: data.uid});
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
+    },
+
+    //项目付款
+    async projectPay({commit, stata, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            let res = await rootState.socketClass.myEmit('projectPay', {pid: data.pid, image: data.image, money: data.money, voucher: data.voucher});
+            console.log(res);
+            rootState.appLoading = false;
         } catch (err) {
             rootState.appLoading = false;
             rootState.errorSnackbar = { state: true, text: err.message };

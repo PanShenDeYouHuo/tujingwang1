@@ -56,6 +56,16 @@ let actions = {
         });
     },
 
+    //获取渲染师
+    async getRender({commit, state, rootState}, data) {
+        try {
+            let res = await rootState.socketClass.myEmit( 'getRender',{pageSize: data.pageSize, currentPage: data.currentPage, authority: data.authority, search: data.search});
+            return res;
+        } catch (err) {
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    }
+
 
 };
 

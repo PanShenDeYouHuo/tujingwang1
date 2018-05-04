@@ -58,7 +58,7 @@
 
                         <v-card flat>
                             <v-card-title style="">
-                                <span class="subheading" style="font-weight:bold; ">消息盒</span>
+                                <span class="subheading" style="">消息盒</span>
                             </v-card-title>
      
                             <v-divider></v-divider>
@@ -83,9 +83,9 @@
 
                             <v-card-actions>
                                 <v-flex xs12 class="text-xs-center" >
-                                    <v-btn @click="urlChange('/notify')">
+                                    <v-btn flat @click="urlChange('/notify')">
 
-                                    <span class="body-2" style="font-weight:bold; ">查看全部</span>
+                                    <span class="body-2" style=" ">查看全部</span>
                                     </v-btn>
                                 </v-flex>
                             </v-card-actions>
@@ -116,19 +116,19 @@
                                 <v-list-tile-title class="body-1">{{ item.signOut }}</v-list-tile-title>
                             </v-list-tile> -->
 
-                            <v-list-tile v-if="user.authority.indexOf('service') !== -1"  @click="urlChange('/projects')">
-                                <v-list-tile-title class="body-1">客服项目</v-list-tile-title>
+                            <v-list-tile v-if="user.authority.indexOf('render') !== -1"  @click="urlChange('/works')">
+                                <v-list-tile-title class="body-1">我的任务</v-list-tile-title>
                             </v-list-tile>
 
-                            <v-list-tile v-if="user.authority.indexOf('serviceMaster') !== -1"  @click="urlChange('/projects')">
+                            <v-list-tile v-if="user.authority.indexOf('service') !== -1"  @click="urlChange('/projects')">
                                 <v-list-tile-title class="body-1">项目管理</v-list-tile-title>
                             </v-list-tile>
 
-                            <v-list-tile v-if="user.authority.indexOf('leder') !== -1"  @click="urlChange('/temas')">
+                            <!-- <v-list-tile v-if="user.authority.indexOf('leder') !== -1"  @click="urlChange('/temas')">
                                 <v-list-tile-title class="body-1">我的团队</v-list-tile-title>
-                            </v-list-tile>
+                            </v-list-tile> -->
 
-                            <v-list-tile v-if="user.authority.indexOf('serviceMaster') !== -1"  @click="urlChange('/customer')">
+                            <v-list-tile v-if="user.authority.indexOf('customerManager') !== -1"  @click="urlChange('/customer')">
                                 <v-list-tile-title class="body-1">客户管理</v-list-tile-title>
                             </v-list-tile>
 
@@ -204,7 +204,7 @@ export default {
             // let l = url.length;
             // this.$store.state.user.headimgurl = url.substr(0, l-1) + '132';
             return this.$store.state.user;
-            console.log(this.$store.state.url[1]);
+
         },
 
         notifyData() {

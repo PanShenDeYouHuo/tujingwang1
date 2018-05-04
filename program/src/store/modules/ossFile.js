@@ -87,7 +87,8 @@ let actions = {
                     'x-oss-callback': callBack,
                 }
             });
-
+            //完成状态
+            data.buf.state = 2;
             return res;
         } catch (err) {
             console.log(err);
@@ -105,7 +106,7 @@ let actions = {
             let callBack = {
                 callbackUrl:data.callbackUrl,
                 callbackHost:"tujingcloud.oss-cn-beijing.aliyuncs.com",
-                callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&pid=${x:pid}",
+                callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&pid=${x:pid}&iid=${x:iid}",
                 callbackBodyType:"application/json",
             }
             //转化成字符串
@@ -113,7 +114,7 @@ let actions = {
             //转化成base64编码
             callBack = callBack.toString('base64');
             
-            let callBackVar = {'x:pid': data.pid};
+            let callBackVar = {'x:pid': data.pid, 'x:iid': data.iid};
             callBackVar = new Buffer(JSON.stringify(callBackVar))
             callBackVar = callBackVar.toString('base64');
             
@@ -137,11 +138,24 @@ let actions = {
         
     },
     
-    //删除项目文件
+    //删除参考文件
     async deleteRefFile({commit, state, rootState}, data) {
         try {
             rootState.appLoading = true;
             await rootState.socketClass.myEmit('deleteRefFile', {pid: data.pid, name: data.name});
+            rootState.appLoading = false;
+        } catch (err) {
+            rootState.appLoading = false;
+            rootState.errorSnackbar = { state: true, text: err.message };
+        }
+    },
+
+        
+    //删除项目文件
+    async deleteModFile({commit, state, rootState}, data) {
+        try {
+            rootState.appLoading = true;
+            await rootState.socketClass.myEmit('deleteModFile', {pid: data.pid, name: data.name});
             rootState.appLoading = false;
         } catch (err) {
             rootState.appLoading = false;
