@@ -119,13 +119,21 @@
                                             </div>
 
                                             
-                                            <div style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
-                                                <span>模型：</span>
-                                                <span v-if="!image.model">无</span>
-                                                <span v-else style="font-weight:bold;" class="black--text">{{`${image.model.name}`}}</span>
+                                            <div v-if="!image.model"  style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                <span>模型：无</span>
                                                 <v-spacer></v-spacer>
                                                 <v-btn v-if="user.realInformation.name === image.renderName" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
                                                     <span class=" caption">添加</span>
+                                                </v-btn>
+
+                                            </div>
+
+                                            <div v-else style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
+                                                <span>模型：</span>
+                                                <span style="font-weight:bold;" class="black--text">{{`${image.model.name}`}}</span>
+                                                <v-spacer></v-spacer>
+                                                <v-btn v-if="user.realInformation.name === image.renderName" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
+                                                    <span class=" caption">替换</span>
                                                 </v-btn>
 
                                             </div>
@@ -401,11 +409,6 @@ export default {
             this.modelDialog.iid = iid; 
         },
 
-        // //提交修改
-        // putProImgMod() {
-            
-        // },
-
         //关闭选定模型任务模态框
         modelDialogClose() {
 
@@ -424,6 +427,11 @@ export default {
         async putProImgMod() {
             console.log(this.modelDialog.action);
             await this.$store.dispatch('putProImgMod',{pid: this.project._id, iid: this.modelDialog.iid, model: this.modelDialog.action});
+
+            //数据库同步到本地
+            await this.$store.dispatch('getProImage', this.project._id);
+
+            this.modelDialogClose();
         },
 
         //创建时间解析

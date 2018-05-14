@@ -193,13 +193,11 @@ export default {
                         pid: this.pid
                     })
                     .then((res)=> {
-                                          console.log(res.data)
                         for (let index in this.fileList) {
                             if(!this.fileList[index].file) continue;
                             if(this.fileList[index].file.name !== res.data.name) continue;
                             
                             // console.log(this.fileList[index].name);
-                            console.log(res.data)
                             this.fileList.splice(index, 1, res.data);
                         }
  

@@ -14,7 +14,7 @@
     "analyz": "cross-env NODE_ENV=production npm_config_report=true npm run build"
   },
   "dependencies": {
-    "ali-oss": "^4.11.2",
+    "ali-oss": "^5.2.0",
     "socket.io": "^2.0.3",
     "vue": "^2.3.3",
     "vue-agile": "^0.2.6",

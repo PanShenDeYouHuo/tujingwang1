@@ -191,7 +191,7 @@ export default {
 
                     let name = buf.file.name;
 
-
+                    
                     let res = await this.$store.dispatch(
                                     'uploadprojectFile',
                                     {

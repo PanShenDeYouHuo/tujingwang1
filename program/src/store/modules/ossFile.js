@@ -1,4 +1,4 @@
-// import  oss from 'ali-oss' //阿里云oss SDK
+import  oss from 'ali-oss' //阿里云oss SDK
 
 let state = {
     referenceFileList: [],
@@ -23,7 +23,9 @@ let mutations = {
         state.clientOption.accessKeySecret = newToken.credentials.AccessKeySecret;
         state.clientOption.stsToken = newToken.credentials.SecurityToken;
 
-        state.client = new OSS.Wrapper(state.clientOption)
+        state.client = new oss.Wrapper(state.clientOption)
+
+        console.log (state.client);
 	},
     setProgress(state, data) {
         let buf = state.uploadFileList[data.index]; 
@@ -100,8 +102,8 @@ let actions = {
     },
 
     //project文件上传
-    uploadprojectFile({commit, state, rootState}, data) {
-        return new Promise((resolve, reject)=> {
+    async uploadprojectFile({commit, state, rootState}, data) {
+        try {
             //回调服务器头
             let callBack = {
                 callbackUrl:data.callbackUrl,
@@ -118,7 +120,7 @@ let actions = {
             callBackVar = new Buffer(JSON.stringify(callBackVar))
             callBackVar = callBackVar.toString('base64');
             
-            state.client.multipartUpload(data.objectKey, data.buf.file, {
+            let res = await state.client.multipartUpload(data.objectKey, data.buf.file, {
                 progress: function* (p) {
                     data.buf.progress = p;
                 },
@@ -127,14 +129,13 @@ let actions = {
                     'x-oss-callback-var': callBackVar,
                 }
             })
-            .then((res)=> {
-                resolve(res);
-            })
-            .catch((err)=> {
-                reject(err);
-            })
 
-        });   
+            return res;
+
+        } catch (err) {
+            console.log(err);
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
         
     },
     
