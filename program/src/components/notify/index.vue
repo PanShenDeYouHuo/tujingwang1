@@ -145,6 +145,7 @@ export default {
                 this.active = url;
                 this.currentPage = this.currentPage + 1;
                 let result = await this.$store.dispatch('getNotifyReturn', {notifyType: this.ntypeMap[url], currentPage: this.currentPage });
+                result = result.reverse();
                 for( let index in result) {
                     this.notifys.push(result[index])
                 }

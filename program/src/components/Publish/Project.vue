@@ -554,7 +554,6 @@ export default {
     },
     computed: {
         project() {
-            console.log(this.$store.state.project.changeData);
             return this.$store.state.project.changeData;
         },
         projects() {
@@ -741,7 +740,6 @@ export default {
 
         createTime2(time) {
             let createTime = new Date(time);
-            console.log(createTime);
             return `${createTime.getFullYear()}/${createTime.getMonth() + 1}/${createTime.getDate()} ${createTime.getHours()}:${createTime.getMinutes()}`;
 
         },

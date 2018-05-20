@@ -28,6 +28,7 @@ let state = {
 
 let mutations = {
 	setUser(state, newUser) {
+		console.log(newUser);
 		for (var key in newUser) {
 			state[key] = newUser[key];
 		}
@@ -35,6 +36,7 @@ let mutations = {
 
 	setNotify(state, data) {
 		state.notify = data; 
+		console.log(state.notify);
 	}
 };
 
@@ -103,7 +105,7 @@ let actions = {
 	//通知接口
 	notify({commit, state, rootState}) {
 		rootState.socketClass.socket.on('notify', ()=> {
-			rootState.socketClass.myEmit('getNotify', {notifyType: state.notifyType})
+			rootState.socketClass.myEmit('getNotify', {notifyType: 0,  currentPage: 1})
 			.then((res)=> {
 				commit('setNotify', res);
 				rootState.infoSnackbar = {state: true, text: '您有新的通知'};
@@ -118,7 +120,7 @@ let actions = {
 	getNotify({commit, state, rootState}, data) {
 		return new Promise((resolve, reject)=> {
 
-			rootState.socketClass.myEmit('getNotify', {notifyType: data.notifyType})
+			rootState.socketClass.myEmit('getNotify', {notifyType: data.notifyType,   currentPage: data.currentPage})
 			.then((res)=> {
 				commit('setNotify', res);
 

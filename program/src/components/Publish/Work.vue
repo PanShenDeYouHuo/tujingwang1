@@ -122,7 +122,7 @@
                                             <div v-if="!image.model"  style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
                                                 <span>模型：无</span>
                                                 <v-spacer></v-spacer>
-                                                <v-btn v-if="user.realInformation.name === image.renderName" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
+                                                <v-btn v-if="user.realInformation.name === image.renderName && image.isFinish === 1" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
                                                     <span class=" caption">添加</span>
                                                 </v-btn>
 

@@ -224,7 +224,8 @@ export default {
 
         //删除文件
         async deleteRefFile(name) {
-            await this.$store.dispatch('deleteModFile', {pid: this.pid, name});
+            let res = await this.$store.dispatch('deleteModFile', {pid: this.pid, name});
+            if (!res) return;
             for (let index in this.fileList) {
                 if(this.fileList[index].name !== name) continue;
 

@@ -158,9 +158,11 @@ let actions = {
             rootState.appLoading = true;
             await rootState.socketClass.myEmit('deleteModFile', {pid: data.pid, name: data.name});
             rootState.appLoading = false;
+            return true;
         } catch (err) {
             rootState.appLoading = false;
             rootState.errorSnackbar = { state: true, text: err.message };
+            return false;
         }
     },
 

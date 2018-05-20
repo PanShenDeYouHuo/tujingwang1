@@ -195,7 +195,7 @@ export default {
             show: false,
 
             //notify类型映射
-            notifyType: [ '','系统', '团队', '任务']
+            notifyType: [ '','系统', '任务']
         }
     },
     computed: {
@@ -208,7 +208,7 @@ export default {
         },
 
         notifyData() {
-            return this.$store.state.user.notify;
+            return this.$store.state.user.notify.reverse();
         },
         //当前路由
         active() {
