@@ -46,7 +46,6 @@
                     </v-flex>
 
 
-
                     <v-flex xs3 d-flex >
                         <v-card flat>
                             <v-card-title style=" height: 100%;" >
@@ -99,10 +98,10 @@
                                                     <span  class="">{{`价格：￥${image.price}，已收：`}}</span>
                                                     <span style="font-weight:bold;" class="black--text">{{`￥${image.payment}`}}</span>
                                                     <v-spacer></v-spacer>
-                                                    <v-btn outline flat small class="my-btn" @click="modifyImageDialogPriceOpen(image)">
+                                                    <v-btn small class="my-btn" @click="modifyImageDialogPriceOpen(image)">
                                                         <span class=" caption">修改</span>
                                                     </v-btn>
-                                                    <v-btn outline flat small class="my-btn" @click="proPayDialogOpen(image)">
+                                                    <v-btn small class="my-btn" @click="proPayDialogOpen(image)">
                                                         <span class=" caption">收款</span>
                                                     </v-btn>
                                                 </div>
@@ -116,13 +115,13 @@
                                                 <div v-if="image.isFinish !== 1" style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
                                                     {{`状态：未完成`}}
                                                     <v-spacer></v-spacer>
-                                                    <v-btn outline flat small class="my-btn" @click="putProImageFinish(image)">
+                                                    <v-btn  small class="my-btn" @click="putProImageFinish(image)">
                                                         <span class=" caption">完成</span>
                                                     </v-btn>
-                                                    <v-btn outline flat small class="my-btn" @click="modifyImageDialogOpen(image)" >
+                                                    <v-btn  small class="my-btn" @click="modifyImageDialogOpen(image)" >
                                                         <span class=" caption">编辑</span>
                                                     </v-btn>
-                                                    <v-btn outline flat small class="my-btn" @click="deleteProImage( image._id )" :loading="appLoading">
+                                                    <v-btn  small class="my-btn" @click="deleteProImage( image._id )" :loading="appLoading">
                                                         <span class=" caption">删除</span>
                                                     </v-btn>
                                                 </div>
@@ -142,16 +141,16 @@
                                                 <span v-if="!image.modelId">无</span>
                                                 <span v-else style="font-weight:bold;" class="black--text">{{`${image.modelName}`}}</span>
                                                 <v-spacer></v-spacer>
-                                                <v-btn v-if="image.isFinish !== 1" outline flat small class="my-btn" @click="arrangeDialogOpen(image, 'model')">
+                                                <v-btn v-if="image.isFinish !== 1"  small class="my-btn" @click="arrangeDialogOpen(image, 'model')">
                                                     <span class=" caption">设置</span>
                                                 </v-btn>
                                                 <span>，</span>
                                                 <span v-if="!image.renderId">渲染：</span>
                                                 <span v-else class="green--text">渲染：</span>
                                                 <span v-if="!image.renderId">无</span>
-                                                <span v-else style="font-weight:bold;" class="black--text">{{`${image.modelName}`}}</span>
+                                                <span v-else style="font-weight:bold;" class="black--text">{{`${image.renderName}`}}</span>
                                                  <v-spacer></v-spacer>
-                                                <v-btn v-if="image.isFinish !== 1" outline flat small class="my-btn" @click="arrangeDialogOpen(image, 'render')">
+                                                <v-btn v-if="image.isFinish !== 1"  small class="my-btn" @click="arrangeDialogOpen(image, 'render')">
                                                     <span class=" caption">设置</span>
                                                 </v-btn>
                                             </div>
@@ -356,7 +355,7 @@
                     <v-form v-model="arrangeValid" ref="arrangeForm" lazy-validation style="width: 100%;">                                
                     <v-flex xs12 sm12 md12>
                         <!-- 选择工作人员 -->
-                        <v-select
+                        <!-- <v-select
                             label="渲染师"
                             autocomplete
                             :loading="customer.loading"
@@ -365,7 +364,18 @@
                             :rules="[v => !!v || '请选择渲染师']"
                             :search-input.sync="search"
                             v-model="customer.select"
-                        ></v-select>
+                        ></v-select> -->
+
+                        <v-autocomplete
+                            :items="customer.items"
+                            :rules="[v => !!v || '请选择渲染师']"
+                            :search-input.sync="search"
+                            v-model="customer.select"    
+                            item-text="name"
+                            label="渲染师"
+                            placeholder="输入"
+                        ></v-autocomplete>
+
 
                     </v-flex>
                     </v-form>
@@ -479,6 +489,7 @@ export default {
                 { text: '后现代', value: '后现代'},
                 { text: '中式', value:'中式'},
                 { text: '新中式', value:'新中式'},
+                { text: '北欧', value: '北欧'},
                 { text: '欧式', value: '欧式'},
                 { text: '简欧', value: '简欧'},
                 { text: '法式', value: '法式'},
@@ -488,7 +499,8 @@ export default {
                 { text: '简美', value: '简美'},
                 { text: '东南亚', value: '东南亚'},
                 { text: '日式', value: '日式'},
-                { text: '混搭', value: '混搭'}
+                { text: '混搭', value: '混搭'},
+                { text: '其他', value: '其他'}
             ],
             imageTypeItems: [
                 { text: '默认视角', value: '默认'},
@@ -535,10 +547,11 @@ export default {
     watch: {
         async search (val) {
 
-            if (!val) return; 
+            if (!val) return;
 
             let re=/[^\u4e00-\u9fa5]/;  
-            if(re.test(val)) return;
+            if (re.test(val)) return;
+            if (!this.customer.items.indexOf(val)) return;
 
             let items = await this.$store.dispatch('getRender', {pageSize: 50, currentPage: 1, authority: 'render',  search: this.search });
             console.log(items);
@@ -680,8 +693,11 @@ export default {
 
         //安排工作
         async putProImgArrange() {
+            //验证表单数据
+            if(!this.$refs.arrangeForm.validate()) return;
+            
             let uid = this.customer.idMap[this.customer.items.indexOf(this.customer.select)];
-            console.log(uid);
+
              //设置工作人员
             await this.$store.dispatch('putProImgArrange', { workType: this.workType, pid: this.project._id, iid: this.arrangeImage._id, uid });
             //同步数据
@@ -761,7 +777,7 @@ export default {
             this.change('projects')
         },
 
-         //
+        //
         change(routerName) {
             console.log(routerName);
             this.$router.replace({name:routerName});
@@ -832,7 +848,7 @@ export default {
         margin-top: 0px;
         margin-bottom: 0px;
         min-width: 0px;
-        height: 20px;
+        height: 18px;
         
     }
     .two-btn {

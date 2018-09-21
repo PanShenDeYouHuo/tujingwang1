@@ -42,12 +42,13 @@
                             <v-card-media
                             class="white--text"
                             height="165px"
-                            :src="workingImage"
+                            :src="(project.isFinish === 1 && project.image[0].picture ? true : false) ? project.workingImage : workingImage"
                             >
                                 <v-container fill-height fluid>
                                     <v-layout fill-height>
                                     <v-flex xs12 align-end flexbox>
-                                        <span class="headline">制作中</span>
+                                        <span v-if="!project.isFinish" class="headline">制作中</span>
+                                        <span v-else class="headline green--text" >完成</span>
                                     </v-flex>
                                     </v-layout>
                                 </v-container>
@@ -142,7 +143,14 @@
     },
     computed: {
         projectList() {
-            return this.$store.state.project.listData;
+            let projectList = this.$store.state.project.listData;
+            for( let index in projectList ) {
+                if (projectList[index].isFinish === 1 && projectList[index].image[0].picture ? true : false) {
+                    // console.log(this.$store.state.ossFile.readClient)
+                    projectList[index].workingImage = this.$store.state.ossFile.readClient.signatureUrl(projectList[index].image[0].picture.object, {expires: 600, process:'image/resize,w_132'});
+                }
+            }
+            return projectList;
         },
         projectCount() {
             return this.$store.state.project.listCount;
@@ -217,12 +225,17 @@
         }
     },
 
-    mounted() {
-        this.getProjects(this.items[0].url);
+    async mounted() {
 
+        //获得列表图片读取权限
+        await this.$store.dispatch('getAllWriteAndReadProjectStsToken', {});
+        //获取当前页面数据
+        this.getProjects(this.items[0].url);
     },
 
-    beforeCreate() {}
+    async beforeCreate() {
+        
+    }
     };
     </script>
 
@@ -255,10 +268,10 @@
             overflow: visible;
         }
 
-        .card__title {
-            padding: 4px 8px 4px 10px;
+        .v-card__title {
+            padding: 8px 8px 8px 8px;
         }
-        .card__actions {
+        .v-card__actions {
             border-style: solid;
             border-width: 1px 0px 0px 0px;
             border-color: #ddd;

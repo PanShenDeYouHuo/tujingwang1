@@ -24,7 +24,7 @@
 
                         <v-card flat style="">
                                     
-                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="120px" @click="1">
+                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="102px" @click="1">
                                 <!-- <v-chip v-for="job in staff.authority" :key="job" color="red" text-color="white" small >{{job}}</v-chip> -->
                             </v-card-media>
 

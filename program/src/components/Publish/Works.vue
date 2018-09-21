@@ -36,20 +36,21 @@
                     </v-flex>
                     
                     <!-- 项目列表 -->
-                    <v-flex xs2 v-for="(project ) in projectList" :key="project._id" v-if="projectList.length">
+                    <v-flex xs2 v-for="project  in projectList" :key="project._id">
                         
                         <v-card hover flat>
                             <v-card-media
                             class="white--text"
                             height="200px"
-                            :src="workingImage"
+                            :src="(project.isFinish === 1 && project.image[0].picture ? true : false) ? project.workingImage : workingImage"
                             @click="editProject(project._id)"
                             >
                                 <v-container fill-height fluid>
                                     <v-layout fill-height>
                                     <v-flex xs12 >
                                         <span class="title">{{project.name}}</span><br>
-                                        <span class="body-2 ">制作中</span>
+                                        <span v-if="!project.isFinish" class="body-2 ">制作中</span>
+                                        <span v-else class="body-2 green--text" >完成</span>
                                     </v-flex>
                                     </v-layout>
                                 </v-container>
@@ -57,8 +58,9 @@
                         </v-card>
                     </v-flex>
 
+
                     <!-- 没有数据 -->
-                    <v-layout row wrap v-else align-center>
+                    <!-- <v-layout row wrap v-else align-center>
                         <v-flex xs12>
                             <v-layout justify-center>
                             <img src="../../assets/nothing.png"  alt="没有找到符合条件的结果" />
@@ -71,7 +73,7 @@
                             </v-layout>
                         </v-flex>
 
-                    </v-layout>
+                    </v-layout> -->
 
                     <!-- 页面 -->
                     <v-flex xs12 class="py-2" v-if="projectCount > 1">
@@ -112,25 +114,32 @@
             toggle_multiple: [0, 1, 2],
 
             workingImage: require("../../assets/working1.jpg"),
-
+           
             items: [
                 { name: '全部', url:'/all' },
                 { name: '完成',  url: '/finish'}, 
                 { name: "未完成", url: '/unfinished'}
             ],
             active: "",
+            currentPage: 1
         };
     },
     computed: {
-        currentPage: {
-                get: function () {
-                    return this.$store.state.project.work.currentPage;
-                },
-                set: function () {
-                }
-        },
+        // currentPage: {
+        //         get: function () {
+        //             return this.$store.state.project.work.currentPage;
+        //         },
+        //         set: function () {
+        //         }
+        // },
         projectList() {
-            return this.$store.state.project.listData;
+            let projectList = this.$store.state.project.listData;
+            for( let index in projectList ) {
+                if (projectList[index].isFinish === 1 && projectList[index].image[0].picture ? true : false) {
+                    projectList[index].workingImage = this.$store.state.ossFile.readClient.signatureUrl(projectList[index].image[0].picture.object, {expires: 600, process:'image/resize,w_132'});
+                }
+            }
+            return projectList;
         },
         projectCount() {
             return this.$store.state.project.listCount;
@@ -209,7 +218,9 @@
         }
     },
 
-    mounted() {
+    async mounted() {
+        //获得列表图片读取权限
+        await this.$store.dispatch('getAllWriteAndReadProjectStsToken', {});
         this.getProjects(this.items[0].url);
 
     },

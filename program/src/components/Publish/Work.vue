@@ -122,7 +122,7 @@
                                             <div v-if="!image.model"  style=" display: flex; align-items: center; height: 28px;" class="grey--text  caption">
                                                 <span>模型：无</span>
                                                 <v-spacer></v-spacer>
-                                                <v-btn v-if="user.realInformation.name === image.renderName && image.isFinish === 1" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
+                                                <v-btn v-if="user.realInformation.name === image.renderName && image.isFinish === 1"  small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
                                                     <span class=" caption">添加</span>
                                                 </v-btn>
 
@@ -132,7 +132,7 @@
                                                 <span>模型：</span>
                                                 <span style="font-weight:bold;" class="black--text">{{`${image.model.name}`}}</span>
                                                 <v-spacer></v-spacer>
-                                                <v-btn v-if="user.realInformation.name === image.renderName" outline flat small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
+                                                <v-btn v-if="user.realInformation.name === image.renderName"   small class="my-btn" @click="modelDialogOpen(image.model ? image.model : '', image._id)">
                                                     <span class=" caption">替换</span>
                                                 </v-btn>
 
@@ -159,7 +159,7 @@
                         </v-card>
                     </v-flex> 
 
-                    <v-flex xs12 v-if="project.image ? project.image.length || 0 : 100">
+                    <v-flex xs12 v-if="project.image ? project.image.length - workLength > 0  : 0">
                         <v-layout row wrap>
                         <v-flex v-if="user.realInformation.name !== image.renderName && user.realInformation.name !== image.modelName" xs6 v-for="(image, index) in project.image" :key="image._id">
                             <v-card flat color="grey lighten-2">
@@ -393,7 +393,7 @@ export default {
             if ( !this.project.image ) return 0;
             let len = 0;
             for ( let index in this.project.image) {
-                if ( this.project.image[index].renderName === this.user.realInformation.name ) {
+                if ( this.project.image[index].renderName === this.user.realInformation.name ||  this.project.image[index].modelName === this.user.realInformation.name) {
                     len++;
                 }
             }
@@ -530,16 +530,17 @@ export default {
         border-style:solid; border-width: 1px 0px 0px 0px; border-color: #ddd;
         padding: 2px 0px 2px 0px;
     } */
-
+    
     .my-btn {
         margin-left: 2px;
         margin-right: 0px;
         margin-top: 0px;
         margin-bottom: 0px;
         min-width: 0px;
-        height: 20px;
+        height: 18px;
         
     }
+
     .two-btn {
         margin-left: 0px;
         margin-right: 8px;

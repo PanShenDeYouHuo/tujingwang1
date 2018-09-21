@@ -20,6 +20,7 @@ let state = {
 	},
 
 	notify: [],					//通知
+	notifyNumber: 0,			//未读取个数
 	notifyType: '',				//请求通知类型
 
 	loading: true,				//登入时是等待状态
@@ -32,11 +33,32 @@ let mutations = {
 		for (var key in newUser) {
 			state[key] = newUser[key];
 		}
+
+		state.notifyNumber = 0;
+
+		for( let i = 0; i < state.notify.length; i++ ) {
+			if( state.notify[i].state == 0) {
+				state.notifyNumber++;
+			}
+		}
 	},
 
 	setNotify(state, data) {
-		state.notify = data; 
-		console.log(state.notify);
+		state.notify = data;
+		state.notifyNumber = 0;
+		//当前未读通知个数
+		
+		for( let i = 0; i < data.length; i++ ) {
+			if( data[i].state == 0) {
+				state.notifyNumber++;
+			}
+		}
+
+		// //0个是不显示个数
+		// notifyShow() {
+		// 	return this.notifyNumber > 0 ? true : false;
+		// }
+		// console.log(state.notify);
 	}
 };
 
@@ -73,6 +95,7 @@ let actions = {
 			localStorage.setItem('accessToken', data.accessToken);
 			//用户数据保存
 			commit('setUser', data);
+	
 
 			// //获取通知信息
 			// rootState.socketClass.myEmit('getNotify', {ntype: state.notifyType})
@@ -143,6 +166,7 @@ let actions = {
 				resolve(res);
 			})
 			.catch((err)=> {
+				reject(err);
 				rootState.appLoading = false;
 			})
 		});
@@ -152,6 +176,16 @@ let actions = {
 	putNotify({commit, state, rootState}, data) {
 		return new Promise((resolve, reject)=> {
 			rootState.socketClass.myEmit('putNotify', {_id: data._id})
+			.then((res)=> {
+				resolve();
+			});
+		});
+	},
+
+	//删除通知
+	deleteNotify({commit, state, rootState}, data) {
+		return new Promise((resolve, reject)=> {
+			rootState.socketClass.myEmit('deleteNotify', {_id: data._id})
 			.then((res)=> {
 				resolve();
 			});

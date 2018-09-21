@@ -197,7 +197,7 @@ export default {
                     let res = await this.$store.dispatch(
                                     'uploadFile',
                                     {
-                                        callbackUrl:'60.205.225.197/osscallback',
+                                        callbackUrl:'osscallback',
                                         objectKey:`temporaryFile/payment/${Number(Math.random().toString().substr(3,6) + Date.now()).toString(36)}.${name.substring(name.lastIndexOf('.')+1)}`,
                                         buf,
                                     });

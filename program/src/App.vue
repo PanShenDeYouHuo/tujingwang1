@@ -140,11 +140,16 @@ export default {
 
     
   },
-  mounted(){
+  async mounted(){
       if( !this.$store.state.url[0]) {
           console.log(this.$route.path)
           this.$store.dispatch('initRouter', this.$route.path);
+          
       }
+    // setTimeout(()=> {
+    //         this.$store.dispatch('getAllWriteAndReadProjectStsToken', {});
+
+    // }, 100);
     // setTimeout(()=> {
     //   if( !this.$store.state.url[0]) {
     //     console.log(this.$route.path)
@@ -158,7 +163,7 @@ export default {
     this.$store.dispatch('getRouter', this.$router);    //将router映射到store内
     this.$store.dispatch('appError');                   //开启错误接口
     this.$store.dispatch('loginSuccess');               //开启登入成功接口
-    this.$store.dispatch('authenticationSuccess');      //开启登入成功接口
+    this.$store.dispatch('authenticationSuccess');      //开启验证成功接口
     this.$store.dispatch('notify');                     //开启通知接口
 
     this.$store.dispatch('initialize');                 //程序初始化

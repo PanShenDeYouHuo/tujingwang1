@@ -195,7 +195,7 @@ export default {
                     let res = await this.$store.dispatch(
                                     'uploadprojectFile',
                                     {
-                                        callbackUrl:'60.205.225.197/osscallback/picFileUpload',
+                                        callbackUrl:'osscallback/picFileUpload',
                                         objectKey:`temporaryFile/project/${ this.pid }/picture/${Number(Math.random().toString().substr(3,6) + Date.now()).toString(36)}.${name.substring(name.lastIndexOf('.')+1)}`,
                                         buf,
                                         pid: this.pid,

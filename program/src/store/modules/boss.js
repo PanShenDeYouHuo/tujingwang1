@@ -25,9 +25,9 @@ let mutations = {
     setStaffAccounts(state, data) {
         state.staffAccounts = [];
         for (let i in data.users) {
-            setTimeout(() => {
+            // setTimeout(() => {
                 state.staffAccounts.push(data.users[i]);
-            }, i*25);
+            // }, i*25);
         }
         state.staffAccountsCount = data.count;
     },

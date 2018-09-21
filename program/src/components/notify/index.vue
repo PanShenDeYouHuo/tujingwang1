@@ -56,8 +56,11 @@
 
 
                                     <v-spacer></v-spacer>
-                                    <v-btn small :disabled="notify.state === 1" style="min-width: 0px;" @click="putNotify(notify)">
+                                    <v-btn small style="min-width: 0px;" @click="putNotify(notify)">
                                         查看
+                                    </v-btn>
+                                    <v-btn small :disabled="notify.state !== 1" style="min-width: 0px;" @click="deleteNotify(notify,index)">
+                                        删除
                                     </v-btn>
 
                                     <v-list-tile-title class="caption" v-bind:class="{'grey--text': notify.state === 1}" >
@@ -152,6 +155,7 @@ export default {
                 if(result.length !== 8 ) return this.nextState = false;
                 this.nextState = true;
             } catch (err) {
+                this.nextState = false;
                 console.log(err);
             }
         },
@@ -164,6 +168,16 @@ export default {
                 notify.state = 1;
             } catch (err) {
                 console.log(err);             
+            }
+        },
+
+        //删除通知
+        async deleteNotify(notify, index){
+            try {
+                await this.$store.dispatch('deleteNotify', {_id: notify._id});
+                this.notifys.splice(index,1);
+            } catch (err) {
+                console.log(err);           
             }
         },
         

@@ -103,7 +103,7 @@ export default new Router({
         }
       ]
     },
-    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: true} },
+    { name: 'notify', path: '/notify', component: Notify, meta: {keepAlive: false} },
     { name: 'customer', path: '/customer', component: Customer, meta: {keepAlive: false} },
 
   ],

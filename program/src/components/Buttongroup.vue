@@ -85,7 +85,7 @@ export default {
         margin: 0px;
         font-size: 16px;
         border-radius: 0px;
-        padding-top: 5px;
+      
         color: #aaaaaa;
         border-style:solid; border-width: 0px 0px 2px 0px; border-color: rgba(0, 0, 0, 0);
     }

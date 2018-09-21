@@ -39,22 +39,20 @@
                                 <span class="lengthLimit" >{{file.name }}</span>
 
                             </v-flex>
-                            <v-flex xs2 >
-                                <v-layout justify-end fill-height>
-                                    <v-menu offset-y>
-                                    <v-btn icon small light style="margin: 0px; margin-top: 4px;" dark slot="activator"><v-icon color="grey darken-2" >more_vert</v-icon></v-btn>
-                                    <v-list>
-                                        <v-list-tile  @click="deleteRefFile(file.name)">
-                                            <v-list-tile-title class="body-1">删除</v-list-tile-title>
-                                        </v-list-tile>
+  
+                            <v-menu offset-y>
+                            <v-btn icon small light style="margin: 0px; margin-right: 4px;" dark slot="activator"><v-icon color="grey darken-2" >more_vert</v-icon></v-btn>
+                            <v-list>
+                                <v-list-tile  @click="deleteRefFile(file.name)">
+                                    <v-list-tile-title class="body-1">删除</v-list-tile-title>
+                                </v-list-tile>
 
-                                        <v-list-tile  @click=" downRefFile(file.object, file.name)">
-                                            <v-list-tile-title class="body-1">下载</v-list-tile-title>
-                                        </v-list-tile>
-                                    </v-list>
-                                    </v-menu>
-                                </v-layout>
-                            </v-flex>
+                                <v-list-tile  @click=" downRefFile(file.object, file.name)">
+                                    <v-list-tile-title class="body-1">下载</v-list-tile-title>
+                                </v-list-tile>
+                            </v-list>
+                            </v-menu>
+   
                             
                         </v-layout>
                     </v-container>
@@ -188,7 +186,7 @@ export default {
                 this.$store.dispatch(
                     'uploadprojectFile',
                     {
-                        callbackUrl:'60.205.225.197/osscallback/proFileUpload',
+                        callbackUrl:'osscallback/proFileUpload',
                         objectKey:`temporaryFile/project/${ this.pid }/model/${ buf.file.name }`,
                         buf,
                         pid: this.pid

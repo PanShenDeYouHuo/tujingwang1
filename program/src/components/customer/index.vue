@@ -68,15 +68,10 @@
                                                 <span style="font-weight:bold;" >
                                                     客户名：
                                                 </span> 
-                                                <v-text-field
-                                                label="无"
-                                                v-model="customer.name"
-                                                single-line
-                                                full-width
-                                                hide-details
-                                                disabled                                                
-                                                ></v-text-field>
-
+                                                <span >
+                                                    {{customer.name}}
+                                                </span> 
+              
                                             </v-card-title>
 
                                     </v-card>
@@ -90,15 +85,10 @@
                                             <span style="font-weight:bold;" >
                                                 公司：
                                             </span> 
-                                            <v-text-field
-                                            label="无"
-                                            v-model="customer.companyName"
-                                            single-line
-                                            full-width
-                                            hide-details
-                                            disabled                                            
-                                            ></v-text-field>
-                                        </v-card-title>
+                                            <span >
+                                                {{customer.companyName}}
+                                            </span> 
+                                         </v-card-title>
 
                                 </v-card>
                             </v-flex>
@@ -111,14 +101,9 @@
                                             <span style="font-weight:bold;" >
                                                 电话：
                                             </span> 
-                                            <v-text-field
-                                            label="无"
-                                            v-model="customer.phone"
-                                            single-line
-                                            full-width
-                                            hide-details
-                                            disabled                                            
-                                            ></v-text-field>
+                                            <span >
+                                                {{customer.phone}}
+                                            </span> 
                                         </v-card-title>
 
                                 </v-card>
@@ -132,15 +117,10 @@
                                             <span style="font-weight:bold;" >
                                                 QQ：
                                             </span> 
-                                            <v-text-field
-                                            label="无"
-                                            v-model="customer.QQ"
-                                            single-line
-                                            full-width
-                                            hide-details
-                                            disabled                                           
-                                            ></v-text-field>
-                                        </v-card-title>
+                                            <span >
+                                                {{customer.QQ}}
+                                            </span> 
+                                         </v-card-title>
 
                                 </v-card>
                             </v-flex>
@@ -153,14 +133,9 @@
                                             <span style="font-weight:bold;" >
                                                 微信：
                                             </span> 
-                                            <v-text-field
-                                            label="无"
-                                            v-model="customer.wechat"
-                                            single-line
-                                            full-width
-                                            hide-details
-                                            disabled
-                                            ></v-text-field>
+                                            <span >
+                                                {{customer.wechat}}
+                                            </span> 
                                         </v-card-title>
 
                                 </v-card>
@@ -188,7 +163,7 @@
                         
 
                     <!-- 页面 -->
-                    <v-flex xs12 class="py-2">
+                    <v-flex xs12 class="py-2" v-if="currentPage > 1">
                         <v-card>
                             <v-card-title style="padding: 0px 16px;" >
                                  <div class="text-xs-center" style="width: 100%;">

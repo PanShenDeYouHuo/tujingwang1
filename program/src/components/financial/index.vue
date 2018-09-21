@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div class="financial">
 
     <v-layout row justify-center>
-      <p>进行中</p>
+      <p>financial</p>
     </v-layout>
 
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'home',
+  name: 'financial',
   data() {
     return {
       value: 0
@@ -23,7 +23,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .home {
+  .financial {
     width:100%;
     height:100%;
     min-width: 1280px;

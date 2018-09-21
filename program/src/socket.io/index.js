@@ -8,7 +8,8 @@ function socketClass () {
 
 	// http
 	// let url = 'http://192.168.0.105:3000/';
-	let url = 'http://60.205.225.197:80/';
+	// let url = 'http://60.205.225.197:80/';
+	let url = 'http://47.97.215.115:80/';
 	this.opt = {
 		// autoConnect: false,
 		query: {},

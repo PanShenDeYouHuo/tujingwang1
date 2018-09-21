@@ -22,7 +22,7 @@
 
                         <v-card style="">
                                     
-                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="132px">
+                            <v-card-media :src=" staff.headimgurl.substr(0, staff.headimgurl.length-3) + '0' " height="102px">
                             </v-card-media>
 
                             <div class="caption" style="padding-top:10px; padding-left:10px; ">

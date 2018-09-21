@@ -315,7 +315,7 @@ export default {
                     await store.dispatch(
                         'uploadFile',
                         {
-                            callbackUrl:'60.205.225.197/osscallback',
+                            callbackUrl:'osscallback/',
                             objectKey:`temporaryFile/account/${store.state.user._id}/authenticate/${uploadMap}.${ file.type === 'image/jpeg' ? 'jpg' : 'png'}`,
                             buf
                         });

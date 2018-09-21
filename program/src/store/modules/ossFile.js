@@ -1,18 +1,21 @@
-import  oss from 'ali-oss' //阿里云oss SDK
+import oss from 'ali-oss' //阿里云oss SDK
 
 let state = {
     referenceFileList: [],
     uploadFileList: [],
 
     clientOption: { 
-        region: 'oss-cn-beijing',
+        region: 'oss-cn-hangzhou',
         accessKeyId: '',
         accessKeySecret: '',
         stsToken: '',
-        bucket: 'tujingcloud',
+        bucket: 'tujing',
     },
 
-    client: {}
+    callbackUrl:'47.97.215.115/',
+
+    client: {},
+    readClient: {}
 };
 
 let mutations = {
@@ -26,6 +29,15 @@ let mutations = {
         state.client = new oss.Wrapper(state.clientOption)
 
         console.log (state.client);
+    },
+    
+    setReadClient(state, newToken) {
+        state.clientOption.accessKeyId = newToken.credentials.AccessKeyId;
+        state.clientOption.accessKeySecret = newToken.credentials.AccessKeySecret;
+        state.clientOption.stsToken = newToken.credentials.SecurityToken;
+
+        state.readClient = new oss.Wrapper(state.clientOption)
+
 	},
     setProgress(state, data) {
         let buf = state.uploadFileList[data.index]; 
@@ -39,9 +51,18 @@ let mutations = {
 
 let actions = {
 
+    //获得oss project读权限的sts临时token
+    async getAllWriteAndReadProjectStsToken({commit, state, rootState}, data) {
+        try {
+            let stsToken = await rootState.socketClass.myEmit( 'getAllWriteAndReadProjectStsToken',{});
+            commit('setReadClient', stsToken);
+         
+        } catch (err) {
+            rootState.errorSnackbar = { state: true, text: err.message};
+        }
+    },
 
 /////////////////////******写权限*******////////////////////
-
     //获得oss project读写权限的sts临时token
     async getWriteAndReadProjectStsToken({commit, state, rootState}, data) {
         try {
@@ -51,6 +72,7 @@ let actions = {
             rootState.errorSnackbar = { state: true, text: err.message};
         }
     },
+
 
     //获得oss Account写权限的sts临时token
     async getWriteAccountStsToken({commit, state, rootState}) {
@@ -71,8 +93,8 @@ let actions = {
             
             //回调服务器头
             let callBack = {
-                callbackUrl:data.callbackUrl,
-                callbackHost:"tujingcloud.oss-cn-beijing.aliyuncs.com",
+                callbackUrl:`${state.callbackUrl}${data.callbackUrl}`,
+                callbackHost:`${state.clientOption.bucket}.${state.clientOption.region}.aliyuncs.com`,
                 callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&var1=${x:var1}&var2=${x:var2}",
                 callbackBodyType:"application/json",
             }
@@ -106,8 +128,8 @@ let actions = {
         try {
             //回调服务器头
             let callBack = {
-                callbackUrl:data.callbackUrl,
-                callbackHost:"tujingcloud.oss-cn-beijing.aliyuncs.com",
+                callbackUrl:`${state.callbackUrl}${data.callbackUrl}`,
+                callbackHost:`${state.clientOption.bucket}.${state.clientOption.region}.aliyuncs.com`,
                 callbackBody : "bucket=${bucket}&object=${object}&etag=${etag}&size=${size}&mimeType=${mimeType}&pid=${x:pid}&iid=${x:iid}",
                 callbackBodyType:"application/json",
             }

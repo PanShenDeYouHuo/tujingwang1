@@ -180,7 +180,7 @@ export default {
             text:'首页',
             menuText: [
                 { title: '首页',router: '/', url: '/' },
-                { title: '项目',router: 'works', url: '/works'},
+                // { title: '项目',router: 'works', url: '/works'},
                 { title: '资讯',router: 'login', url: '/login'},
                 { title: '活动',router: 'activity', url: '/statistics'},
                 { title: '素材',router: 'material', url: '/material'},
@@ -210,24 +210,20 @@ export default {
         notifyData() {
             return this.$store.state.user.notify.reverse();
         },
+
         //当前路由
         active() {
-             return this.$store.state.url[0];
+            return this.$store.state.url[0];
         },
+
         //当前未读通知个数
         notifyNumber() {
-            let number = 0;
-            let notifyData = this.$store.state.user.notify;
-            for( let i = 0; i < notifyData.length; i++ ) {
-                if( notifyData[i].state == 0) {
-                    number++;
-                }
-            }
-            return number;
+            return this.$store.state.user.notifyNumber;
         },
+
         //0个是不显示个数
         notifyShow() {
-            return this.notifyNumber > 0 ? true : false;
+            return this.$store.state.user.notifyNumber > 0 ? true : false;
         }
     },
     methods: {
@@ -240,9 +236,10 @@ export default {
         //查看通知
         async putNotify(notify){
             try {
+                console.log(notify);
                 await this.$store.dispatch('putNotify', {_id: notify._id});
                 this.urlChange(notify.router);
-                this.$store.dispatch('getNotify', {notifyType: 0});
+                this.$store.dispatch('getNotify', {notifyType: 0, currentPage:1});
             } catch (err) {
                 console.log(err);                
             }
@@ -303,7 +300,7 @@ export default {
         margin: 0px;
         font-size: 16px;
         border-radius: 0px;
-        padding-top: 5px; 
+        /* padding-top: 5px;  */
         border-style:solid; border-width: 0px 0px 4px 0px; border-color: rgba(0, 0, 0, 0);
     }
 
@@ -331,9 +328,12 @@ export default {
         color: #000;
     }
 
-    .badge {
+    .v-badge {
         height: 24px;
+        display: inline-block;
+        position: relative;
     }
+
 
     /* .btn--flat {
         border-radius: 0px;
